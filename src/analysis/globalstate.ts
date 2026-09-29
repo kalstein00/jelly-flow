@@ -37,6 +37,7 @@ import {isAppSource} from "./appscope";
  * Global analysis state.
  */
 export class GlobalState {
+    readonly modeledExternalModules = new Set<ModuleInfo>();
 
     /**
      * Map from constraint variable string hash to canonical ConstraintVar object.

@@ -103,6 +103,7 @@ import {TokenListener} from "./listeners";
 import micromatch from "micromatch";
 import {callPromiseResolve} from "../natives/nativehelpers";
 import Module from "module";
+import {buildExternalReactModel, prepareExternalReactProperty} from "../natives/react";
 
 /**
  * Models of core JavaScript operations used by astvisitor and nativehelpers.
@@ -665,6 +666,8 @@ export class Operations {
      * re-used across all calls to this function for the same base and property.
      */
     readPropertyFromChain(base: ObjectPropertyVarObj, prop: string): ReadResultVar | undefined {
+        if (base instanceof NativeObjectToken)
+            prepareExternalReactProperty(this.solver, base, prop);
         if (base instanceof ArrayToken && prop === "length")
             return undefined;
         const dst = this.solver.varProducer.readResultVar(base, prop);
@@ -883,12 +886,13 @@ export class Operations {
 
             // try to locate the module
             m = f.loadModule(mode, str, path, this.moduleInfo);
-            if (m instanceof ModuleInfo && m.isIncluded) {
+            const modeled = m instanceof ModuleInfo && buildExternalReactModel(this.solver, m);
+            if (m instanceof ModuleInfo && (m.isIncluded || modeled)) {
 
                 // extend the require graph
                 const fp = getEnclosingFunction(path)?.node;
                 const from = fp ? this.a.functionInfos.get(fp)! : this.moduleInfo;
-                f.registerRequireEdge(from, m);
+                if (m.isIncluded) f.registerRequireEdge(from, m);
 
                 // constraint: ⟦module_m.exports⟧ ⊆ ⟦require(...)⟧ where m denotes the module being loaded
                 if (!reexport)
@@ -901,7 +905,7 @@ export class Operations {
                 const tracked = options.trackedModules && options.trackedModules.some(e =>
                     micromatch.isMatch(m!.getOfficialName(), e) || micromatch.isMatch(s, e));
                 const analyzed = m instanceof ModuleInfo && m.isIncluded;
-                const ap = tracked ? new ModuleAccessPath(m, s) : analyzed ? undefined : IgnoredAccessPath.instance;
+                const ap = modeled ? undefined : tracked ? new ModuleAccessPath(m, s) : analyzed ? undefined : IgnoredAccessPath.instance;
                 if (ap) {
                     this.solver.addAccessPath(ap, resultVar, path.node, this.a.getEnclosingFunctionOrModule(path));
                     if (isExportAllDeclaration(path.node))

@@ -144,6 +144,11 @@ export default class Solver {
         d.maxMemoryUsage = Math.max(d.maxMemoryUsage, getMemoryUsage());
         d.unhandledDynamicPropertyWrites = f.unhandledDynamicPropertyWrites.size;
         d.unhandledDynamicPropertyReads = f.unhandledDynamicPropertyReads.size;
+        if (options.appOnly)
+            d.excludedModules = [...a.moduleInfos.values()].filter(m => !m.isIncluded).map(m => ({
+                file: m.getPath(), package: m.packageInfo.name, version: m.packageInfo.version,
+                modeled: a.modeledExternalModules.has(m),
+            }));
         if (options.memoryTrace) {
             d.listenerDedupEntries = f.listenersProcessed.size;
             d.listenerDedupSingletons = 0;

@@ -1,4 +1,5 @@
 import traverse, {NodePath} from "@babel/traverse";
+import {prepareExternalReactProperty} from "../natives/react";
 import {
     ArrayExpression,
     ArrowFunctionExpression,
@@ -760,6 +761,8 @@ export function visit(ast: File, op: Operations) {
                         if (isImportSpecifier(imp) || isImportDefaultSpecifier(imp)) {
                             const prop = getImportName(imp);
                             const dst = solver.varProducer.nodeVar(imp.local);
+                            if (t instanceof NativeObjectToken)
+                                prepareExternalReactProperty(solver, t, prop);
                             if (t instanceof AllocationSiteToken || t instanceof FunctionToken || t instanceof NativeObjectToken || t instanceof PackageObjectToken)
                                 solver.addSubsetConstraint(solver.varProducer.objPropVar(t, prop), dst);
                             else if (t instanceof AccessPathToken) // TODO: treat as object along with other tokens above?
@@ -829,7 +832,10 @@ export function visit(ast: File, op: Operations) {
                         const node = path.node;
                         function getExportVar(name: string): ConstraintVar | undefined {
                             const m = node.source ? op.loadModule("module", node.source.value, vp.nodeVar(node), path) : undefined;
-                            return m instanceof ModuleInfo ? vp.objPropVar(a.canonicalizeToken(new NativeObjectToken("exports", m)), name) : undefined;
+                            if (!(m instanceof ModuleInfo)) return undefined;
+                            const exports = a.canonicalizeToken(new NativeObjectToken("exports", m));
+                            prepareExternalReactProperty(solver, exports, name);
+                            return vp.objPropVar(exports, name);
                         }
                         for (const spec of path.node.specifiers)
                             switch (spec.type) {

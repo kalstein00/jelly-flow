@@ -4,7 +4,8 @@ import Solver from "../../src/analysis/solver";
 import logger from "../../src/misc/logger";
 import {options, resetOptions} from "../../src/options";
 
-describe.each([false, true])("React callback model enabled=%s", enabled => {
+describe.each(["off", "full", "app"])("React callback model mode=%s", mode => {
+    const enabled = mode !== "off";
     let solver: Solver;
     const named = (name: string) => {
         const matches = [...solver.globalState.functionInfos.values()].filter(f =>
@@ -18,7 +19,8 @@ describe.each([false, true])("React callback model enabled=%s", enabled => {
     beforeAll(async () => {
         resetOptions();
         options.basedir = path.resolve("tests/flow");
-        options.reactCallbackModel = enabled;
+        options.reactCallbackModel = mode === "full";
+        if (mode === "app") options.appOnly = path.resolve("tests/flow/fixtures");
         options.callgraphExternal = false;
         options.loglevel = logger.transports[0].level = "error";
         solver = new Solver();
@@ -53,10 +55,12 @@ describe.each([false, true])("React callback model enabled=%s", enabled => {
         expect(edge("callAlias", "savedNamespace")).toBe(false);
         expect(edge("callNamespace", "savedAlias")).toBe(false);
     });
-    test("retains actual React source analysis", () => {
+    test("includes React implementation only in full analysis mode", () => {
         expect([...solver.globalState.moduleInfos.values()].some(m =>
             m.packageInfo.name === "react" && m.packageInfo.version === "18.3.1" &&
-            m.relativePath.replaceAll("\\", "/") === "cjs/react.development.js")).toBe(true);
+            m.relativePath.replaceAll("\\", "/") === "cjs/react.development.js")).toBe(mode !== "app");
+        if (mode === "app")
+            expect(solver.globalState.filesAnalyzed.some(file => file.includes("node_modules"))).toBe(false);
     });
     test("reports model scope and return transfers separately from calls", () => {
         expect(solver.diagnostics.libraryModels).toHaveLength(enabled ? 1 : 0);
@@ -64,7 +68,7 @@ describe.each([false, true])("React callback model enabled=%s", enabled => {
             const evidence = solver.diagnostics.libraryModels[0];
             expect(evidence.version).toBe("18.3.1");
             expect(evidence.relation).toBe("return-argument");
-            expect(evidence.implementationAnalyzed).toBe(true);
+            expect(evidence.implementationAnalyzed).toBe(mode !== "app");
             expect(evidence.calls).toHaveLength(5);
         }
     });
