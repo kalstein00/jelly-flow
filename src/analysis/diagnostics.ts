@@ -3,6 +3,11 @@ import {VulnerabilityDiagnostics} from "../patternmatching/diagnostics";
 
 export default class AnalysisDiagnostics {
 
+    libraryModels: Array<{
+        model: string, module: string, version: string, relation: "return-argument",
+        argument: number, implementationAnalyzed: boolean, calls: Array<string>
+    }> = [];
+
     packages: number = 0;
 
     modules: number = 0;

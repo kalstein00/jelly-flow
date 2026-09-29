@@ -1,0 +1,84 @@
+{
+  "react": {
+    "name": "react",
+    "node": "v24.20.0",
+    "elapsedMs": 5230,
+    "exitCode": 0,
+    "killed": false,
+    "status": "completed",
+    "selectedChecksPassed": true,
+    "graphSha256": "b1e715d5e8274ea50f390cc9c95d8fe8a10fd2bb9294ddfae97a3e36e6a358f7",
+    "modules": 11,
+    "functions": 1988,
+    "analysisMs": 3863,
+    "memoryMB": 367,
+    "errors": 0,
+    "warnings": 221,
+    "timeout": false,
+    "aborted": false,
+    "unprocessedTokens": 0,
+    "libraryModels": [
+      {
+        "model": "react.useCallback/1",
+        "module": "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tests\\flow\\node_modules\\react\\index.js",
+        "version": "18.3.1",
+        "relation": "return-argument",
+        "argument": 0,
+        "implementationAnalyzed": true,
+        "calls": [
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tests\\flow\\fixtures\\react.tsx:7:17"
+        ]
+      }
+    ],
+    "expectedEdges": {
+      "clickToCallback": true,
+      "callbackToPersist": true
+    },
+    "unrelatedIncoming": 0,
+    "analyzedDependencies": {
+      "react": true,
+      "react-dom": true
+    }
+  },
+  "react-no-external": {
+    "name": "react-no-external",
+    "node": "v24.20.0",
+    "elapsedMs": 5000,
+    "exitCode": 0,
+    "killed": false,
+    "status": "completed",
+    "selectedChecksPassed": true,
+    "graphSha256": "d0f317fe617d81d7dcb0f603707a3cf75c7a53e05e47a9b5daec902f4615a5b0",
+    "modules": 11,
+    "functions": 1988,
+    "analysisMs": 3735,
+    "memoryMB": 378,
+    "errors": 0,
+    "warnings": 221,
+    "timeout": false,
+    "aborted": false,
+    "unprocessedTokens": 0,
+    "libraryModels": [
+      {
+        "model": "react.useCallback/1",
+        "module": "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tests\\flow\\node_modules\\react\\index.js",
+        "version": "18.3.1",
+        "relation": "return-argument",
+        "argument": 0,
+        "implementationAnalyzed": true,
+        "calls": [
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tests\\flow\\fixtures\\react.tsx:7:17"
+        ]
+      }
+    ],
+    "expectedEdges": {
+      "clickToCallback": true,
+      "callbackToPersist": true
+    },
+    "unrelatedIncoming": 0,
+    "analyzedDependencies": {
+      "react": true,
+      "react-dom": true
+    }
+  }
+}

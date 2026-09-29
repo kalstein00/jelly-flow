@@ -6,7 +6,9 @@ const {spawn, execFileSync} = require('node:child_process');
 const {summarize} = require('./summarize.cjs');
 
 const root = path.resolve(__dirname, '../..');
-const [cliArg, outputArg, name] = process.argv.slice(2);
+const [cliArg, outputArg, name, ...extraArgs] = process.argv.slice(2);
+if (extraArgs.some(arg => !['--react-callback-model', '--map-keys'].includes(arg)))
+  throw new Error('Supported evaluation options: --react-callback-model, --map-keys');
 const cases = {
   baseline: ['baseline/caller.ts'],
   negative: ['negative.ts'],
@@ -26,7 +28,7 @@ const args = ['--max-old-space-size=4096', cli, '--basedir', root,
   '--timeout', '90', '--no-print-progress', '--warnings-unsupported',
   '--diagnostics-json', path.join(output, 'diagnostics.json'),
   '--callgraph-json', path.join(output, 'graph.json'),
-  path.join(fixtureRoot, cases[name][0]), ...cases[name].slice(1)];
+  path.join(fixtureRoot, cases[name][0]), ...cases[name].slice(1), ...extraArgs];
 const sha256 = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 const fixtureFiles = ['baseline/caller.ts', 'baseline/leaf.ts', 'baseline/barrel.ts',
   'baseline/tsconfig.json', 'negative.ts', 'react.tsx'];

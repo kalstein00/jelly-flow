@@ -9,6 +9,7 @@ import {options} from "../options";
 import logger from "../misc/logger";
 import {Operations} from "../analysis/operations";
 import {ConstraintVar, ObjectPropertyVarObj} from "../analysis/constraintvars";
+import {addReactCallbackModel} from "./react";
 
 export type CallNodePath = NodePath<CallExpression | OptionalCallExpression | NewExpression>;
 
@@ -234,5 +235,6 @@ export function buildModuleNatives(solver: Solver, moduleInfo: ModuleInfo, modul
             m.init({solver, moduleInfo, moduleSpecialNatives, globalSpecialNatives});
         }
 
+    addReactCallbackModel({solver, moduleInfo, moduleSpecialNatives, globalSpecialNatives});
     return moduleSpecialNatives;
 }

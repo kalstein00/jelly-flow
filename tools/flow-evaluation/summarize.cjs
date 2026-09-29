@@ -21,6 +21,7 @@ function summarize(directory) {
     timeout: diagnostics.timeout, aborted: diagnostics.aborted,
     unprocessedTokens: diagnostics.unprocessedTokensSize,
   });
+  if (diagnostics.libraryModels) result.libraryModels = diagnostics.libraryModels;
   result.status = diagnostics.timeout || diagnostics.aborted || diagnostics.errors !== 0 ||
     diagnostics.unprocessedTokensSize !== 0 ? 'partial' : 'completed';
   // "completed" describes termination only, never graph soundness/completeness.
