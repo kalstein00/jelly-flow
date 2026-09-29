@@ -84,6 +84,7 @@ program
     .option("--no-cycle-elimination", "disable cycle elimination")
     .option("--no-natives", "disable nonessential models of native libraries")
     .option("--react-callback-model", "add a useCallback return-value model for React 18.3.1 (keeps library analysis)")
+    .option("--map-keys", "separate literal Map keys, conservatively merging unknown keys")
     .option("--test-graal", "test graal-nodejs (use with -d)")
     .option("--no-print-progress", "don't print analysis progress information")
     .option("--no-tty", "don't print solver progress for TTY")

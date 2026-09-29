@@ -18,6 +18,7 @@ function at(solver: Solver, file: string, line: number): FunctionInfo {
 async function analyze(entry: string): Promise<Solver> {
     resetOptions();
     options.basedir = path.resolve("tests/flow");
+    options.mapKeys = true;
     options.loglevel = logger.transports[0].level = "error";
     const solver = new Solver();
     await analyzeFiles([entry], solver);
@@ -72,12 +73,10 @@ describe("tests/flow Map negative controls", () => {
             expect(callees).not.toContain(unrelated);
     });
 
-    // Known defects, not desired baseline behavior. Jest reports unexpected passes
-    // as failures: when fixed, remove .failing without weakening these assertions.
-    test.failing("KNOWN DEFECT: saveOnly must not call remove", () => {
+    test("saveOnly must not call remove", () => {
         expect(solver.fragmentState.functionToFunction.get(saveOnly)).not.toContain(remove);
     });
-    test.failing("KNOWN DEFECT: removeOnly must not call save", () => {
+    test("removeOnly must not call save", () => {
         expect(solver.fragmentState.functionToFunction.get(removeOnly)).not.toContain(save);
     });
 });

@@ -33,8 +33,19 @@ React and ReactDOM must both appear in the analyzed files.
 tokens; it does **not** claim a complete or sound call graph. `selectedChecksPassed`
 covers expected positive edges and unrelated-function controls. Known Map
 false positives are reported separately and remain defects. In Jest these are
-`test.failing`: a fix causes an unexpected-pass failure until `.failing` is
-removed, preserving the desired negative assertion.
+ordinary negative tests with `options.mapKeys = true`. The initial 01 commit
+used `test.failing`; 03 removed `.failing` after the key model fixed both defects.
+
+The new models are opt-in and independent:
+
+```powershell
+node tools/flow-evaluation/run.cjs lib/main.js tmp/flow-model-run negative --map-keys
+node tools/flow-evaluation/run.cjs lib/main.js tmp/flow-model-run react --react-callback-model --map-keys
+```
+
+`--react-callback-model` adds return transfers for React 18.3.1's public entry
+without replacing library analysis. `--map-keys` separates primitive literal
+keys with conservative unknown-key fallback. See work items 02/03 for limits.
 
 Selected source positions belong only to these frozen fixtures. The selector
 requires a unique single-line function and distinguishes method columns from

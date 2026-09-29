@@ -57,6 +57,7 @@ import {NativeFunctionParams, NativeModel, NativeModelParams} from "./nativebuil
 import {TokenListener} from "../analysis/listeners";
 import {options} from "../options";
 import {getConstantString} from "../misc/asthelpers";
+import {mapGet, mapSet} from "./mapkeys";
 
 export const OBJECT_PROTOTYPE = "Object.prototype";
 export const ARRAY_PROTOTYPE = "Array.prototype";
@@ -77,6 +78,7 @@ export const ARRAY_UNKNOWN = "%ARRAY_UNKNOWN";
 export const ARRAY_ALL = "%ARRAY_ALL";
 export const MAP_KEYS = "%MAP_KEYS";
 export const MAP_VALUES = "%MAP_VALUES";
+export const MAP_UNKNOWN_VALUES = "%MAP_UNKNOWN_VALUES";
 export const SET_VALUES = "%SET_VALUES";
 export const WEAKMAP_VALUES = "%WEAKMAP_VALUES";
 export const WEAKREF_VALUES = "%WEAKREF_VALUES";
@@ -912,7 +914,10 @@ export const ecmascriptModels: NativeModel = {
                 if (isNewExpression(p.path.node)) {
                     const t = newSpecialObject("Map", p);
                     if (p.callArgs.length > 0)
-                        assignIteratorMapValuePairs(0, t, MAP_KEYS, MAP_VALUES, p);
+                        assignIteratorMapValuePairs(0, t, MAP_KEYS, options.mapKeys ? MAP_UNKNOWN_VALUES : MAP_VALUES, p);
+                    if (options.mapKeys)
+                        p.solver.addSubsetConstraint(p.solver.varProducer.objPropVar(t, MAP_UNKNOWN_VALUES),
+                            p.solver.varProducer.objPropVar(t, MAP_VALUES));
                     returnToken(t, p);
                 }
             },
@@ -938,7 +943,8 @@ export const ecmascriptModels: NativeModel = {
                 {
                     name: "get",
                     invoke: (p: NativeFunctionParams) => {
-                        returnThisProperty(MAP_VALUES, p);
+                        if (options.mapKeys) mapGet(p);
+                        else returnThisProperty(MAP_VALUES, p);
                     }
                 },
                 {
@@ -953,8 +959,11 @@ export const ecmascriptModels: NativeModel = {
                 {
                     name: "set",
                     invoke: (p: NativeFunctionParams) => {
-                        assignParameterToThisProperty(0, MAP_KEYS, p);
-                        assignParameterToThisProperty(1, MAP_VALUES, p);
+                        if (options.mapKeys) mapSet(p);
+                        else {
+                            assignParameterToThisProperty(0, MAP_KEYS, p);
+                            assignParameterToThisProperty(1, MAP_VALUES, p);
+                        }
                     }
                 },
                 {

@@ -1,0 +1,61 @@
+{
+  "baseline": {
+    "name": "baseline",
+    "node": "v24.20.0",
+    "elapsedMs": 1102,
+    "exitCode": 0,
+    "killed": false,
+    "status": "completed",
+    "selectedChecksPassed": true,
+    "graphSha256": "b2a076a90d8fe93a009b0663d3d9ca807a046083f026deb75557c7a6a89b1855",
+    "modules": 3,
+    "functions": 15,
+    "analysisMs": 90,
+    "memoryMB": 47,
+    "errors": 0,
+    "warnings": 0,
+    "timeout": false,
+    "aborted": false,
+    "unprocessedTokens": 0,
+    "libraryModels": [],
+    "expectedEdges": {
+      "alias": true,
+      "reExport": true,
+      "methodA": true,
+      "methodB": true,
+      "parameterCallback": true,
+      "returnedCallback": true,
+      "callbackBody": true,
+      "mapCallback": true
+    }
+  },
+  "negative": {
+    "name": "negative",
+    "node": "v24.20.0",
+    "elapsedMs": 1185,
+    "exitCode": 0,
+    "killed": false,
+    "status": "completed",
+    "selectedChecksPassed": true,
+    "graphSha256": "206814e48d9d20980dd0fbcc6b174e1a5928832b726327e4823f32f9c58edc59",
+    "modules": 1,
+    "functions": 5,
+    "analysisMs": 46,
+    "memoryMB": 43,
+    "errors": 0,
+    "warnings": 0,
+    "timeout": false,
+    "aborted": false,
+    "unprocessedTokens": 0,
+    "libraryModels": [],
+    "expectedEdges": {
+      "saveToSave": true,
+      "removeToRemove": true
+    },
+    "knownFalsePositives": {
+      "saveToRemove": false,
+      "removeToSave": false
+    },
+    "unrelatedIncoming": 0
+  }
+}
