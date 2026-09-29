@@ -1,0 +1,167 @@
+{
+  "baseline": {
+    "sha256": "b502790ef252f47d0bb6e144209b635fc3a21d1fefb9630f7afc03d49efcaa61",
+    "modules": 3,
+    "functions": 15,
+    "analysisMs": 79,
+    "memoryMB": 48,
+    "errors": 0,
+    "warnings": 0,
+    "timeout": false,
+    "aborted": false,
+    "unprocessedTokens": 0,
+    "rawFunctionEdges": 16,
+    "diagnosticFunctionEdges": 13
+  },
+  "baselineExpectedEdges": [
+    [
+      "alias",
+      true
+    ],
+    [
+      "re-export",
+      true
+    ],
+    [
+      "method A",
+      true
+    ],
+    [
+      "method B",
+      true
+    ],
+    [
+      "parameter callback",
+      true
+    ],
+    [
+      "returned callback",
+      true
+    ],
+    [
+      "callback body",
+      true
+    ],
+    [
+      "Map callback",
+      true
+    ]
+  ],
+  "negative": {
+    "sha256": "e695b8fe60183397fcc1f9df9b67b32b693bbabbee46820b753f121a91722b45",
+    "modules": 1,
+    "functions": 5,
+    "analysisMs": 44,
+    "memoryMB": 46,
+    "errors": 0,
+    "warnings": 0,
+    "timeout": false,
+    "aborted": false,
+    "unprocessedTokens": 0,
+    "rawFunctionEdges": 6,
+    "diagnosticFunctionEdges": 6
+  },
+  "negativeEdges": {
+    "saveToSave": true,
+    "saveToRemove_FALSE_POSITIVE": true,
+    "removeToRemove": true,
+    "removeToSave_FALSE_POSITIVE": true,
+    "unrelatedIncoming": 0
+  },
+  "react": {
+    "sha256": "784256f9766d0ca0de67ad2ee32fc3d1cc11423d0e6c8ef7190e175742c11a4c",
+    "modules": 11,
+    "functions": 1988,
+    "analysisMs": 11504,
+    "memoryMB": 1034,
+    "errors": 0,
+    "warnings": 287,
+    "timeout": false,
+    "aborted": false,
+    "unprocessedTokens": 0,
+    "rawFunctionEdges": 5363,
+    "diagnosticFunctionEdges": 5350
+  },
+  "reactEdges": {
+    "clickToCallback": true,
+    "callbackToPersist": true,
+    "unrelatedIncoming": 0
+  },
+  "reactNoExternal": {
+    "sha256": "313241ba6d08b9a78f3bade66d165073e490ddaf3c3b2520d3aee4ea87a22552",
+    "modules": 11,
+    "functions": 1988,
+    "analysisMs": 10638,
+    "memoryMB": 1022,
+    "errors": 0,
+    "warnings": 287,
+    "timeout": false,
+    "aborted": false,
+    "unprocessedTokens": 0,
+    "rawFunctionEdges": 4779,
+    "diagnosticFunctionEdges": 4766
+  },
+  "reactNoExternalEdges": {
+    "clickToCallback": true,
+    "callbackToPersist": true
+  },
+  "dart": {
+    "sha256": "b18af62cee94b70c88701344a5ee1df3c346082c057706d434d3c3e4cf45b063",
+    "modules": 1130,
+    "functions": 5553,
+    "analysisMs": 17219,
+    "memoryMB": 998,
+    "errors": 0,
+    "warnings": 1055,
+    "timeout": false,
+    "aborted": false,
+    "unprocessedTokens": 0,
+    "rawFunctionEdges": 21621,
+    "diagnosticFunctionEdges": 17587
+  },
+  "dartClose": {
+    "incoming": [],
+    "outgoing": [
+      {
+        "from": {
+          "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+          "line": 430,
+          "column": 5,
+          "endLine": 456,
+          "endColumn": 6
+        },
+        "to": {
+          "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+          "line": 341,
+          "column": 51,
+          "endLine": 366,
+          "endColumn": 2
+        }
+      },
+      {
+        "from": {
+          "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+          "line": 430,
+          "column": 5,
+          "endLine": 456,
+          "endColumn": 6
+        },
+        "to": {
+          "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+          "line": 113,
+          "column": 39,
+          "endLine": 120,
+          "endColumn": 2
+        }
+      }
+    ]
+  },
+  "rendererRun": {
+    "code": 134,
+    "signal": null,
+    "killed": false,
+    "elapsedMs": 92562,
+    "graphProduced": false,
+    "diagnosticsProduced": false
+  }
+}

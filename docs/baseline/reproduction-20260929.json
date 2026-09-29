@@ -1,0 +1,669 @@
+{
+  "date": "2026-09-29",
+  "sourceHead": "62e60eb4fd5b991c5bf4cfc992f018984f560ea4",
+  "analysisSourceModified": false,
+  "referencePackage": {
+    "version": "0.13.0",
+    "resolved": "https://registry.npmjs.org/@cs-au-dk/jelly/-/jelly-0.13.0.tgz",
+    "integrity": "sha512-UaEL24sdiZO32ZFZ5fjAHjp6kxeTt+PODxQm5AvB7v0suWzljXusc1Oc3qUi0zb6y/xshoQj9Ee8WmvF9ic5wg==",
+    "license": "BSD-3-Clause",
+    "dependencies": {
+      "@babel/core": "^7.28.5",
+      "@babel/parser": "^7.28.5",
+      "@babel/plugin-proposal-decorators": "^7.28.0",
+      "@babel/plugin-transform-template-literals": "^7.27.1",
+      "@babel/plugin-transform-typescript": "^7.28.5",
+      "@babel/traverse": "^7.28.5",
+      "@babel/types": "^7.28.5",
+      "commander": "^9.5.0",
+      "micromatch": "^4.0.8",
+      "semver": "^7.7.3",
+      "stringify2stream": "^1.1.0",
+      "typescript": "^5.9.3",
+      "winston": "^3.18.3"
+    },
+    "bin": {
+      "jelly": "lib/main.js",
+      "jelly-server": "lib/server.js"
+    },
+    "engines": {
+      "node": ">=22.0.0"
+    }
+  },
+  "referenceLockSha256": "8188bcd747b6975d26100c8c682a1f05dfca7f2bd524dc3cf69b1fd99d400cd0",
+  "runnerSha256": "a4cd09e50cc4c2635760982dcf328aadb4081992717d374504f85109e4af963c",
+  "summarizerSha256": "9d9139a509fdd2144091cf02a7887d5417692ba04253e4231eaa406be9365d43",
+  "fixtures": [
+    {
+      "file": "baseline/caller.ts",
+      "originalSha256": "406f7ec3acd5cdc449eb61eca282627dce2b9466330479ec88d1db5633fcb3a4",
+      "copiedSha256": "406f7ec3acd5cdc449eb61eca282627dce2b9466330479ec88d1db5633fcb3a4"
+    },
+    {
+      "file": "baseline/leaf.ts",
+      "originalSha256": "0d8122aa5a9f79c9c9ce98c0684df2e835543f899378ec46e7c8a89308f5d87b",
+      "copiedSha256": "0d8122aa5a9f79c9c9ce98c0684df2e835543f899378ec46e7c8a89308f5d87b"
+    },
+    {
+      "file": "baseline/barrel.ts",
+      "originalSha256": "507b8e1145bc487c577a40ea227f6f385c3d1b507250485111f8f800944771f1",
+      "copiedSha256": "507b8e1145bc487c577a40ea227f6f385c3d1b507250485111f8f800944771f1"
+    },
+    {
+      "file": "baseline/tsconfig.json",
+      "originalSha256": "dec86e77257766ad0bc915deaeb7da71963da323860784bab6ce4c2592cba703",
+      "copiedSha256": "dec86e77257766ad0bc915deaeb7da71963da323860784bab6ce4c2592cba703"
+    },
+    {
+      "file": "negative.ts",
+      "originalSha256": "135d167998b567d6bbb1a01c1b6d49273e3a6bf62e64dcb5e81071fe5fa7464f",
+      "copiedSha256": "135d167998b567d6bbb1a01c1b6d49273e3a6bf62e64dcb5e81071fe5fa7464f"
+    },
+    {
+      "file": "react.tsx",
+      "originalSha256": "b94c967812d7c41965fce92228bdcb5d39704032c7eac5230186ff408fe91f35",
+      "copiedSha256": "b94c967812d7c41965fce92228bdcb5d39704032c7eac5230186ff408fe91f35"
+    }
+  ],
+  "runs": {
+    "verified-fork": {
+      "baseline": {
+        "rawDirectory": "tmp/flow-baseline-20260929/verified-fork/baseline",
+        "metadata": {
+          "name": "baseline",
+          "cwd": "C:\\Users\\hj0712.jo\\vscode\\jelly-flow",
+          "node": "v24.20.0",
+          "args": [
+            "--max-old-space-size=4096",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\lib\\main.js",
+            "--basedir",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow",
+            "--timeout",
+            "90",
+            "--no-print-progress",
+            "--warnings-unsupported",
+            "--diagnostics-json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-baseline-20260929\\verified-fork\\baseline\\diagnostics.json",
+            "--callgraph-json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-baseline-20260929\\verified-fork\\baseline\\graph.json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tests\\flow\\fixtures\\baseline\\caller.ts"
+          ],
+          "sourceHead": "62e60eb4fd5b991c5bf4cfc992f018984f560ea4",
+          "sourceChanges": "?? docs/\n?? tests/flow/\n?? tools/",
+          "cliSha256": "740d0db7c6804f290ae154a0efcb61c466da4db61b57e51ca1a7e8ddf42b81db",
+          "rootLockSha256": "838af135ad811d64e4c12cbe3753e1227d97eb21ba38e827333c07d25d41c441",
+          "fixtureLockSha256": "6c19b0f8658a9eb882ce584e68cb8c03dfc8e79ec7bbf2c605501fa397b82861",
+          "fixtures": {
+            "baseline/caller.ts": "406f7ec3acd5cdc449eb61eca282627dce2b9466330479ec88d1db5633fcb3a4",
+            "baseline/leaf.ts": "0d8122aa5a9f79c9c9ce98c0684df2e835543f899378ec46e7c8a89308f5d87b",
+            "baseline/barrel.ts": "507b8e1145bc487c577a40ea227f6f385c3d1b507250485111f8f800944771f1",
+            "baseline/tsconfig.json": "dec86e77257766ad0bc915deaeb7da71963da323860784bab6ce4c2592cba703",
+            "negative.ts": "135d167998b567d6bbb1a01c1b6d49273e3a6bf62e64dcb5e81071fe5fa7464f",
+            "react.tsx": "b94c967812d7c41965fce92228bdcb5d39704032c7eac5230186ff408fe91f35"
+          },
+          "dependencies": {
+            "react": "18.3.1",
+            "react-dom": "18.3.1"
+          },
+          "startedAt": "2026-09-29T09:28:28.818Z",
+          "code": 0,
+          "signal": null,
+          "killed": false,
+          "elapsedMs": 1310
+        },
+        "summary": {
+          "name": "baseline",
+          "node": "v24.20.0",
+          "elapsedMs": 1310,
+          "exitCode": 0,
+          "killed": false,
+          "status": "completed",
+          "selectedChecksPassed": true,
+          "graphSha256": "37a411f1f2b1aa2198e2d2c18cf73c0c7d3a8da0f526e40834cbd9cf0e68e8fe",
+          "modules": 3,
+          "functions": 15,
+          "analysisMs": 83,
+          "memoryMB": 46,
+          "errors": 0,
+          "warnings": 0,
+          "timeout": false,
+          "aborted": false,
+          "unprocessedTokens": 0,
+          "expectedEdges": {
+            "alias": true,
+            "reExport": true,
+            "methodA": true,
+            "methodB": true,
+            "parameterCallback": true,
+            "returnedCallback": true,
+            "callbackBody": true,
+            "mapCallback": true
+          }
+        }
+      },
+      "negative": {
+        "rawDirectory": "tmp/flow-baseline-20260929/verified-fork/negative",
+        "metadata": {
+          "name": "negative",
+          "cwd": "C:\\Users\\hj0712.jo\\vscode\\jelly-flow",
+          "node": "v24.20.0",
+          "args": [
+            "--max-old-space-size=4096",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\lib\\main.js",
+            "--basedir",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow",
+            "--timeout",
+            "90",
+            "--no-print-progress",
+            "--warnings-unsupported",
+            "--diagnostics-json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-baseline-20260929\\verified-fork\\negative\\diagnostics.json",
+            "--callgraph-json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-baseline-20260929\\verified-fork\\negative\\graph.json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tests\\flow\\fixtures\\negative.ts"
+          ],
+          "sourceHead": "62e60eb4fd5b991c5bf4cfc992f018984f560ea4",
+          "sourceChanges": "?? docs/\n?? tests/flow/\n?? tools/",
+          "cliSha256": "740d0db7c6804f290ae154a0efcb61c466da4db61b57e51ca1a7e8ddf42b81db",
+          "rootLockSha256": "838af135ad811d64e4c12cbe3753e1227d97eb21ba38e827333c07d25d41c441",
+          "fixtureLockSha256": "6c19b0f8658a9eb882ce584e68cb8c03dfc8e79ec7bbf2c605501fa397b82861",
+          "fixtures": {
+            "baseline/caller.ts": "406f7ec3acd5cdc449eb61eca282627dce2b9466330479ec88d1db5633fcb3a4",
+            "baseline/leaf.ts": "0d8122aa5a9f79c9c9ce98c0684df2e835543f899378ec46e7c8a89308f5d87b",
+            "baseline/barrel.ts": "507b8e1145bc487c577a40ea227f6f385c3d1b507250485111f8f800944771f1",
+            "baseline/tsconfig.json": "dec86e77257766ad0bc915deaeb7da71963da323860784bab6ce4c2592cba703",
+            "negative.ts": "135d167998b567d6bbb1a01c1b6d49273e3a6bf62e64dcb5e81071fe5fa7464f",
+            "react.tsx": "b94c967812d7c41965fce92228bdcb5d39704032c7eac5230186ff408fe91f35"
+          },
+          "dependencies": {
+            "react": "18.3.1",
+            "react-dom": "18.3.1"
+          },
+          "startedAt": "2026-09-29T09:28:30.603Z",
+          "code": 0,
+          "signal": null,
+          "killed": false,
+          "elapsedMs": 1030
+        },
+        "summary": {
+          "name": "negative",
+          "node": "v24.20.0",
+          "elapsedMs": 1030,
+          "exitCode": 0,
+          "killed": false,
+          "status": "completed",
+          "selectedChecksPassed": true,
+          "graphSha256": "5aae46cf834a1500aea689fa228124bf33cb2e677e8fa60d98553dddf29b9ba8",
+          "modules": 1,
+          "functions": 5,
+          "analysisMs": 48,
+          "memoryMB": 43,
+          "errors": 0,
+          "warnings": 0,
+          "timeout": false,
+          "aborted": false,
+          "unprocessedTokens": 0,
+          "expectedEdges": {
+            "saveToSave": true,
+            "removeToRemove": true
+          },
+          "knownFalsePositives": {
+            "saveToRemove": true,
+            "removeToSave": true
+          },
+          "unrelatedIncoming": 0
+        }
+      },
+      "react": {
+        "rawDirectory": "tmp/flow-baseline-20260929/verified-fork/react",
+        "metadata": {
+          "name": "react",
+          "cwd": "C:\\Users\\hj0712.jo\\vscode\\jelly-flow",
+          "node": "v24.20.0",
+          "args": [
+            "--max-old-space-size=4096",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\lib\\main.js",
+            "--basedir",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow",
+            "--timeout",
+            "90",
+            "--no-print-progress",
+            "--warnings-unsupported",
+            "--diagnostics-json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-baseline-20260929\\verified-fork\\react\\diagnostics.json",
+            "--callgraph-json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-baseline-20260929\\verified-fork\\react\\graph.json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tests\\flow\\fixtures\\react.tsx"
+          ],
+          "sourceHead": "62e60eb4fd5b991c5bf4cfc992f018984f560ea4",
+          "sourceChanges": "?? docs/\n?? tests/flow/\n?? tools/",
+          "cliSha256": "740d0db7c6804f290ae154a0efcb61c466da4db61b57e51ca1a7e8ddf42b81db",
+          "rootLockSha256": "838af135ad811d64e4c12cbe3753e1227d97eb21ba38e827333c07d25d41c441",
+          "fixtureLockSha256": "6c19b0f8658a9eb882ce584e68cb8c03dfc8e79ec7bbf2c605501fa397b82861",
+          "fixtures": {
+            "baseline/caller.ts": "406f7ec3acd5cdc449eb61eca282627dce2b9466330479ec88d1db5633fcb3a4",
+            "baseline/leaf.ts": "0d8122aa5a9f79c9c9ce98c0684df2e835543f899378ec46e7c8a89308f5d87b",
+            "baseline/barrel.ts": "507b8e1145bc487c577a40ea227f6f385c3d1b507250485111f8f800944771f1",
+            "baseline/tsconfig.json": "dec86e77257766ad0bc915deaeb7da71963da323860784bab6ce4c2592cba703",
+            "negative.ts": "135d167998b567d6bbb1a01c1b6d49273e3a6bf62e64dcb5e81071fe5fa7464f",
+            "react.tsx": "b94c967812d7c41965fce92228bdcb5d39704032c7eac5230186ff408fe91f35"
+          },
+          "dependencies": {
+            "react": "18.3.1",
+            "react-dom": "18.3.1"
+          },
+          "startedAt": "2026-09-29T09:28:32.122Z",
+          "code": 0,
+          "signal": null,
+          "killed": false,
+          "elapsedMs": 4679
+        },
+        "summary": {
+          "name": "react",
+          "node": "v24.20.0",
+          "elapsedMs": 4679,
+          "exitCode": 0,
+          "killed": false,
+          "status": "completed",
+          "selectedChecksPassed": true,
+          "graphSha256": "c6eddffef264053375a67522eb8f4d5ccd29ffb355f4c78464ee651fd7a91dae",
+          "modules": 11,
+          "functions": 1988,
+          "analysisMs": 3523,
+          "memoryMB": 365,
+          "errors": 0,
+          "warnings": 221,
+          "timeout": false,
+          "aborted": false,
+          "unprocessedTokens": 0,
+          "expectedEdges": {
+            "clickToCallback": true,
+            "callbackToPersist": true
+          },
+          "unrelatedIncoming": 0,
+          "analyzedDependencies": {
+            "react": true,
+            "react-dom": true
+          }
+        }
+      },
+      "react-no-external": {
+        "rawDirectory": "tmp/flow-baseline-20260929/verified-fork/react-no-external",
+        "metadata": {
+          "name": "react-no-external",
+          "cwd": "C:\\Users\\hj0712.jo\\vscode\\jelly-flow",
+          "node": "v24.20.0",
+          "args": [
+            "--max-old-space-size=4096",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\lib\\main.js",
+            "--basedir",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow",
+            "--timeout",
+            "90",
+            "--no-print-progress",
+            "--warnings-unsupported",
+            "--diagnostics-json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-baseline-20260929\\verified-fork\\react-no-external\\diagnostics.json",
+            "--callgraph-json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-baseline-20260929\\verified-fork\\react-no-external\\graph.json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tests\\flow\\fixtures\\react.tsx",
+            "--no-callgraph-external"
+          ],
+          "sourceHead": "62e60eb4fd5b991c5bf4cfc992f018984f560ea4",
+          "sourceChanges": "?? docs/\n?? tests/flow/\n?? tools/",
+          "cliSha256": "740d0db7c6804f290ae154a0efcb61c466da4db61b57e51ca1a7e8ddf42b81db",
+          "rootLockSha256": "838af135ad811d64e4c12cbe3753e1227d97eb21ba38e827333c07d25d41c441",
+          "fixtureLockSha256": "6c19b0f8658a9eb882ce584e68cb8c03dfc8e79ec7bbf2c605501fa397b82861",
+          "fixtures": {
+            "baseline/caller.ts": "406f7ec3acd5cdc449eb61eca282627dce2b9466330479ec88d1db5633fcb3a4",
+            "baseline/leaf.ts": "0d8122aa5a9f79c9c9ce98c0684df2e835543f899378ec46e7c8a89308f5d87b",
+            "baseline/barrel.ts": "507b8e1145bc487c577a40ea227f6f385c3d1b507250485111f8f800944771f1",
+            "baseline/tsconfig.json": "dec86e77257766ad0bc915deaeb7da71963da323860784bab6ce4c2592cba703",
+            "negative.ts": "135d167998b567d6bbb1a01c1b6d49273e3a6bf62e64dcb5e81071fe5fa7464f",
+            "react.tsx": "b94c967812d7c41965fce92228bdcb5d39704032c7eac5230186ff408fe91f35"
+          },
+          "dependencies": {
+            "react": "18.3.1",
+            "react-dom": "18.3.1"
+          },
+          "startedAt": "2026-09-29T09:28:37.329Z",
+          "code": 0,
+          "signal": null,
+          "killed": false,
+          "elapsedMs": 4924
+        },
+        "summary": {
+          "name": "react-no-external",
+          "node": "v24.20.0",
+          "elapsedMs": 4924,
+          "exitCode": 0,
+          "killed": false,
+          "status": "completed",
+          "selectedChecksPassed": true,
+          "graphSha256": "d77b0d81b18b3c77a6a4a82cddabc98f1011e8c2c62534fd3eb5169722e521b0",
+          "modules": 11,
+          "functions": 1988,
+          "analysisMs": 3745,
+          "memoryMB": 377,
+          "errors": 0,
+          "warnings": 221,
+          "timeout": false,
+          "aborted": false,
+          "unprocessedTokens": 0,
+          "expectedEdges": {
+            "clickToCallback": true,
+            "callbackToPersist": true
+          },
+          "unrelatedIncoming": 0,
+          "analyzedDependencies": {
+            "react": true,
+            "react-dom": true
+          }
+        }
+      }
+    },
+    "npm-0.13.0": {
+      "baseline": {
+        "rawDirectory": "tmp/flow-baseline-20260929/npm-0.13.0/baseline",
+        "metadata": {
+          "name": "baseline",
+          "cwd": "C:\\Users\\hj0712.jo\\vscode\\jelly-flow",
+          "node": "v24.20.0",
+          "args": [
+            "--max-old-space-size=4096",
+            "C:\\Users\\hj0712.jo\\AppData\\Local\\Temp\\dart-jelly-evaluation-20260929\\node_modules\\@cs-au-dk\\jelly\\lib\\main.js",
+            "--basedir",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow",
+            "--timeout",
+            "90",
+            "--no-print-progress",
+            "--warnings-unsupported",
+            "--diagnostics-json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-baseline-20260929\\npm-0.13.0\\baseline\\diagnostics.json",
+            "--callgraph-json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-baseline-20260929\\npm-0.13.0\\baseline\\graph.json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tests\\flow\\fixtures\\baseline\\caller.ts"
+          ],
+          "sourceHead": "62e60eb4fd5b991c5bf4cfc992f018984f560ea4",
+          "sourceChanges": "?? docs/\n?? tests/flow/\n?? tools/",
+          "cliSha256": "0f5422e1a35b78e8ce059f5cd1fb11f445e51eace6b0a4463f3212887f91bd5d",
+          "rootLockSha256": "838af135ad811d64e4c12cbe3753e1227d97eb21ba38e827333c07d25d41c441",
+          "fixtureLockSha256": "6c19b0f8658a9eb882ce584e68cb8c03dfc8e79ec7bbf2c605501fa397b82861",
+          "fixtures": {
+            "baseline/caller.ts": "406f7ec3acd5cdc449eb61eca282627dce2b9466330479ec88d1db5633fcb3a4",
+            "baseline/leaf.ts": "0d8122aa5a9f79c9c9ce98c0684df2e835543f899378ec46e7c8a89308f5d87b",
+            "baseline/barrel.ts": "507b8e1145bc487c577a40ea227f6f385c3d1b507250485111f8f800944771f1",
+            "baseline/tsconfig.json": "dec86e77257766ad0bc915deaeb7da71963da323860784bab6ce4c2592cba703",
+            "negative.ts": "135d167998b567d6bbb1a01c1b6d49273e3a6bf62e64dcb5e81071fe5fa7464f",
+            "react.tsx": "b94c967812d7c41965fce92228bdcb5d39704032c7eac5230186ff408fe91f35"
+          },
+          "dependencies": {
+            "react": "18.3.1",
+            "react-dom": "18.3.1"
+          },
+          "startedAt": "2026-09-29T09:28:48.268Z",
+          "code": 0,
+          "signal": null,
+          "killed": false,
+          "elapsedMs": 8053
+        },
+        "summary": {
+          "name": "baseline",
+          "node": "v24.20.0",
+          "elapsedMs": 8053,
+          "exitCode": 0,
+          "killed": false,
+          "status": "completed",
+          "selectedChecksPassed": true,
+          "graphSha256": "965c1641c0fa9ef04071e8d2c1ddc961f740c3e7b3424b84dcd14d6efd6a51d7",
+          "modules": 3,
+          "functions": 15,
+          "analysisMs": 74,
+          "memoryMB": 49,
+          "errors": 0,
+          "warnings": 0,
+          "timeout": false,
+          "aborted": false,
+          "unprocessedTokens": 0,
+          "expectedEdges": {
+            "alias": true,
+            "reExport": true,
+            "methodA": true,
+            "methodB": true,
+            "parameterCallback": true,
+            "returnedCallback": true,
+            "callbackBody": true,
+            "mapCallback": true
+          }
+        }
+      },
+      "negative": {
+        "rawDirectory": "tmp/flow-baseline-20260929/npm-0.13.0/negative",
+        "metadata": {
+          "name": "negative",
+          "cwd": "C:\\Users\\hj0712.jo\\vscode\\jelly-flow",
+          "node": "v24.20.0",
+          "args": [
+            "--max-old-space-size=4096",
+            "C:\\Users\\hj0712.jo\\AppData\\Local\\Temp\\dart-jelly-evaluation-20260929\\node_modules\\@cs-au-dk\\jelly\\lib\\main.js",
+            "--basedir",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow",
+            "--timeout",
+            "90",
+            "--no-print-progress",
+            "--warnings-unsupported",
+            "--diagnostics-json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-baseline-20260929\\npm-0.13.0\\negative\\diagnostics.json",
+            "--callgraph-json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-baseline-20260929\\npm-0.13.0\\negative\\graph.json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tests\\flow\\fixtures\\negative.ts"
+          ],
+          "sourceHead": "62e60eb4fd5b991c5bf4cfc992f018984f560ea4",
+          "sourceChanges": "?? docs/\n?? tests/flow/\n?? tools/",
+          "cliSha256": "0f5422e1a35b78e8ce059f5cd1fb11f445e51eace6b0a4463f3212887f91bd5d",
+          "rootLockSha256": "838af135ad811d64e4c12cbe3753e1227d97eb21ba38e827333c07d25d41c441",
+          "fixtureLockSha256": "6c19b0f8658a9eb882ce584e68cb8c03dfc8e79ec7bbf2c605501fa397b82861",
+          "fixtures": {
+            "baseline/caller.ts": "406f7ec3acd5cdc449eb61eca282627dce2b9466330479ec88d1db5633fcb3a4",
+            "baseline/leaf.ts": "0d8122aa5a9f79c9c9ce98c0684df2e835543f899378ec46e7c8a89308f5d87b",
+            "baseline/barrel.ts": "507b8e1145bc487c577a40ea227f6f385c3d1b507250485111f8f800944771f1",
+            "baseline/tsconfig.json": "dec86e77257766ad0bc915deaeb7da71963da323860784bab6ce4c2592cba703",
+            "negative.ts": "135d167998b567d6bbb1a01c1b6d49273e3a6bf62e64dcb5e81071fe5fa7464f",
+            "react.tsx": "b94c967812d7c41965fce92228bdcb5d39704032c7eac5230186ff408fe91f35"
+          },
+          "dependencies": {
+            "react": "18.3.1",
+            "react-dom": "18.3.1"
+          },
+          "startedAt": "2026-09-29T09:28:56.915Z",
+          "code": 0,
+          "signal": null,
+          "killed": false,
+          "elapsedMs": 1061
+        },
+        "summary": {
+          "name": "negative",
+          "node": "v24.20.0",
+          "elapsedMs": 1061,
+          "exitCode": 0,
+          "killed": false,
+          "status": "completed",
+          "selectedChecksPassed": true,
+          "graphSha256": "a8a1feeec455261e1f04440907e4f7478fcc7507566cb500bce5cbb9c05668ae",
+          "modules": 1,
+          "functions": 5,
+          "analysisMs": 43,
+          "memoryMB": 46,
+          "errors": 0,
+          "warnings": 0,
+          "timeout": false,
+          "aborted": false,
+          "unprocessedTokens": 0,
+          "expectedEdges": {
+            "saveToSave": true,
+            "removeToRemove": true
+          },
+          "knownFalsePositives": {
+            "saveToRemove": true,
+            "removeToSave": true
+          },
+          "unrelatedIncoming": 0
+        }
+      },
+      "react": {
+        "rawDirectory": "tmp/flow-baseline-20260929/npm-0.13.0/react",
+        "metadata": {
+          "name": "react",
+          "cwd": "C:\\Users\\hj0712.jo\\vscode\\jelly-flow",
+          "node": "v24.20.0",
+          "args": [
+            "--max-old-space-size=4096",
+            "C:\\Users\\hj0712.jo\\AppData\\Local\\Temp\\dart-jelly-evaluation-20260929\\node_modules\\@cs-au-dk\\jelly\\lib\\main.js",
+            "--basedir",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow",
+            "--timeout",
+            "90",
+            "--no-print-progress",
+            "--warnings-unsupported",
+            "--diagnostics-json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-baseline-20260929\\npm-0.13.0\\react\\diagnostics.json",
+            "--callgraph-json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-baseline-20260929\\npm-0.13.0\\react\\graph.json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tests\\flow\\fixtures\\react.tsx"
+          ],
+          "sourceHead": "62e60eb4fd5b991c5bf4cfc992f018984f560ea4",
+          "sourceChanges": "?? docs/\n?? tests/flow/\n?? tools/",
+          "cliSha256": "0f5422e1a35b78e8ce059f5cd1fb11f445e51eace6b0a4463f3212887f91bd5d",
+          "rootLockSha256": "838af135ad811d64e4c12cbe3753e1227d97eb21ba38e827333c07d25d41c441",
+          "fixtureLockSha256": "6c19b0f8658a9eb882ce584e68cb8c03dfc8e79ec7bbf2c605501fa397b82861",
+          "fixtures": {
+            "baseline/caller.ts": "406f7ec3acd5cdc449eb61eca282627dce2b9466330479ec88d1db5633fcb3a4",
+            "baseline/leaf.ts": "0d8122aa5a9f79c9c9ce98c0684df2e835543f899378ec46e7c8a89308f5d87b",
+            "baseline/barrel.ts": "507b8e1145bc487c577a40ea227f6f385c3d1b507250485111f8f800944771f1",
+            "baseline/tsconfig.json": "dec86e77257766ad0bc915deaeb7da71963da323860784bab6ce4c2592cba703",
+            "negative.ts": "135d167998b567d6bbb1a01c1b6d49273e3a6bf62e64dcb5e81071fe5fa7464f",
+            "react.tsx": "b94c967812d7c41965fce92228bdcb5d39704032c7eac5230186ff408fe91f35"
+          },
+          "dependencies": {
+            "react": "18.3.1",
+            "react-dom": "18.3.1"
+          },
+          "startedAt": "2026-09-29T09:28:58.523Z",
+          "code": 0,
+          "signal": null,
+          "killed": false,
+          "elapsedMs": 12918
+        },
+        "summary": {
+          "name": "react",
+          "node": "v24.20.0",
+          "elapsedMs": 12918,
+          "exitCode": 0,
+          "killed": false,
+          "status": "completed",
+          "selectedChecksPassed": true,
+          "graphSha256": "e6f577002a9af0b6f76611e84ee10e242a939c809ea95eecbcdc731b7b0f61fe",
+          "modules": 11,
+          "functions": 1988,
+          "analysisMs": 11633,
+          "memoryMB": 1033,
+          "errors": 0,
+          "warnings": 287,
+          "timeout": false,
+          "aborted": false,
+          "unprocessedTokens": 0,
+          "expectedEdges": {
+            "clickToCallback": true,
+            "callbackToPersist": true
+          },
+          "unrelatedIncoming": 0,
+          "analyzedDependencies": {
+            "react": true,
+            "react-dom": true
+          }
+        }
+      },
+      "react-no-external": {
+        "rawDirectory": "tmp/flow-baseline-20260929/npm-0.13.0/react-no-external",
+        "metadata": {
+          "name": "react-no-external",
+          "cwd": "C:\\Users\\hj0712.jo\\vscode\\jelly-flow",
+          "node": "v24.20.0",
+          "args": [
+            "--max-old-space-size=4096",
+            "C:\\Users\\hj0712.jo\\AppData\\Local\\Temp\\dart-jelly-evaluation-20260929\\node_modules\\@cs-au-dk\\jelly\\lib\\main.js",
+            "--basedir",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow",
+            "--timeout",
+            "90",
+            "--no-print-progress",
+            "--warnings-unsupported",
+            "--diagnostics-json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-baseline-20260929\\npm-0.13.0\\react-no-external\\diagnostics.json",
+            "--callgraph-json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-baseline-20260929\\npm-0.13.0\\react-no-external\\graph.json",
+            "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tests\\flow\\fixtures\\react.tsx",
+            "--no-callgraph-external"
+          ],
+          "sourceHead": "62e60eb4fd5b991c5bf4cfc992f018984f560ea4",
+          "sourceChanges": "?? docs/\n?? tests/flow/\n?? tools/",
+          "cliSha256": "0f5422e1a35b78e8ce059f5cd1fb11f445e51eace6b0a4463f3212887f91bd5d",
+          "rootLockSha256": "838af135ad811d64e4c12cbe3753e1227d97eb21ba38e827333c07d25d41c441",
+          "fixtureLockSha256": "6c19b0f8658a9eb882ce584e68cb8c03dfc8e79ec7bbf2c605501fa397b82861",
+          "fixtures": {
+            "baseline/caller.ts": "406f7ec3acd5cdc449eb61eca282627dce2b9466330479ec88d1db5633fcb3a4",
+            "baseline/leaf.ts": "0d8122aa5a9f79c9c9ce98c0684df2e835543f899378ec46e7c8a89308f5d87b",
+            "baseline/barrel.ts": "507b8e1145bc487c577a40ea227f6f385c3d1b507250485111f8f800944771f1",
+            "baseline/tsconfig.json": "dec86e77257766ad0bc915deaeb7da71963da323860784bab6ce4c2592cba703",
+            "negative.ts": "135d167998b567d6bbb1a01c1b6d49273e3a6bf62e64dcb5e81071fe5fa7464f",
+            "react.tsx": "b94c967812d7c41965fce92228bdcb5d39704032c7eac5230186ff408fe91f35"
+          },
+          "dependencies": {
+            "react": "18.3.1",
+            "react-dom": "18.3.1"
+          },
+          "startedAt": "2026-09-29T09:29:11.989Z",
+          "code": 0,
+          "signal": null,
+          "killed": false,
+          "elapsedMs": 11915
+        },
+        "summary": {
+          "name": "react-no-external",
+          "node": "v24.20.0",
+          "elapsedMs": 11915,
+          "exitCode": 0,
+          "killed": false,
+          "status": "completed",
+          "selectedChecksPassed": true,
+          "graphSha256": "e1d419d4bdacdd23579022dc6ebabb3413bc04fd11f57ff9a17a1666781f52ca",
+          "modules": 11,
+          "functions": 1988,
+          "analysisMs": 10648,
+          "memoryMB": 1026,
+          "errors": 0,
+          "warnings": 287,
+          "timeout": false,
+          "aborted": false,
+          "unprocessedTokens": 0,
+          "expectedEdges": {
+            "clickToCallback": true,
+            "callbackToPersist": true
+          },
+          "unrelatedIncoming": 0,
+          "analyzedDependencies": {
+            "react": true,
+            "react-dom": true
+          }
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Selected static edges only; no completeness claim.",
+    "Map cross-key false positives are present in both variants.",
+    "Timing is a single observation, not an improvement attributable to this change.",
+    "DART hook/renderer have not been re-run in this step.",
+    "Raw graphs/logs are local generated files under ignored tmp; their hashes and metadata are retained here."
+  ]
+}
