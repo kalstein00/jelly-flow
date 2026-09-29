@@ -1,0 +1,122 @@
+{
+  "samples": 12511,
+  "last": {
+    "elapsedMs": 85731,
+    "phase": "propagation:Analyzing",
+    "rss": 4464549888,
+    "heapTotal": 4274569216,
+    "heapUsed": 4238690240,
+    "external": 4193946,
+    "arrayBuffers": 212399,
+    "modules": 1782,
+    "functions": 34592,
+    "vars": 2076082,
+    "tokens": 2069911,
+    "uniqueTokens": 114684,
+    "subsetEdges": 1534733,
+    "listenerKeys": 862382,
+    "pendingTokenVars": 225241,
+    "listenerQueue": 1921578,
+    "boundedListenerQueue": 0,
+    "listenersProcessed": 1712900,
+    "callEdges": 49265,
+    "propertyReads": 420299,
+    "defUseModules": 1782,
+    "heapUsedMB": 4042,
+    "rssMB": 4258
+  },
+  "peak": {
+    "elapsedMs": 82967,
+    "phase": "propagation:Analyzing",
+    "rss": 4507209728,
+    "heapTotal": 4320440320,
+    "heapUsed": 4281895408,
+    "external": 4193946,
+    "arrayBuffers": 212399,
+    "modules": 1782,
+    "functions": 34592,
+    "vars": 2075435,
+    "tokens": 2069911,
+    "uniqueTokens": 114684,
+    "subsetEdges": 1534266,
+    "listenerKeys": 862382,
+    "pendingTokenVars": 225241,
+    "listenerQueue": 1921578,
+    "boundedListenerQueue": 0,
+    "listenersProcessed": 1710500,
+    "callEdges": 49265,
+    "propertyReads": 419832,
+    "defUseModules": 1782,
+    "heapUsedMB": 4084,
+    "rssMB": 4298
+  },
+  "propagationStart": [
+    {
+      "elapsedMs": 45284,
+      "phase": "propagation:Analyzing:start",
+      "rss": 3048751104,
+      "heapTotal": 2913976320,
+      "heapUsed": 2756336816,
+      "external": 4199357,
+      "arrayBuffers": 212399,
+      "modules": 1782,
+      "functions": 34592,
+      "vars": 763087,
+      "tokens": 190517,
+      "uniqueTokens": 111897,
+      "subsetEdges": 417711,
+      "listenerKeys": 328713,
+      "pendingTokenVars": 188310,
+      "listenerQueue": 51337,
+      "boundedListenerQueue": 0,
+      "listenersProcessed": 0,
+      "callEdges": 0,
+      "propertyReads": 169186,
+      "defUseModules": 1782,
+      "heapUsedMB": 2629,
+      "rssMB": 2908
+    }
+  ],
+  "largestModuleDeltas": [
+    {
+      "module": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\echarts\\dist\\echarts.js",
+      "heapDeltaMB": 886,
+      "durationMs": 8334
+    },
+    {
+      "module": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\ag-grid-community\\dist\\package\\main.cjs.js",
+      "heapDeltaMB": 560,
+      "durationMs": 5701
+    },
+    {
+      "module": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\lucide-react\\dist\\cjs\\lucide-react.js",
+      "heapDeltaMB": 191,
+      "durationMs": 1659
+    },
+    {
+      "module": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react-dom\\cjs\\react-dom.development.js",
+      "heapDeltaMB": 117,
+      "durationMs": 1458
+    },
+    {
+      "module": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react-dom\\cjs\\react-dom.production.min.js",
+      "heapDeltaMB": 102,
+      "durationMs": 1029
+    },
+    {
+      "module": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\dockview-core\\dist\\package\\main.cjs.js",
+      "heapDeltaMB": 91,
+      "durationMs": 1270
+    },
+    {
+      "module": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\@xyflow\\react\\dist\\umd\\index.js",
+      "heapDeltaMB": 67,
+      "durationMs": 1267
+    },
+    {
+      "module": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\mathjs\\lib\\cjs\\type\\matrix\\SparseMatrix.js",
+      "heapDeltaMB": 28,
+      "durationMs": 85
+    }
+  ]
+}

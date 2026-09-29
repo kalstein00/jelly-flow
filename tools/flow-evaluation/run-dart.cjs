@@ -6,7 +6,7 @@ const {spawn, execFileSync} = require('node:child_process');
 const {summarizeDart} = require('./summarize-dart.cjs');
 const [cliArg, outputArg, dartArg, name, ...extraArgs] = process.argv.slice(2);
 if (!cliArg || !outputArg || !dartArg || !['hook', 'renderer'].includes(name) ||
-    extraArgs.some(arg => !['--react-callback-model', '--map-keys'].includes(arg)))
+    extraArgs.some(arg => !['--react-callback-model', '--map-keys', '--profile-memory'].includes(arg)))
   throw new Error('Expected CLI, fresh output directory, DART root, hook|renderer, optional model flags');
 const cli = path.resolve(cliArg), dart = fs.realpathSync(dartArg);
 const git = (...args) => execFileSync('git', args, {cwd: dart, encoding: 'utf8', windowsHide: true}).trim();
@@ -38,7 +38,9 @@ fs.mkdirSync(path.dirname(output), {recursive: true});
 fs.mkdirSync(output);
 const args = ['--max-old-space-size=4096', cli, '--basedir', base, '--timeout', '90',
   '--no-print-progress', '--warnings-unsupported', '--diagnostics-json', path.join(output, 'diagnostics.json'),
-  '--callgraph-json', path.join(output, 'graph.json'), entry, ...extraArgs];
+  '--callgraph-json', path.join(output, 'graph.json'), entry,
+  ...extraArgs.filter(arg => arg !== '--profile-memory'),
+  ...(extraArgs.includes('--profile-memory') ? ['--memory-trace', path.join(output, 'memory.ndjson')] : [])];
 const run = {name, dart, dependencies, base, entry, head, versions, args, node: process.version,
   cliSha256: sha256(cli), entrySha256: sha256(entry), lockSha256: sha256(path.join(dart, 'package-lock.json')),
   startedAt: new Date().toISOString(), killed: false};

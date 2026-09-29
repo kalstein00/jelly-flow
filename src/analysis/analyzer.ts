@@ -25,6 +25,14 @@ import {buildProgramCFG, CFGBuildError} from "../cfg/builder";
 import {computeDefUse} from "../cfg/defuse";
 
 export async function analyzeFiles(files: Array<string>, solver: Solver) {
+    try {
+        await analyzeFilesImpl(files, solver);
+    } finally {
+        solver.memoryTrace.close();
+    }
+}
+
+async function analyzeFilesImpl(files: Array<string>, solver: Solver) {
     const a = solver.globalState;
     const d = solver.diagnostics;
     const timer = new Timer();
@@ -64,8 +72,10 @@ export async function analyzeFiles(files: Array<string>, solver: Solver) {
                             logger.info(`Analyzing module ${moduleInfo} (${d.modules})`);
 
                         const str = fs.readFileSync(file, "utf8"); // TODO: OK to assume utf8? (ECMAScript says utf16??)
+                        solver.memoryTrace.checkpoint(solver, "parse:start", file);
                         writeStdOutIfActive(`Parsing ${file} (${Math.ceil(str.length / 1024)}KB)...`);
                         const ast = parseAndDesugar(str, file, solver.fragmentState);
+                        solver.memoryTrace.checkpoint(solver, "parse:end", file);
                         if (!ast) {
                             a.filesWithParseErrors.push(file);
                             continue;
@@ -105,10 +115,13 @@ export async function analyzeFiles(files: Array<string>, solver: Solver) {
                             if (options.defUse)
                                 try {
                                     const t1 = new Timer();
+                                    solver.memoryTrace.checkpoint(solver, "cfg:start", file);
                                     const pcfg = buildProgramCFG(ast, options.narrow);
+                                    solver.memoryTrace.checkpoint(solver, "def-use:start", file);
                                     d.cfgTime += t1.elapsed();
                                     const t2 = new Timer();
                                     a.defUse.set(moduleInfo, computeDefUse(pcfg));
+                                    solver.memoryTrace.checkpoint(solver, "def-use:end", file);
                                     d.defUseTime += t2.elapsed();
                                 } catch (ex) {
                                     if (!(ex instanceof CFGBuildError))
@@ -122,7 +135,9 @@ export async function analyzeFiles(files: Array<string>, solver: Solver) {
 
                             // traverse the AST
                             writeStdOutIfActive("Traversing AST...");
+                            solver.memoryTrace.checkpoint(solver, "traversal:start", file);
                             visit(ast, new Operations(moduleInfo, solver, buildModuleNatives(solver, moduleInfo, moduleParams)));
+                            solver.memoryTrace.checkpoint(solver, "traversal:end", file);
 
                             if (options.eagerPropagation) {
                                 const t = new Timer();
@@ -154,6 +169,7 @@ export async function analyzeFiles(files: Array<string>, solver: Solver) {
                     // patch using escape analysis
                     if (options.patchEscaping) {
                         const t = new Timer();
+                        solver.memoryTrace.checkpoint(solver, "escape:start");
                         findEscapingObjects(Array.from(a.moduleInfos.values()), solver); // TODO: currently using all modules, restrict to relevant packages?
                         await solver.propagate("Escape patching");
                         d.totalEscapePatchingTime += t.elapsed();
@@ -203,7 +219,9 @@ export async function analyzeFiles(files: Array<string>, solver: Solver) {
         logger.warn("Warning: Indirection limit reached, analysis terminated early");
 
     // collect final call edges
+    solver.memoryTrace.checkpoint(solver, "finalization:start");
     finalizeCallEdges(solver);
+    solver.memoryTrace.checkpoint(solver, "statistics:start");
     solver.updateDiagnostics();
 
     // output statistics
@@ -263,4 +281,5 @@ export async function analyzeFiles(files: Array<string>, solver: Solver) {
             }
         }
     }
+    solver.memoryTrace.checkpoint(solver, "statistics:end");
 }

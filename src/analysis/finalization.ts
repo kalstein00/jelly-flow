@@ -37,6 +37,7 @@ export function finalizeCallEdges(solver: Solver) {
         }
     }
     const elapsed1 = t1.elapsed();
+    solver.memoryTrace.checkpoint(solver, "finalization:getter-index");
 
     // build getter index
     const t2 = new Timer;
@@ -61,6 +62,7 @@ export function finalizeCallEdges(solver: Solver) {
     for (const v of f.redirections.keys())
         collectGetters(v);
     const elapsed2 = t2.elapsed();
+    solver.memoryTrace.checkpoint(solver, "finalization:property-reads");
 
     // group property reads by representative base
     const t3 = new Timer;
@@ -74,6 +76,7 @@ export function finalizeCallEdges(solver: Solver) {
         mapGetArray(mapGetMap(pm, f.getRepresentative(base)), prop).push([node, encl]);
     }
     const elapsed3 = t3.elapsed();
+    solver.memoryTrace.checkpoint(solver, "finalization:getter-edges");
 
     // getter call edges
     const t4 = new Timer;

@@ -47,6 +47,7 @@ import Timer, {nanoToMs} from "../misc/timer";
 import {setImmediate} from "timers/promises";
 import {getMemoryUsage} from "../misc/memory";
 import AnalysisDiagnostics from "./diagnostics";
+import {MemoryTrace} from "./memorytrace";
 import {
     ARRAY_PROTOTYPE,
     ARRAY_UNKNOWN,
@@ -98,6 +99,7 @@ export default class Solver {
     readonly listeners: Map<ListenerID, ListenerKey> = new Map; // XXX: move to property of the listener function? (would enable GC'ing)
 
     readonly diagnostics = new AnalysisDiagnostics;
+    readonly memoryTrace = new MemoryTrace();
 
     readonly abort?: () => boolean;
 
@@ -263,6 +265,7 @@ export default class Solver {
      * Reports diagnostics periodically (only if print progress is enabled, stdout is tty, and log level is "info").
      */
     private printDiagnostics() {
+        this.memoryTrace.checkpoint(this, `propagation:${this.phase}`, undefined, false);
         if (options.printProgress && options.tty && isTTY && !options.logfile && logger.level === "info") {
             const d = Number(this.timer.elapsed() / 1000000n);
             if (d > this.diagnostics.lastPrintDiagnosticsTime + 100) { // only report every 100ms
@@ -862,6 +865,7 @@ export default class Solver {
      * This notifies listeners and propagates tokens along subset edges.
      */
     async propagate(phase: Phase) {
+        this.memoryTrace.checkpoint(this, `propagation:${phase}:start`);
         this.phase = phase;
         if (logger.isDebugEnabled())
             logger.debug("Processing constraints until fixpoint...");

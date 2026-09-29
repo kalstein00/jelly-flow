@@ -1,6 +1,6 @@
 # 06 — renderer OOM 원인 측정 계획
 
-상태: 계획 확정, 구현/새 분석 실행 전 (2026-09-29).
+상태: 구현 및 원인 후보 측정 완료 (2026-09-29).
 선행 기준: `5df974c`, [04 비교 결과](04-dart-comparison.md).
 실행 순서: **06 측정 → 07 중단 경로 → 08 메모리 절감 → 09 재검증**, 단계별 커밋.
 
@@ -29,6 +29,25 @@ getter/property-read 인덱스를 추가 생성한다. 따라서 **후처리 추
 마지막 경고에 ECharts가 많다는 사실은 메모리 원인/현재 실행 모듈을 증명하지 않는다.
 
 ## 작업
+
+### 실행 결과
+
+- `--memory-trace <새 파일>`: 동기 NDJSON 기록, 단계 경계 및 전파 1초 샘플,
+  상수 시간 collection 크기만 수집. 정상/예외 경로에서 파일 descriptor를 닫는다.
+- 초기 open/close-per-record 구현은 I/O 간섭으로 renderer가 1,570개 모듈에서
+  timeout되었다. 원인 비교에서 제외하고 descriptor 재사용으로 교체했다.
+- 최종 계측 renderer는 1,782개 모듈 처리 후 전파 시작 시 heap 2,629MiB,
+  82.97초에 4,084MiB, 약 90초 wall time에 OOM. finalization 도달 전이다.
+- 종료 직전 listener 배열 1,921,578개 중 1,712,900개가 처리 완료였지만
+  배열에 유지됐다. **08 첫 후보는 처리 완료 queue 참조 해제**다.
+- 모듈 처리 구간 heap 증가: ECharts 886MiB, AG Grid 560MiB. GC가 개입하는
+  구간 차이이며 retained-size 소유권 증명은 아니다. AST/def-use는 함부로 버리지 않는다.
+- **07은 heap budget checkpoint와 중단 후 finalization/statistics 생략**을 먼저 구현한다.
+- 원시 결과: `tmp/flow-memory-20260929/{profile,profile-fd,control}`.
+  요약: [renderer memory profile](../baseline/renderer-memory-profile-20260929.json).
+- 단위 검증: trace on/off fixture graph 동일, 단계 기록 파싱, 기존 파일 덮어쓰기 거부.
+- DART hook on/off 전체 graph는 timestamp 제외 동일. 분석 시간 13,727 → 14,042ms
+  (+2.3%, 단일 쌍 측정), wall 15,285 → 15,641ms. 목표 5% 이내지만 통계적 보장은 아니다.
 
 - [ ] 선택 옵션으로 phase/module 경계와 propagation checkpoint에 NDJSON 계측 추가.
 - [ ] parse/CFG/def-use/AST traversal/propagation/escape patching/finalization/statistics/

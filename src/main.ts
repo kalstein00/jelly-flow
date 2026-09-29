@@ -85,6 +85,7 @@ program
     .option("--no-natives", "disable nonessential models of native libraries")
     .option("--react-callback-model", "add a useCallback return-value model for React 18.3.1 (keeps library analysis)")
     .option("--map-keys", "separate literal Map keys, conservatively merging unknown keys")
+    .option("--memory-trace <file>", "write incremental memory checkpoints to a new NDJSON file")
     .option("--test-graal", "test graal-nodejs (use with -d)")
     .option("--no-print-progress", "don't print analysis progress information")
     .option("--no-tty", "don't print solver progress for TTY")
@@ -401,11 +402,14 @@ async function main() {
                 out.reportMostCalledFunctions();
             }
 
+            solver.memoryTrace.checkpoint(solver, "serialization:start");
             if (options.callgraphJson)
                 out.saveCallGraph(options.callgraphJson, files);
 
             if (options.diagnosticsJson)
                 out.saveDiagnostics(solver.diagnostics, options.diagnosticsJson);
+            solver.memoryTrace.checkpoint(solver, "serialization:end");
+            solver.memoryTrace.close();
 
             if (options.matchesFile)
                 saveMatches(vr, loadedVulnerabilities, options.matchesFile);
