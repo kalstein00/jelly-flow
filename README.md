@@ -1,5 +1,22 @@
 # Jelly
 
+This is **jelly-flow**, an experimental fork for TypeScript call-graph analysis.
+Upstream licensing, package identity, and default analysis behavior are retained.
+Two independent opt-in extensions are available:
+
+```bash
+node lib/main.js --react-callback-model --map-keys -j graph.json --diagnostics-json diagnostics.json entry.ts
+```
+
+The React model adds callback return transfers for the public React 18.3.1 entry
+while keeping library analysis. The Map model separates primitive literal keys
+and preserves conservative unknown-key fallback. See the [support limits and
+step-by-step results](docs/work-items/README.md), [reproduction commands](tools/flow-evaluation/README.md),
+and [proposed evidence contract](docs/contracts/analysis-evidence-v1.md).
+The selected DART hook callback improves; full renderer analysis still runs out
+of memory within the tested 4GB budget. These results do not establish a complete
+application call graph.
+
 [![License](https://img.shields.io/github/license/cs-au-dk/jelly)](LICENSE)
 [![npm version](https://img.shields.io/npm/v/@cs-au-dk/jelly)](https://www.npmjs.com/package/@cs-au-dk/jelly)
 

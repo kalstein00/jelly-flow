@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "jelly-flow-evidence/1",
+  "coverage": "bounded",
+  "selection": "DART closeViewInstance call and React return transfers",
+  "source": {
+    "head": "e6628e840ed5d9c27f3cb99023a93f6ef979dc5b",
+    "entry": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+    "basedir": "C:\\Users\\hj0712.jo",
+    "dependencyRoot": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules",
+    "lockSha256": "86994d6c8d3405b0fbdaa2fa9e9c4680bc4bd3b3f69e20268767803d9a00efb6"
+  },
+  "analyzer": {
+    "reference": "574ef3054ec3a77faed48c4a4ce727b8a307e22e",
+    "cliSha256": "740d0db7c6804f290ae154a0efcb61c466da4db61b57e51ca1a7e8ddf42b81db",
+    "node": "v24.20.0",
+    "options": [
+      "--basedir",
+      "C:\\Users\\hj0712.jo",
+      "--timeout",
+      "90",
+      "--no-print-progress",
+      "--warnings-unsupported",
+      "--diagnostics-json",
+      "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-dart-20260929\\baseline\\renderer\\diagnostics.json",
+      "--callgraph-json",
+      "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-dart-20260929\\baseline\\renderer\\graph.json",
+      "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx"
+    ]
+  },
+  "budget": {
+    "heapMB": 4096,
+    "analysisSeconds": 90,
+    "deadlineSeconds": 120
+  },
+  "registrationCoverage": "unavailable",
+  "limitations": [
+    "Selected relations only; graph completeness is unproven.",
+    "May-call edges do not prove execution and have no per-edge derivation attribution.",
+    "JSX registration, event execution and Electron IPC extraction are unavailable.",
+    "React model supports only the public 18.3.1 entry; unsupported API behavior remains unanalyzed by that model."
+  ],
+  "termination": "failed",
+  "relations": null,
+  "graphSha256": null,
+  "diagnostics": null,
+  "failure": {
+    "code": 134,
+    "killed": false,
+    "heapOutOfMemory": true
+  }
+}

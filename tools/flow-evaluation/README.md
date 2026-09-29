@@ -81,3 +81,16 @@ are analyzed. No DART files are written. Budget/overwrite rules match fixture ru
 The report checks the real call at line 483 and callback at line 430 in
 `useWorkspaceAggregate.ts`, preserving ambiguous/missing selection failures.
 Incomplete/failed runs do not manufacture zero-edge graphs.
+
+## Proposed evidence output
+
+```powershell
+node -r ts-node/register tools/flow-evaluation/export-evidence.ts tmp/dart-new-run/hook <analyzer-commit> evidence.json
+```
+
+This evaluation adapter emits selected evidence following
+[the v1 proposal](../../docs/contracts/analysis-evidence-v1.md), with explicit bounded
+coverage, unclassified may-call provenance, return transfers, and unresolved calls.
+It refuses to overwrite the output. Failed runs emit null relations/diagnostics;
+registration extraction is explicitly unavailable. This is not a DART production
+collector or a replacement for Jelly's existing full raw graph.
