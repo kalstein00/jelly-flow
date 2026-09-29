@@ -23,6 +23,7 @@ function summarizeDart(directory) {
   const raw = fs.readFileSync(path.join(directory, 'graph.json'));
   const graph = JSON.parse(raw), d = read('diagnostics.json');
   Object.assign(result, {graphSha256: crypto.createHash('sha256').update(raw).digest('hex'),
+    scope: d.scope ?? {kind: 'full'},
     modules: d.modules, functions: d.functions, analysisMs: d.analysisTime, memoryMB: d.maxMemoryUsage,
     errors: d.errors, warnings: d.warnings, timeout: d.timeout, aborted: d.aborted,
     unprocessedTokens: d.unprocessedTokensSize, libraryModels: d.libraryModels ?? []});
@@ -61,6 +62,8 @@ function summarizeDart(directory) {
   };
   result.outOfScopeFiles = graph.files.filter(file => {
     const absolute = path.resolve(run.base, file);
+    if (run.analysisScope?.kind === 'app-only')
+      return !inside(absolute, run.dart) || absolute.split(/[\\/]/).some(part => part.toLowerCase() === 'node_modules');
     return !inside(absolute, run.dart) && !inside(absolute, run.dependencies);
   });
   return result;

@@ -1,0 +1,989 @@
+{
+  "date": "2026-09-29",
+  "scope": "app-only",
+  "rendererCompletedRuns": 3,
+  "sameBuild": true,
+  "rendererGraphsEqualWithoutTimestamp": true,
+  "wallMs": {
+    "min": 11110,
+    "median": 11207,
+    "max": 11480
+  },
+  "runs": [
+    {
+      "name": "final-hook",
+      "directory": "tmp\\flow-app-only-20260929\\final-hook\\hook",
+      "run": {
+        "name": "hook",
+        "dart": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+        "dependencies": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules",
+        "base": "C:\\Users\\hj0712.jo",
+        "entry": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts",
+        "head": "e6628e840ed5d9c27f3cb99023a93f6ef979dc5b",
+        "versions": {
+          "react": "18.3.1",
+          "react-dom": "18.3.1"
+        },
+        "args": [
+          "--max-old-space-size=4096",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\lib\\main.js",
+          "--basedir",
+          "C:\\Users\\hj0712.jo",
+          "--timeout",
+          "90",
+          "--no-print-progress",
+          "--warnings-unsupported",
+          "--diagnostics-json",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-app-only-20260929\\final-hook\\hook\\diagnostics.json",
+          "--callgraph-json",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-app-only-20260929\\final-hook\\hook\\graph.json",
+          "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts",
+          "--app-only",
+          "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+          "--map-keys"
+        ],
+        "node": "v24.20.0",
+        "analysisScope": {
+          "kind": "app-only",
+          "root": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch"
+        },
+        "cliSha256": "bb21e37f31c1fae9bb604640fe0c39649cb659d84ba8312008b137a6777edb0b",
+        "entrySha256": "05dbd8bcaa26dd9c3146e6e646eccf98c39c84da99fbb77d97dd94338b4463d4",
+        "lockSha256": "86994d6c8d3405b0fbdaa2fa9e9c4680bc4bd3b3f69e20268767803d9a00efb6",
+        "buildSha256": "9e1057d3b8839a584629b6ca17906089296ccfebfc11013eba318e2ad49cff40",
+        "startedAt": "2026-09-29T14:29:48.925Z",
+        "killed": false,
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 2697
+      },
+      "summary": {
+        "name": "hook",
+        "status": "completed",
+        "elapsedMs": 2697,
+        "code": 0,
+        "killed": false,
+        "graphProduced": true,
+        "diagnosticsProduced": true,
+        "memoryLimitReached": false,
+        "finalizationStatus": "complete",
+        "statisticsStatus": "complete",
+        "graphOutputStatus": "complete",
+        "waveLimitReached": 0,
+        "indirectionsLimitReached": 0,
+        "graphSha256": "8e46fe347b34bc58ddb99b6a5c6ec93806af7851a918dc159e107129ec283757",
+        "scope": {
+          "kind": "app-only",
+          "root": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+          "externalImplementations": false
+        },
+        "modules": 70,
+        "functions": 870,
+        "analysisMs": 1645,
+        "memoryMB": 173,
+        "errors": 0,
+        "warnings": 192,
+        "timeout": false,
+        "aborted": false,
+        "unprocessedTokens": 0,
+        "closeViewInstance": {
+          "location": {
+            "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+            "line": 430,
+            "column": 5,
+            "endLine": 456,
+            "endColumn": 6
+          },
+          "incoming": [
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+              "line": 464,
+              "column": 13,
+              "endLine": 496,
+              "endColumn": 8
+            }
+          ],
+          "outgoing": [
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+              "line": 113,
+              "column": 39,
+              "endLine": 120,
+              "endColumn": 2
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+              "line": 341,
+              "column": 51,
+              "endLine": 366,
+              "endColumn": 2
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+              "line": 101,
+              "column": 5,
+              "endLine": 101,
+              "endColumn": 77
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+              "line": 438,
+              "column": 40,
+              "endLine": 438,
+              "endColumn": 77
+            }
+          ]
+        },
+        "closeCall": {
+          "location": {
+            "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+            "line": 483,
+            "column": 17,
+            "endLine": 483,
+            "endColumn": 42
+          },
+          "targets": [
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+              "line": 430,
+              "column": 5,
+              "endLine": 456,
+              "endColumn": 6
+            }
+          ]
+        },
+        "actualCloseCallConnected": true,
+        "outOfScopeFiles": []
+      },
+      "graphWithoutTimestampSha256": "f8a94f1da9ddde2dd4f9e402a6e184bce471b3671331032f1b8614db25291db9",
+      "excludedModules": [
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react\\index.js",
+          "package": "react",
+          "version": "18.3.1",
+          "modeled": true
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\mathjs\\lib\\cjs\\index.js",
+          "package": "mathjs",
+          "version": "15.2.0",
+          "modeled": false
+        }
+      ],
+      "resourceCounts": {
+        "css": 0,
+        "json": 0
+      },
+      "models": [
+        {
+          "model": "react.useCallback/1",
+          "module": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react\\index.js",
+          "version": "18.3.1",
+          "relation": "return-argument",
+          "argument": 0,
+          "implementationAnalyzed": false,
+          "callsApplied": 71
+        }
+      ]
+    },
+    {
+      "name": "final-1",
+      "directory": "tmp\\flow-app-only-20260929\\final-1\\renderer",
+      "run": {
+        "name": "renderer",
+        "dart": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+        "dependencies": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules",
+        "base": "C:\\Users\\hj0712.jo",
+        "entry": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+        "head": "e6628e840ed5d9c27f3cb99023a93f6ef979dc5b",
+        "versions": {
+          "react": "18.3.1",
+          "react-dom": "18.3.1"
+        },
+        "args": [
+          "--max-old-space-size=4096",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\lib\\main.js",
+          "--basedir",
+          "C:\\Users\\hj0712.jo",
+          "--timeout",
+          "90",
+          "--no-print-progress",
+          "--warnings-unsupported",
+          "--diagnostics-json",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-app-only-20260929\\final-1\\renderer\\diagnostics.json",
+          "--callgraph-json",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-app-only-20260929\\final-1\\renderer\\graph.json",
+          "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+          "--app-only",
+          "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+          "--map-keys"
+        ],
+        "node": "v24.20.0",
+        "analysisScope": {
+          "kind": "app-only",
+          "root": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch"
+        },
+        "cliSha256": "bb21e37f31c1fae9bb604640fe0c39649cb659d84ba8312008b137a6777edb0b",
+        "entrySha256": "e968898b0abde63520999b6eb14e0b8e15ec87dc1a1547bd9c691d4657af5c61",
+        "lockSha256": "86994d6c8d3405b0fbdaa2fa9e9c4680bc4bd3b3f69e20268767803d9a00efb6",
+        "buildSha256": "9e1057d3b8839a584629b6ca17906089296ccfebfc11013eba318e2ad49cff40",
+        "startedAt": "2026-09-29T14:29:52.182Z",
+        "killed": false,
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 11207
+      },
+      "summary": {
+        "name": "renderer",
+        "status": "completed",
+        "elapsedMs": 11207,
+        "code": 0,
+        "killed": false,
+        "graphProduced": true,
+        "diagnosticsProduced": true,
+        "memoryLimitReached": false,
+        "finalizationStatus": "complete",
+        "statisticsStatus": "complete",
+        "graphOutputStatus": "complete",
+        "waveLimitReached": 0,
+        "indirectionsLimitReached": 0,
+        "graphSha256": "7824c7a92a7ac26783f3b12b73e1801dfd4ad3f55cac4eb1b53c481e954c9f15",
+        "scope": {
+          "kind": "app-only",
+          "root": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+          "externalImplementations": false
+        },
+        "modules": 530,
+        "functions": 6663,
+        "analysisMs": 9858,
+        "memoryMB": 725,
+        "errors": 0,
+        "warnings": 1373,
+        "timeout": false,
+        "aborted": false,
+        "unprocessedTokens": 0,
+        "closeViewInstance": {
+          "location": {
+            "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+            "line": 430,
+            "column": 5,
+            "endLine": 456,
+            "endColumn": 6
+          },
+          "incoming": [
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+              "line": 464,
+              "column": 13,
+              "endLine": 496,
+              "endColumn": 8
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceSqlViewWorkflows.ts",
+              "line": 96,
+              "column": 5,
+              "endLine": 135,
+              "endColumn": 6
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceTabClosing.ts",
+              "line": 20,
+              "column": 5,
+              "endLine": 30,
+              "endColumn": 6
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceTabClosing.ts",
+              "line": 43,
+              "column": 5,
+              "endLine": 46,
+              "endColumn": 6
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceTabClosing.ts",
+              "line": 50,
+              "column": 36,
+              "endLine": 52,
+              "endColumn": 4
+            }
+          ],
+          "outgoing": [
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+              "line": 113,
+              "column": 39,
+              "endLine": 120,
+              "endColumn": 2
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+              "line": 341,
+              "column": 51,
+              "endLine": 366,
+              "endColumn": 2
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+              "line": 101,
+              "column": 5,
+              "endLine": 101,
+              "endColumn": 77
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+              "line": 438,
+              "column": 40,
+              "endLine": 438,
+              "endColumn": 77
+            }
+          ]
+        },
+        "closeCall": {
+          "location": {
+            "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+            "line": 483,
+            "column": 17,
+            "endLine": 483,
+            "endColumn": 42
+          },
+          "targets": [
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+              "line": 430,
+              "column": 5,
+              "endLine": 456,
+              "endColumn": 6
+            }
+          ]
+        },
+        "actualCloseCallConnected": true,
+        "outOfScopeFiles": []
+      },
+      "graphWithoutTimestampSha256": "71241a22a598dd7a63eab8ccfdf159bc966076d003b163349e1333849cf5d9c8",
+      "excludedModules": [
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react\\index.js",
+          "package": "react",
+          "version": "18.3.1",
+          "modeled": true
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react-dom\\client.js",
+          "package": "react-dom",
+          "version": "18.3.1",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\dockview\\dist\\package\\main.cjs.js",
+          "package": "dockview",
+          "version": "5.2.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\lucide-react\\dist\\cjs\\lucide-react.js",
+          "package": "lucide-react",
+          "version": "0.364.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\ag-grid-react\\dist\\package\\index.cjs.js",
+          "package": "ag-grid-react",
+          "version": "35.3.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\ag-grid-community\\dist\\package\\main.cjs.js",
+          "package": "ag-grid-community",
+          "version": "35.3.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react-markdown\\index.js",
+          "package": "react-markdown",
+          "version": "10.1.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\echarts-for-react\\lib\\index.js",
+          "package": "echarts-for-react",
+          "version": "3.0.6",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react-dom\\index.js",
+          "package": "react-dom",
+          "version": "18.3.1",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\@xyflow\\react\\dist\\umd\\index.js",
+          "package": "@xyflow/react",
+          "version": "12.10.2",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\mathjs\\lib\\cjs\\index.js",
+          "package": "mathjs",
+          "version": "15.2.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\tabulator-tables\\dist\\js\\tabulator.js",
+          "package": "tabulator-tables",
+          "version": "6.5.2",
+          "modeled": false
+        }
+      ],
+      "resourceCounts": {
+        "css": 45,
+        "json": 1
+      },
+      "models": [
+        {
+          "model": "react.useCallback/1",
+          "module": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react\\index.js",
+          "version": "18.3.1",
+          "relation": "return-argument",
+          "argument": 0,
+          "implementationAnalyzed": false,
+          "callsApplied": 538
+        }
+      ]
+    },
+    {
+      "name": "final-2",
+      "directory": "tmp\\flow-app-only-20260929\\final-2\\renderer",
+      "run": {
+        "name": "renderer",
+        "dart": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+        "dependencies": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules",
+        "base": "C:\\Users\\hj0712.jo",
+        "entry": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+        "head": "e6628e840ed5d9c27f3cb99023a93f6ef979dc5b",
+        "versions": {
+          "react": "18.3.1",
+          "react-dom": "18.3.1"
+        },
+        "args": [
+          "--max-old-space-size=4096",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\lib\\main.js",
+          "--basedir",
+          "C:\\Users\\hj0712.jo",
+          "--timeout",
+          "90",
+          "--no-print-progress",
+          "--warnings-unsupported",
+          "--diagnostics-json",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-app-only-20260929\\final-2\\renderer\\diagnostics.json",
+          "--callgraph-json",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-app-only-20260929\\final-2\\renderer\\graph.json",
+          "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+          "--app-only",
+          "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+          "--map-keys"
+        ],
+        "node": "v24.20.0",
+        "analysisScope": {
+          "kind": "app-only",
+          "root": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch"
+        },
+        "cliSha256": "bb21e37f31c1fae9bb604640fe0c39649cb659d84ba8312008b137a6777edb0b",
+        "entrySha256": "e968898b0abde63520999b6eb14e0b8e15ec87dc1a1547bd9c691d4657af5c61",
+        "lockSha256": "86994d6c8d3405b0fbdaa2fa9e9c4680bc4bd3b3f69e20268767803d9a00efb6",
+        "buildSha256": "9e1057d3b8839a584629b6ca17906089296ccfebfc11013eba318e2ad49cff40",
+        "startedAt": "2026-09-29T14:30:04.092Z",
+        "killed": false,
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 11480
+      },
+      "summary": {
+        "name": "renderer",
+        "status": "completed",
+        "elapsedMs": 11480,
+        "code": 0,
+        "killed": false,
+        "graphProduced": true,
+        "diagnosticsProduced": true,
+        "memoryLimitReached": false,
+        "finalizationStatus": "complete",
+        "statisticsStatus": "complete",
+        "graphOutputStatus": "complete",
+        "waveLimitReached": 0,
+        "indirectionsLimitReached": 0,
+        "graphSha256": "6a08c5c9f85441da0c95fbbfa07897f06fbe13dc68cdb0c8fb5b4691767aeb6f",
+        "scope": {
+          "kind": "app-only",
+          "root": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+          "externalImplementations": false
+        },
+        "modules": 530,
+        "functions": 6663,
+        "analysisMs": 10109,
+        "memoryMB": 713,
+        "errors": 0,
+        "warnings": 1373,
+        "timeout": false,
+        "aborted": false,
+        "unprocessedTokens": 0,
+        "closeViewInstance": {
+          "location": {
+            "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+            "line": 430,
+            "column": 5,
+            "endLine": 456,
+            "endColumn": 6
+          },
+          "incoming": [
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+              "line": 464,
+              "column": 13,
+              "endLine": 496,
+              "endColumn": 8
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceSqlViewWorkflows.ts",
+              "line": 96,
+              "column": 5,
+              "endLine": 135,
+              "endColumn": 6
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceTabClosing.ts",
+              "line": 20,
+              "column": 5,
+              "endLine": 30,
+              "endColumn": 6
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceTabClosing.ts",
+              "line": 43,
+              "column": 5,
+              "endLine": 46,
+              "endColumn": 6
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceTabClosing.ts",
+              "line": 50,
+              "column": 36,
+              "endLine": 52,
+              "endColumn": 4
+            }
+          ],
+          "outgoing": [
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+              "line": 113,
+              "column": 39,
+              "endLine": 120,
+              "endColumn": 2
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+              "line": 341,
+              "column": 51,
+              "endLine": 366,
+              "endColumn": 2
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+              "line": 101,
+              "column": 5,
+              "endLine": 101,
+              "endColumn": 77
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+              "line": 438,
+              "column": 40,
+              "endLine": 438,
+              "endColumn": 77
+            }
+          ]
+        },
+        "closeCall": {
+          "location": {
+            "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+            "line": 483,
+            "column": 17,
+            "endLine": 483,
+            "endColumn": 42
+          },
+          "targets": [
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+              "line": 430,
+              "column": 5,
+              "endLine": 456,
+              "endColumn": 6
+            }
+          ]
+        },
+        "actualCloseCallConnected": true,
+        "outOfScopeFiles": []
+      },
+      "graphWithoutTimestampSha256": "71241a22a598dd7a63eab8ccfdf159bc966076d003b163349e1333849cf5d9c8",
+      "excludedModules": [
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react\\index.js",
+          "package": "react",
+          "version": "18.3.1",
+          "modeled": true
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react-dom\\client.js",
+          "package": "react-dom",
+          "version": "18.3.1",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\dockview\\dist\\package\\main.cjs.js",
+          "package": "dockview",
+          "version": "5.2.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\lucide-react\\dist\\cjs\\lucide-react.js",
+          "package": "lucide-react",
+          "version": "0.364.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\ag-grid-react\\dist\\package\\index.cjs.js",
+          "package": "ag-grid-react",
+          "version": "35.3.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\ag-grid-community\\dist\\package\\main.cjs.js",
+          "package": "ag-grid-community",
+          "version": "35.3.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react-markdown\\index.js",
+          "package": "react-markdown",
+          "version": "10.1.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\echarts-for-react\\lib\\index.js",
+          "package": "echarts-for-react",
+          "version": "3.0.6",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react-dom\\index.js",
+          "package": "react-dom",
+          "version": "18.3.1",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\@xyflow\\react\\dist\\umd\\index.js",
+          "package": "@xyflow/react",
+          "version": "12.10.2",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\mathjs\\lib\\cjs\\index.js",
+          "package": "mathjs",
+          "version": "15.2.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\tabulator-tables\\dist\\js\\tabulator.js",
+          "package": "tabulator-tables",
+          "version": "6.5.2",
+          "modeled": false
+        }
+      ],
+      "resourceCounts": {
+        "css": 45,
+        "json": 1
+      },
+      "models": [
+        {
+          "model": "react.useCallback/1",
+          "module": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react\\index.js",
+          "version": "18.3.1",
+          "relation": "return-argument",
+          "argument": 0,
+          "implementationAnalyzed": false,
+          "callsApplied": 538
+        }
+      ]
+    },
+    {
+      "name": "final-3",
+      "directory": "tmp\\flow-app-only-20260929\\final-3\\renderer",
+      "run": {
+        "name": "renderer",
+        "dart": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+        "dependencies": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules",
+        "base": "C:\\Users\\hj0712.jo",
+        "entry": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+        "head": "e6628e840ed5d9c27f3cb99023a93f6ef979dc5b",
+        "versions": {
+          "react": "18.3.1",
+          "react-dom": "18.3.1"
+        },
+        "args": [
+          "--max-old-space-size=4096",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\lib\\main.js",
+          "--basedir",
+          "C:\\Users\\hj0712.jo",
+          "--timeout",
+          "90",
+          "--no-print-progress",
+          "--warnings-unsupported",
+          "--diagnostics-json",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-app-only-20260929\\final-3\\renderer\\diagnostics.json",
+          "--callgraph-json",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-app-only-20260929\\final-3\\renderer\\graph.json",
+          "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+          "--app-only",
+          "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+          "--map-keys"
+        ],
+        "node": "v24.20.0",
+        "analysisScope": {
+          "kind": "app-only",
+          "root": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch"
+        },
+        "cliSha256": "bb21e37f31c1fae9bb604640fe0c39649cb659d84ba8312008b137a6777edb0b",
+        "entrySha256": "e968898b0abde63520999b6eb14e0b8e15ec87dc1a1547bd9c691d4657af5c61",
+        "lockSha256": "86994d6c8d3405b0fbdaa2fa9e9c4680bc4bd3b3f69e20268767803d9a00efb6",
+        "buildSha256": "9e1057d3b8839a584629b6ca17906089296ccfebfc11013eba318e2ad49cff40",
+        "startedAt": "2026-09-29T14:30:16.247Z",
+        "killed": false,
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 11110
+      },
+      "summary": {
+        "name": "renderer",
+        "status": "completed",
+        "elapsedMs": 11110,
+        "code": 0,
+        "killed": false,
+        "graphProduced": true,
+        "diagnosticsProduced": true,
+        "memoryLimitReached": false,
+        "finalizationStatus": "complete",
+        "statisticsStatus": "complete",
+        "graphOutputStatus": "complete",
+        "waveLimitReached": 0,
+        "indirectionsLimitReached": 0,
+        "graphSha256": "fe3c23caaf7a7b67e0febe761afc6ea7c838a0f8e9194bb514d2b2a450c1c7bf",
+        "scope": {
+          "kind": "app-only",
+          "root": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+          "externalImplementations": false
+        },
+        "modules": 530,
+        "functions": 6663,
+        "analysisMs": 9732,
+        "memoryMB": 730,
+        "errors": 0,
+        "warnings": 1373,
+        "timeout": false,
+        "aborted": false,
+        "unprocessedTokens": 0,
+        "closeViewInstance": {
+          "location": {
+            "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+            "line": 430,
+            "column": 5,
+            "endLine": 456,
+            "endColumn": 6
+          },
+          "incoming": [
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+              "line": 464,
+              "column": 13,
+              "endLine": 496,
+              "endColumn": 8
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceSqlViewWorkflows.ts",
+              "line": 96,
+              "column": 5,
+              "endLine": 135,
+              "endColumn": 6
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceTabClosing.ts",
+              "line": 20,
+              "column": 5,
+              "endLine": 30,
+              "endColumn": 6
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceTabClosing.ts",
+              "line": 43,
+              "column": 5,
+              "endLine": 46,
+              "endColumn": 6
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceTabClosing.ts",
+              "line": 50,
+              "column": 36,
+              "endLine": 52,
+              "endColumn": 4
+            }
+          ],
+          "outgoing": [
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+              "line": 113,
+              "column": 39,
+              "endLine": 120,
+              "endColumn": 2
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+              "line": 341,
+              "column": 51,
+              "endLine": 366,
+              "endColumn": 2
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+              "line": 101,
+              "column": 5,
+              "endLine": 101,
+              "endColumn": 77
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+              "line": 438,
+              "column": 40,
+              "endLine": 438,
+              "endColumn": 77
+            }
+          ]
+        },
+        "closeCall": {
+          "location": {
+            "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+            "line": 483,
+            "column": 17,
+            "endLine": 483,
+            "endColumn": 42
+          },
+          "targets": [
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+              "line": 430,
+              "column": 5,
+              "endLine": 456,
+              "endColumn": 6
+            }
+          ]
+        },
+        "actualCloseCallConnected": true,
+        "outOfScopeFiles": []
+      },
+      "graphWithoutTimestampSha256": "71241a22a598dd7a63eab8ccfdf159bc966076d003b163349e1333849cf5d9c8",
+      "excludedModules": [
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react\\index.js",
+          "package": "react",
+          "version": "18.3.1",
+          "modeled": true
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react-dom\\client.js",
+          "package": "react-dom",
+          "version": "18.3.1",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\dockview\\dist\\package\\main.cjs.js",
+          "package": "dockview",
+          "version": "5.2.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\lucide-react\\dist\\cjs\\lucide-react.js",
+          "package": "lucide-react",
+          "version": "0.364.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\ag-grid-react\\dist\\package\\index.cjs.js",
+          "package": "ag-grid-react",
+          "version": "35.3.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\ag-grid-community\\dist\\package\\main.cjs.js",
+          "package": "ag-grid-community",
+          "version": "35.3.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react-markdown\\index.js",
+          "package": "react-markdown",
+          "version": "10.1.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\echarts-for-react\\lib\\index.js",
+          "package": "echarts-for-react",
+          "version": "3.0.6",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react-dom\\index.js",
+          "package": "react-dom",
+          "version": "18.3.1",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\@xyflow\\react\\dist\\umd\\index.js",
+          "package": "@xyflow/react",
+          "version": "12.10.2",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\mathjs\\lib\\cjs\\index.js",
+          "package": "mathjs",
+          "version": "15.2.0",
+          "modeled": false
+        },
+        {
+          "file": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\tabulator-tables\\dist\\js\\tabulator.js",
+          "package": "tabulator-tables",
+          "version": "6.5.2",
+          "modeled": false
+        }
+      ],
+      "resourceCounts": {
+        "css": 45,
+        "json": 1
+      },
+      "models": [
+        {
+          "model": "react.useCallback/1",
+          "module": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react\\index.js",
+          "version": "18.3.1",
+          "relation": "return-argument",
+          "argument": 0,
+          "implementationAnalyzed": false,
+          "callsApplied": 538
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "External library implementations are excluded by user choice.",
+    "Only React 18.3.1 public useCallback has a precise external return model.",
+    "Other external APIs remain opaque; callback may-call edges do not prove event execution.",
+    "CSS/JSON resources and dynamic code stored in strings are not analyzed as JS functions.",
+    "Completed termination does not establish graph completeness."
+  ]
+}

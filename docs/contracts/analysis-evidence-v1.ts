@@ -9,11 +9,12 @@ export type Location = {
 
 export type Relation =
     | {kind: "may-call"; callsite: Location; target: Location; attribution: "unclassified"}
-    | {kind: "return-transfer"; model: string; version: string; callsite: Location; argument: number}
+    | {kind: "return-transfer"; model: string; version: string; callsite: Location; argument: number; implementationAnalyzed?: boolean}
     | {kind: "registration"; callsite: Location; target: Location; evidence: string}
     | {kind: "unresolved"; callsite: Location; reason: "no-static-target"};
 
 type BaseEvidence = {
+    analysisScope?: {kind: "full"} | {kind: "app-only"; root: string; externalImplementations: false};
     schemaVersion: "jelly-flow-evidence/1";
     coverage: "bounded";
     selection: "DART closeViewInstance call and React return transfers";

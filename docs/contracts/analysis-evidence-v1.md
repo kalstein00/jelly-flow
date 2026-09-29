@@ -12,6 +12,13 @@ Raw analyzer diagnostics emit `null` for uncomputed call/reachability statistics
 an older file may remain after an interrupted atomic replacement. Diagnostics-only
 runs cannot be exported as selected graph evidence by this adapter.
 
+App-only artifacts additionally carry `analysisScope` (explicit root; external
+implementations excluded) and optional `implementationAnalyzed` on return-transfer
+relations. Missing metadata on historical artifacts stays unknown. Completed app-only
+analysis must not be presented as completed analysis of dependency implementations.
+Raw diagnostics list excluded modules and resolved CSS/JSON resource imports;
+JSON strings are data, and dynamically executing strings is outside this coverage.
+
 ## Meaning
 
 Consumers must distinguish analyzer termination from graph completeness.

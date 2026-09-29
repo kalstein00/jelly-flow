@@ -37,6 +37,15 @@ test("partial output retains diagnostics and partial status", () => {
     expect(result.termination).toBe("partial");
     expect(result.diagnostics?.timeout).toBe(true);
 });
+
+test("app-only evidence keeps scope and omitted library implementation explicit", () => {
+    const scope = {kind: "app-only" as const, root: "C:/source", externalImplementations: false as const};
+    const result = buildEvidence(run, {...summary, scope,
+        libraryModels: [{model: "react.useCallback/1", version: "18.3.1", argument: 0,
+            calls: ["C:/source/hook.ts:429:29"], implementationAnalyzed: false}]}, "ref");
+    expect(result.analysisScope).toEqual(scope);
+    expect(result.relations).toContainEqual(expect.objectContaining({kind: "return-transfer", implementationAnalyzed: false}));
+});
 test("process failure cannot masquerade as completed analysis", () => {
     expect(() => buildEvidence({...run, code: 134}, summary, "ref")).toThrow();
 });

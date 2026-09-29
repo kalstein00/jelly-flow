@@ -132,6 +132,23 @@ export function isAbsoluteModuleName(str: string): boolean {
 export function resolveModule(mode: "commonjs" | "module", str: string, file: FilePath, a: GlobalState): FilePath | undefined {
     if (str[0] === "/")
         throw new Error("Ignoring absolute module path");
+    // Plain CSS/JSON imports carry resources, not JS function implementations. Resolve
+    // and record actual files; missing resources and JS targets must still fail/analyze normally.
+    if (options.appOnly && /\.(css|json)$/.test(str)) {
+        let resolved: string;
+        try {
+            resolved = module.createRequire(file).resolve(str);
+        } catch (error) {
+            if (![".ts", ".tsx", ".mts", ".cts"].includes(extname(file))) throw error;
+            resolved = a.tsModuleResolver.resolveModuleName(str, file);
+        }
+        const resource = realpathSync(resolved);
+        const kind = extname(resource).slice(1);
+        if (kind === "css" || kind === "json") {
+            a.resourceImports.set(`${file}\0${str}`, {importer: file, specifier: str, file: resource, kind});
+            return undefined;
+        }
+    }
     let filepath: string;
     if ([".ts", ".tsx", ".mts", ".cts"].includes(extname(file))) {
         try {

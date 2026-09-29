@@ -7,11 +7,12 @@ export type DartRun = {
     cliSha256: string, node: string, args: Array<string>, code: number | null, killed: boolean,
 };
 export type DartSummary = {
+    scope?: {kind: "full"} | {kind: "app-only", root: string, externalImplementations: false},
     status: "completed" | "partial" | "failed", heapOutOfMemory?: boolean,
     graphSha256?: string, selectionError?: string, outOfScopeFiles?: Array<string>,
     errors?: number, warnings?: number, timeout?: boolean, aborted?: boolean, unprocessedTokens?: number,
     closeCall?: {location: Location, targets: Array<Location>},
-    libraryModels?: Array<{model: string, version: string, argument: number, calls: Array<string>}>,
+    libraryModels?: Array<{model: string, version: string, argument: number, calls: Array<string>, implementationAnalyzed?: boolean}>,
     memoryLimitReached?: boolean, terminationPhase?: string, finalizationStatus?: string,
     statisticsStatus?: string, graphOutputStatus?: string, waveLimitReached?: number, indirectionsLimitReached?: number,
 };
@@ -19,6 +20,7 @@ export type DartSummary = {
 /** Evaluation-only adapter: never labels selected relations as a complete graph. */
 export function buildEvidence(run: DartRun, summary: DartSummary, reference: string): AnalysisEvidence {
     const base = {
+        analysisScope: summary.scope,
         schemaVersion: "jelly-flow-evidence/1" as const,
         coverage: "bounded" as const,
         selection: "DART closeViewInstance call and React return transfers" as const,
@@ -65,7 +67,8 @@ export function buildEvidence(run: DartRun, summary: DartSummary, reference: str
             relations.push({kind: "return-transfer", model: model.model, version: model.version,
                 callsite: {file: paths.relative(run.base, match[1]).replaceAll("\\", "/"),
                     line: Number(match[2]), column: Number(match[3])},
-                argument: model.argument});
+                argument: model.argument,
+                ...(model.implementationAnalyzed !== undefined ? {implementationAnalyzed: model.implementationAnalyzed} : {})});
         }
     return {...base, termination: summary.status, graphSha256: summary.graphSha256, relations,
         diagnostics: {errors, warnings, timeout, aborted, unprocessedTokens,

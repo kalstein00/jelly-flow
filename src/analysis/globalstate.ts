@@ -38,6 +38,7 @@ import {isAppSource} from "./appscope";
  */
 export class GlobalState {
     readonly modeledExternalModules = new Set<ModuleInfo>();
+    readonly resourceImports = new Map<string, {importer: string, specifier: string, file: string, kind: "css" | "json"}>();
 
     /**
      * Map from constraint variable string hash to canonical ConstraintVar object.
