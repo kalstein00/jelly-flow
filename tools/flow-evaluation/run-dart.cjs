@@ -33,6 +33,19 @@ const versions = Object.fromEntries(['react', 'react-dom'].map(pkg => [pkg,
   JSON.parse(fs.readFileSync(path.join(dependencies, pkg, 'package.json'))).version]));
 if (Object.values(versions).some(v => v !== '18.3.1')) throw new Error('React dependency version changed');
 const sha256 = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+// main.js alone does not identify changes to the solver or native models.
+const buildHash = crypto.createHash('sha256');
+const hashJavaScript = directory => {
+  for (const name of fs.readdirSync(directory).sort()) {
+    const file = path.join(directory, name);
+    if (fs.statSync(file).isDirectory()) hashJavaScript(file);
+    else if (name.endsWith('.js')) {
+      buildHash.update(path.relative(path.dirname(cli), file).replaceAll('\\', '/') + '\0');
+      buildHash.update(fs.readFileSync(file));
+    }
+  }
+};
+hashJavaScript(path.dirname(cli));
 const output = path.resolve(outputArg, name);
 fs.accessSync(cli, fs.constants.R_OK);
 fs.mkdirSync(path.dirname(output), {recursive: true});
@@ -45,6 +58,7 @@ const args = ['--max-old-space-size=4096', cli, '--basedir', base, '--timeout', 
   ...(extraArgs.includes('--profile-memory') ? ['--memory-trace', path.join(output, 'memory.ndjson')] : [])];
 const run = {name, dart, dependencies, base, entry, head, versions, args, node: process.version,
   cliSha256: sha256(cli), entrySha256: sha256(entry), lockSha256: sha256(path.join(dart, 'package-lock.json')),
+  buildSha256: buildHash.digest('hex'),
   startedAt: new Date().toISOString(), killed: false};
 const log = fs.openSync(path.join(output, 'analysis.log'), 'wx');
 const start = performance.now();
@@ -60,6 +74,7 @@ child.on('close', (code, signal) => {
   fs.writeFileSync(path.join(output, 'summary.json'), JSON.stringify(summary, null, 2) + '\n');
   console.log(JSON.stringify({name, status: summary.status, elapsedMs: summary.elapsedMs,
     analysisMs: summary.analysisMs, memoryMB: summary.memoryMB, warnings: summary.warnings,
+    memoryLimitReached: summary.memoryLimitReached, finalizationStatus: summary.finalizationStatus,
     actualCloseCallConnected: summary.actualCloseCallConnected,
     incoming: summary.closeViewInstance?.incoming.length, closeCallTargets: summary.closeCall?.targets.length,
     outOfScopeFiles: summary.outOfScopeFiles?.length, selectionError: summary.selectionError,

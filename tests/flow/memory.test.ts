@@ -75,7 +75,7 @@ test("interrupted serialization preserves previous graph and closes/removes temp
     writeFileSync(file, "previous-result");
     const out = new AnalysisStateReporter(new Solver().fragmentState);
     let checks = 0;
-    expect(() => out.saveCallGraph(file, [], () => {
+    expect(() => out.saveCallGraph(file, Array(1500).fill("entry.js"), () => {
         if (++checks === 2) throw new MemoryBudgetException("serialization", 10);
     })).toThrow(MemoryBudgetException);
     expect(readFileSync(file, "utf8")).toBe("previous-result");
@@ -95,4 +95,20 @@ test("a budget interrupted during finalization is recorded instead of escaping",
     expect(solver.diagnostics.memoryLimitReached).toBe(true);
     expect(solver.diagnostics.finalizationStatus).toBe("interrupted");
     expect(solver.diagnostics.statisticsStatus).toBe("not-computed");
+});
+
+test("diagnostics survive an unexpected failure at finalization entry", async () => {
+    resetOptions();
+    options.basedir = path.resolve("tests/flow");
+    options.diagnosticsJson = path.join(mkdtempSync(path.join(tmpdir(), "jelly-checkpoint-")), "diagnostics.json");
+    const solver = new Solver();
+    solver.memoryBudget.check = phase => {
+        if (phase === "finalization:start") throw new Error("injected finalization failure");
+    };
+    await expect(analyzeFiles(["fixtures/map-keys.ts"], solver)).rejects.toThrow("injected finalization failure");
+    const d = JSON.parse(readFileSync(options.diagnosticsJson, "utf8"));
+    expect(d.functions).toBeGreaterThan(0);
+    expect(d.finalizationStatus).toBe("not-started");
+    expect(d.statisticsStatus).toBe("not-computed");
+    expect(d.reachableFunctions).toBeNull();
 });

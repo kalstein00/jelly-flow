@@ -448,6 +448,9 @@ async function main() {
 
             if (options.variableKinds)
                 out.reportVariableKinds();
+            // Optional reporters can update diagnostics after the early, crash-surviving copy.
+            if (options.diagnosticsJson)
+                out.saveDiagnostics(solver.diagnostics, options.diagnosticsJson);
         }
     }
 }

@@ -22,8 +22,10 @@ function summarize(directory) {
     unprocessedTokens: diagnostics.unprocessedTokensSize,
   });
   if (diagnostics.libraryModels) result.libraryModels = diagnostics.libraryModels;
-  result.status = diagnostics.timeout || diagnostics.aborted || diagnostics.errors !== 0 ||
-    diagnostics.unprocessedTokensSize !== 0 ? 'partial' : 'completed';
+  result.status = diagnostics.timeout || diagnostics.aborted || diagnostics.memoryLimitReached || diagnostics.errors !== 0 ||
+    diagnostics.unprocessedTokensSize !== 0 || diagnostics.waveLimitReached > 0 || diagnostics.indirectionsLimitReached > 0 ||
+    (diagnostics.finalizationStatus !== undefined && diagnostics.finalizationStatus !== 'complete') ||
+    (diagnostics.statisticsStatus !== undefined && diagnostics.statisticsStatus !== 'complete') ? 'partial' : 'completed';
   // "completed" describes termination only, never graph soundness/completeness.
   const locate = (suffix, line) => {
     const matches = Object.entries(graph.functions).filter(([, location]) => {

@@ -12,8 +12,8 @@ React 전용 제품이나 완전한 JS/TS 그래프를 목표로 하지 않는�
 | 05 | [수집기 출력 계약](05-output-contract.md) | 설계·평가 adapter 완료 | bounded 결과 계약, production 통합 보류 |
 | 06 | [OOM 원인 측정](06-oom-profile.md) | 완료 | 전파 중 메모리 증가와 queue 보유 확인 |
 | 07 | [예산 제한 후 종료](07-bounded-finalization.md) | 완료 — A 수준 | 협력적 중단과 진단/partial graph 보존 |
-| 08 | [병목 메모리 절감](08-memory-optimization.md) | 두 후보 검증 중 | 근거 있는 구조 최적화와 정확성 유지 |
-| 09 | [renderer 재검증](09-renderer-validation.md) | 계획 | 같은 4GB/90초/120초 조건의 3회 완료 판정 |
+| 08 | [병목 메모리 절감](08-memory-optimization.md) | 구현·검증 완료 — 전체 OOM 지속 | queue 수명과 singleton 저장 개선, graph 동일 |
+| 09 | [renderer 재검증](09-renderer-validation.md) | 검증 완료 — A 달성 / B·C 미달 | 같은 4GB/90초/120초 조건의 종료·정확성 판정 |
 
 각 파일은 목적 → 선행 조건 → 작업 → 검증 → 결과/다음 시작점 순서로 관리한다.
 단계가 끝나면 그 파일과 이 표를 함께 갱신한다. 실패와 미검증 항목을 완료로 바꾸지 않는다.
@@ -36,19 +36,20 @@ React 전용 제품이나 완전한 JS/TS 그래프를 목표로 하지 않는�
 
 원본을 보존한 자료이며 현재 fork의 실행 결과와 구분한다.
 
-현재 완료 지점: 01~05의 구현/평가/계약 설계. 각 단계별 별도 커밋.
+현재 완료 지점: 01~09의 구현/평가/계약 설계. 전체 renderer 정상 완료 목표는 미달이다.
 01에서는 분석기 production 코드를 변경하지 않았다.
-06/07 및 08의 두 구조 최적화를 구현했다. 최종 renderer 완료 여부는 09에서 별도 판정한다.
+06/07 및 08의 두 구조 최적화를 구현했고, 09에서 A 달성 / B·C 미달로 판정했다.
 
 ## 최종 결과와 남은 한계
 
 - React 반환 callback 모델과 Map literal key 모델은 독립 opt-in 옵션이다.
 - DART hook의 실제 closeViewInstance 호출 연결 성공, 선택 Map 오연결 2개 제거.
-- 전체 renderer는 원본/기준/개선 모두 4GB heap OOM. 해결됐다고 표시하지 않는다.
-- DART production 통합과 renderer 성능 조사는 별도 후속 범위다.
+- 전체 renderer의 예산 옵션 없는 4GB 실행은 아직 OOM이다.
+- `--max-heap-mb 3072`의 진단/partial graph 보존은 전체 분석 완료와 구분한다.
+- DART production 통합과 추가 solver/library 요약 설계는 후속 범위다.
 - 평가 로그/원시 graph는 ignored `tmp/`에, 재현 입력/선택 결과/해시는 문서에 보존한다.
 
-## 최종 검증 (2026-09-29)
+## 01~05 검증 (2026-09-29, 당시 결과)
 
 - flow + upstream unit: 7 suites / 238 tests 통과.
 - 관련 upstream micro: 40 tests 통과 (선택 범위 밖 558개 미실행).
@@ -60,10 +61,18 @@ React 전용 제품이나 완전한 JS/TS 그래프를 목표로 하지 않는�
 
 ## 단계별 커밋
 
+06~09 최종 검증: 292개 테스트, build/noEmit 통과. Fixture/hook 전체 graph 동일.
+Renderer는 예산 미설정 시 여전히 OOM이며, 예산 적용 3회는 50.7~52.8초에
+진단/partial graph를 보존했다. 결과·해시·제한은 [09](09-renderer-validation.md)에 있다.
+
 1. `574ef30` — 기준 재현 및 작업 파일
 2. `6658550` — React callback 반환 모델
 3. `5cb50be` — Map literal key 정밀도
 4. `52f46e6` — DART 동일 예산 비교
-5. `feat: define bounded analysis evidence contract` — 계약/adapter/실제 예제 (이 파일과 같은 커밋)
+5. `5df974c` — 계약/adapter/실제 예제
+6. `42a94e6` — phase별 메모리 계측, 원인 후보 측정
+7. `9545c24` — 협력적 예산 중단 및 진단/partial graph 보존
+8. `b95844b`, `9cf6641` — listener queue 수명 및 singleton 중복 방지 저장
+9. 최종 renderer 반복 검증과 후처리 진단 보완 — 최종 검증 문서와 같은 커밋
 
 브랜치: `codex/baseline-reproduction`. 원격 발행은 하지 않았다.

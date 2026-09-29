@@ -49,16 +49,17 @@ getter/property-read 인덱스를 추가 생성한다. 따라서 **후처리 추
 - DART hook on/off 전체 graph는 timestamp 제외 동일. 분석 시간 13,727 → 14,042ms
   (+2.3%, 단일 쌍 측정), wall 15,285 → 15,641ms. 목표 5% 이내지만 통계적 보장은 아니다.
 
-- [ ] 선택 옵션으로 phase/module 경계와 propagation checkpoint에 NDJSON 계측 추가.
-- [ ] parse/CFG/def-use/AST traversal/propagation/escape patching/finalization/statistics/
-  graph serialization을 구분하고 시작·종료 이벤트를 기록.
-- [ ] elapsed, heapUsed/heapTotal/RSS/external, vars/tokens/subsets/listeners/worklist,
-  functions/call edges, getter index/property reads의 크기를 기록.
-- [ ] O(1) 카운터와 제한된 빈도의 메모리 표본을 사용. 전체 상태를 매번 순회·문자열화하지 않기.
-- [ ] 종료 때만 저장하지 않고 증분 저장. 동기식 CPU 작업 중 timer만으로는 계측하지 않기.
-- [ ] 계측 off/on hook 비교로 overhead 확인; 목표 추가 시간 5% 내, 넘으면 표본 빈도 조정.
-- [ ] renderer 1회 계측 후 필요할 때만 1회 재현해 증가 구간/주요 보유 구조를 좁힘.
-- [ ] heap snapshot이 필요하면 축소 재현이나 충분한 여유가 있는 이른 checkpoint에서만 확보.
+- [x] 선택 옵션으로 phase/module 경계와 propagation checkpoint에 NDJSON 계측 추가.
+- [x] parse/CFG/def-use/AST traversal/propagation/escape patching/finalization/statistics/
+  graph serialization의 주요 경계 기록.
+- [x] elapsed, heapUsed/heapTotal/RSS/external, vars/tokens/subsets/listeners/worklist,
+  functions/call edges/property reads 크기 기록.
+- [x] O(1) 카운터와 제한된 빈도의 메모리 표본 사용.
+- [x] 동기식 작업 중에도 증분 저장.
+- [x] 계측 off/on hook 비교: 관측 추가 시간 2.3%.
+- [x] renderer 초기 1회와 I/O 수정 후 1회로 전파 단계 실패 확인.
+- Getter 임시 인덱스 크기와 heap snapshot은 미수집: 실패가 finalization 진입 전이며,
+  두 저장 구조 후보를 선정할 수 있어 이번 조사에서는 필요하지 않았다.
 
 현재 Jelly `maxMemoryUsage`는 몇몇 지점의 heapUsed 최댓값이며 프로세스 peak RSS가 아니다.
 새 측정도 sampled maximum과 실제 OS peak를 구분한다. 강제 GC를 켠 진단 실행은
@@ -71,4 +72,4 @@ getter/property-read 인덱스를 추가 생성한다. 따라서 **후처리 추
 계측 off/on의 완료 fixture 그래프가 동일해야 한다. OOM이어도 마지막 phase/카운터가
 파일에 남아야 한다. 모듈별 메모리 증분은 GC/공유 상태 영향을 받으므로 retained-size
 소유권으로 단정하지 않는다. 상위 원인 후보 1~2개와 다음 실험을 근거와 함께 기록하면 완료.
-다음 시작점은 [07](07-bounded-finalization.md)이며, 이 문서 작성 시 계측은 미구현이다.
+후속 구현/검증은 [07](07-bounded-finalization.md)과 [09](09-renderer-validation.md)에 기록했다.

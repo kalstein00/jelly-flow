@@ -1,0 +1,393 @@
+{
+  "date": "2026-09-29",
+  "runs": [
+    {
+      "name": "unbounded",
+      "directory": "tmp\\flow-memory-final-v2-20260929\\unbounded\\renderer",
+      "run": {
+        "name": "renderer",
+        "dart": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+        "dependencies": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules",
+        "base": "C:\\Users\\hj0712.jo",
+        "entry": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+        "head": "e6628e840ed5d9c27f3cb99023a93f6ef979dc5b",
+        "versions": {
+          "react": "18.3.1",
+          "react-dom": "18.3.1"
+        },
+        "args": [
+          "--max-old-space-size=4096",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\lib\\main.js",
+          "--basedir",
+          "C:\\Users\\hj0712.jo",
+          "--timeout",
+          "90",
+          "--no-print-progress",
+          "--warnings-unsupported",
+          "--diagnostics-json",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-memory-final-v2-20260929\\unbounded\\renderer\\diagnostics.json",
+          "--callgraph-json",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-memory-final-v2-20260929\\unbounded\\renderer\\graph.json",
+          "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+          "--react-callback-model",
+          "--map-keys"
+        ],
+        "node": "v24.20.0",
+        "cliSha256": "ef78889ab34c2e5031919b269779ad54856ebbf73438faaa08b26f97e96e00f4",
+        "entrySha256": "e968898b0abde63520999b6eb14e0b8e15ec87dc1a1547bd9c691d4657af5c61",
+        "lockSha256": "86994d6c8d3405b0fbdaa2fa9e9c4680bc4bd3b3f69e20268767803d9a00efb6",
+        "buildSha256": "06c14a4668a1b9fadfb23962ea69d225b9eb00abff3f7aac71ac3557f927f4eb",
+        "startedAt": "2026-09-29T12:52:48.236Z",
+        "killed": false,
+        "code": 134,
+        "signal": null,
+        "elapsedMs": 94583
+      },
+      "summary": {
+        "name": "renderer",
+        "status": "failed",
+        "elapsedMs": 94583,
+        "code": 134,
+        "killed": false,
+        "graphProduced": false,
+        "diagnosticsProduced": false,
+        "heapOutOfMemory": true
+      },
+      "analyzedFilesDigest": null
+    },
+    {
+      "name": "bounded-1",
+      "directory": "tmp\\flow-memory-final-v2-20260929\\bounded-1\\renderer",
+      "run": {
+        "name": "renderer",
+        "dart": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+        "dependencies": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules",
+        "base": "C:\\Users\\hj0712.jo",
+        "entry": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+        "head": "e6628e840ed5d9c27f3cb99023a93f6ef979dc5b",
+        "versions": {
+          "react": "18.3.1",
+          "react-dom": "18.3.1"
+        },
+        "args": [
+          "--max-old-space-size=4096",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\lib\\main.js",
+          "--basedir",
+          "C:\\Users\\hj0712.jo",
+          "--timeout",
+          "90",
+          "--no-print-progress",
+          "--warnings-unsupported",
+          "--diagnostics-json",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-memory-final-v2-20260929\\bounded-1\\renderer\\diagnostics.json",
+          "--callgraph-json",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-memory-final-v2-20260929\\bounded-1\\renderer\\graph.json",
+          "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+          "--react-callback-model",
+          "--map-keys",
+          "--max-heap-mb",
+          "3072"
+        ],
+        "node": "v24.20.0",
+        "cliSha256": "ef78889ab34c2e5031919b269779ad54856ebbf73438faaa08b26f97e96e00f4",
+        "entrySha256": "e968898b0abde63520999b6eb14e0b8e15ec87dc1a1547bd9c691d4657af5c61",
+        "lockSha256": "86994d6c8d3405b0fbdaa2fa9e9c4680bc4bd3b3f69e20268767803d9a00efb6",
+        "buildSha256": "06c14a4668a1b9fadfb23962ea69d225b9eb00abff3f7aac71ac3557f927f4eb",
+        "startedAt": "2026-09-29T12:54:23.451Z",
+        "killed": false,
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 52754
+      },
+      "summary": {
+        "name": "renderer",
+        "status": "partial",
+        "elapsedMs": 52754,
+        "code": 0,
+        "killed": false,
+        "graphProduced": true,
+        "diagnosticsProduced": true,
+        "memoryLimitReached": true,
+        "memoryLimitMB": 3072,
+        "terminationPhase": "propagation:Analyzing",
+        "finalizationStatus": "skipped",
+        "statisticsStatus": "not-computed",
+        "graphOutputStatus": "complete",
+        "waveLimitReached": 0,
+        "indirectionsLimitReached": 0,
+        "graphSha256": "895886dd8b666d9bcb25463c57eab19d86c6441e5870ca50f7490f17d36e0431",
+        "modules": 1782,
+        "functions": 34592,
+        "analysisMs": 50129,
+        "memoryMB": 3110,
+        "errors": 46,
+        "warnings": 2236,
+        "timeout": false,
+        "aborted": false,
+        "unprocessedTokens": 167000,
+        "closeViewInstance": {
+          "location": {
+            "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+            "line": 430,
+            "column": 5,
+            "endLine": 456,
+            "endColumn": 6
+          },
+          "incoming": [],
+          "outgoing": [
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+              "line": 341,
+              "column": 51,
+              "endLine": 366,
+              "endColumn": 2
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+              "line": 113,
+              "column": 39,
+              "endLine": 120,
+              "endColumn": 2
+            }
+          ]
+        },
+        "closeCall": {
+          "location": {
+            "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+            "line": 483,
+            "column": 17,
+            "endLine": 483,
+            "endColumn": 42
+          },
+          "targets": []
+        },
+        "actualCloseCallConnected": false,
+        "outOfScopeFiles": []
+      },
+      "analyzedFilesDigest": "ddd6a1f4bd42f234a1fad6522f5cf01a472463a398c165b87822b48ed3c93768"
+    },
+    {
+      "name": "bounded-2",
+      "directory": "tmp\\flow-memory-final-v2-20260929\\bounded-2\\renderer",
+      "run": {
+        "name": "renderer",
+        "dart": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+        "dependencies": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules",
+        "base": "C:\\Users\\hj0712.jo",
+        "entry": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+        "head": "e6628e840ed5d9c27f3cb99023a93f6ef979dc5b",
+        "versions": {
+          "react": "18.3.1",
+          "react-dom": "18.3.1"
+        },
+        "args": [
+          "--max-old-space-size=4096",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\lib\\main.js",
+          "--basedir",
+          "C:\\Users\\hj0712.jo",
+          "--timeout",
+          "90",
+          "--no-print-progress",
+          "--warnings-unsupported",
+          "--diagnostics-json",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-memory-final-v2-20260929\\bounded-2\\renderer\\diagnostics.json",
+          "--callgraph-json",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-memory-final-v2-20260929\\bounded-2\\renderer\\graph.json",
+          "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+          "--react-callback-model",
+          "--map-keys",
+          "--max-heap-mb",
+          "3072"
+        ],
+        "node": "v24.20.0",
+        "cliSha256": "ef78889ab34c2e5031919b269779ad54856ebbf73438faaa08b26f97e96e00f4",
+        "entrySha256": "e968898b0abde63520999b6eb14e0b8e15ec87dc1a1547bd9c691d4657af5c61",
+        "lockSha256": "86994d6c8d3405b0fbdaa2fa9e9c4680bc4bd3b3f69e20268767803d9a00efb6",
+        "buildSha256": "06c14a4668a1b9fadfb23962ea69d225b9eb00abff3f7aac71ac3557f927f4eb",
+        "startedAt": "2026-09-29T12:55:17.204Z",
+        "killed": false,
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 50849
+      },
+      "summary": {
+        "name": "renderer",
+        "status": "partial",
+        "elapsedMs": 50849,
+        "code": 0,
+        "killed": false,
+        "graphProduced": true,
+        "diagnosticsProduced": true,
+        "memoryLimitReached": true,
+        "memoryLimitMB": 3072,
+        "terminationPhase": "propagation:Analyzing",
+        "finalizationStatus": "skipped",
+        "statisticsStatus": "not-computed",
+        "graphOutputStatus": "complete",
+        "waveLimitReached": 0,
+        "indirectionsLimitReached": 0,
+        "graphSha256": "1bf7ebe0dd68ad2129530173a4f5028106beb07e915f4b3a48144c3af103d467",
+        "modules": 1782,
+        "functions": 34592,
+        "analysisMs": 48349,
+        "memoryMB": 3112,
+        "errors": 46,
+        "warnings": 2246,
+        "timeout": false,
+        "aborted": false,
+        "unprocessedTokens": 173373,
+        "closeViewInstance": {
+          "location": {
+            "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+            "line": 430,
+            "column": 5,
+            "endLine": 456,
+            "endColumn": 6
+          },
+          "incoming": [],
+          "outgoing": [
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+              "line": 341,
+              "column": 51,
+              "endLine": 366,
+              "endColumn": 2
+            },
+            {
+              "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+              "line": 113,
+              "column": 39,
+              "endLine": 120,
+              "endColumn": 2
+            }
+          ]
+        },
+        "closeCall": {
+          "location": {
+            "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+            "line": 483,
+            "column": 17,
+            "endLine": 483,
+            "endColumn": 42
+          },
+          "targets": []
+        },
+        "actualCloseCallConnected": false,
+        "outOfScopeFiles": []
+      },
+      "analyzedFilesDigest": "ddd6a1f4bd42f234a1fad6522f5cf01a472463a398c165b87822b48ed3c93768"
+    },
+    {
+      "name": "bounded-3",
+      "directory": "tmp\\flow-memory-final-v2-20260929\\bounded-3\\renderer",
+      "run": {
+        "name": "renderer",
+        "dart": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+        "dependencies": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules",
+        "base": "C:\\Users\\hj0712.jo",
+        "entry": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+        "head": "e6628e840ed5d9c27f3cb99023a93f6ef979dc5b",
+        "versions": {
+          "react": "18.3.1",
+          "react-dom": "18.3.1"
+        },
+        "args": [
+          "--max-old-space-size=4096",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\lib\\main.js",
+          "--basedir",
+          "C:\\Users\\hj0712.jo",
+          "--timeout",
+          "90",
+          "--no-print-progress",
+          "--warnings-unsupported",
+          "--diagnostics-json",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-memory-final-v2-20260929\\bounded-3\\renderer\\diagnostics.json",
+          "--callgraph-json",
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-memory-final-v2-20260929\\bounded-3\\renderer\\graph.json",
+          "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+          "--react-callback-model",
+          "--map-keys",
+          "--max-heap-mb",
+          "3072"
+        ],
+        "node": "v24.20.0",
+        "cliSha256": "ef78889ab34c2e5031919b269779ad54856ebbf73438faaa08b26f97e96e00f4",
+        "entrySha256": "e968898b0abde63520999b6eb14e0b8e15ec87dc1a1547bd9c691d4657af5c61",
+        "lockSha256": "86994d6c8d3405b0fbdaa2fa9e9c4680bc4bd3b3f69e20268767803d9a00efb6",
+        "buildSha256": "06c14a4668a1b9fadfb23962ea69d225b9eb00abff3f7aac71ac3557f927f4eb",
+        "startedAt": "2026-09-29T12:56:09.057Z",
+        "killed": false,
+        "code": 0,
+        "signal": null,
+        "elapsedMs": 50695
+      },
+      "summary": {
+        "name": "renderer",
+        "status": "partial",
+        "elapsedMs": 50695,
+        "code": 0,
+        "killed": false,
+        "graphProduced": true,
+        "diagnosticsProduced": true,
+        "memoryLimitReached": true,
+        "memoryLimitMB": 3072,
+        "terminationPhase": "propagation:Analyzing",
+        "finalizationStatus": "skipped",
+        "statisticsStatus": "not-computed",
+        "graphOutputStatus": "complete",
+        "waveLimitReached": 0,
+        "indirectionsLimitReached": 0,
+        "graphSha256": "41ba94c547047fdf1ae41565b6b243721d4d92d12f3ce425da5931a6f8c26773",
+        "modules": 1782,
+        "functions": 34592,
+        "analysisMs": 48124,
+        "memoryMB": 3111,
+        "errors": 46,
+        "warnings": 2236,
+        "timeout": false,
+        "aborted": false,
+        "unprocessedTokens": 160975,
+        "closeViewInstance": {
+          "location": {
+            "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+            "line": 430,
+            "column": 5,
+            "endLine": 456,
+            "endColumn": 6
+          },
+          "incoming": [],
+          "outgoing": []
+        },
+        "closeCall": {
+          "location": {
+            "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+            "line": 483,
+            "column": 17,
+            "endLine": 483,
+            "endColumn": 42
+          },
+          "targets": []
+        },
+        "actualCloseCallConnected": false,
+        "outOfScopeFiles": []
+      },
+      "analyzedFilesDigest": "ddd6a1f4bd42f234a1fad6522f5cf01a472463a398c165b87822b48ed3c93768"
+    }
+  ],
+  "sameBuild": true,
+  "sameInputs": true,
+  "boundedAnalyzedFilesEqual": true,
+  "levelA": true,
+  "levelB": false,
+  "levelC": false,
+  "boundedWallMs": {
+    "min": 50695,
+    "median": 50849,
+    "max": 52754
+  },
+  "limitations": [
+    "Partial renderer results are not completed analysis or evidence of absent callbacks.",
+    "maxMemoryUsage is a sampled heap value, not peak RSS or a physical memory cap.",
+    "Prior renderer graphs are unavailable because the baseline crashed; whole-graph equality is unproven."
+  ]
+}

@@ -30,15 +30,15 @@
 
 ## 작업
 
-- [ ] 시간/메모리 예산의 상태와 중단 사유를 명시적으로 전달. 메모리 임계값은
+- [x] 시간/메모리 예산의 상태와 중단 사유를 명시적으로 전달. 메모리 임계값은
   06에서 관측한 후처리 사용량을 바탕으로 여유를 두고 결정한다.
-- [ ] finalization/getter 인덱스/도달성 통계/출력 각각에 진입 및 반복 중 예산 체크 설계.
-- [ ] 비싼 후처리 전에 최소 diagnostics를 먼저 저장한다.
-- [ ] 중단 시 반드시 필요한 상태와 생략 가능한 통계를 분리. 미계산 값은 null/미계산으로
+- [x] finalization/getter 인덱스/도달성 통계/출력 각각에 진입 및 반복 중 예산 체크 설계.
+- [x] finalization 진입 전과 선택적 상세 출력 전에 diagnostics를 먼저 저장한다.
+- [x] 중단 시 반드시 필요한 상태와 생략 가능한 통계를 분리. 미계산 값은 null/미계산으로
   표시하고 0으로 채우지 않는다. 기존 필수 필드와의 호환성은 변경 전에 정리한다.
-- [ ] graph를 안전하게 완성·저장한 경우만 partial graph로 제공. 불완전 파일은 임시 이름으로
-  남기고 유효 graph로 채택하지 않는다. graph가 없으면 failed/null 결과를 유지한다.
-- [ ] 기존 evidence adapter가 `memory-budget`, `finalization-skipped`, `stats-skipped` 등을
+- [x] graph를 안전하게 완성·저장한 경우만 partial graph로 제공. 실패한 임시 파일은
+  제거하며 유효 graph로 채택하지 않는다. graph가 없으면 failed/null 결과를 유지한다.
+- [x] 기존 evidence adapter가 `memory-budget`, `finalization-skipped`, `stats-skipped` 등을
   오해하지 않도록 계약 변경 필요성을 검토하고, 필요하면 버전을 올린다.
 
 ## 검증

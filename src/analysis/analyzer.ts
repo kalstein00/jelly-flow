@@ -230,6 +230,16 @@ async function analyzeFilesImpl(files: Array<string>, solver: Solver) {
     else if (d.indirectionsLimitReached > 0)
         logger.warn("Warning: Indirection limit reached, analysis terminated early");
 
+    // Preserve the pre-finalization state even if a later individual allocation cannot be interrupted.
+    d.analysisTime = timer.elapsed();
+    d.errors = getMapHybridSetSize(solver.fragmentState.errors) + a.filesWithParseErrors.length;
+    d.warnings = getMapHybridSetSize(solver.fragmentState.warnings) + getMapHybridSetSize(solver.fragmentState.warningsUnsupported);
+    if (options.diagnosticsJson) {
+        solver.updateDiagnostics();
+        d.graphOutputStatus = options.callgraphJson ? "pending" : "not-requested";
+        new AnalysisStateReporter(solver.fragmentState).saveDiagnostics(d, options.diagnosticsJson);
+    }
+
     // collect final call edges
     if (stopped())
         d.finalizationStatus = "skipped";
@@ -247,8 +257,6 @@ async function analyzeFilesImpl(files: Array<string>, solver: Solver) {
 
     // output statistics
     d.analysisTime = timer.elapsed();
-    d.errors = getMapHybridSetSize(solver.fragmentState.errors) + a.filesWithParseErrors.length;
-    d.warnings = getMapHybridSetSize(solver.fragmentState.warnings) + getMapHybridSetSize(solver.fragmentState.warningsUnsupported);
     if (!stopped() && !options.modulesOnly && files.length > 0) {
       try {
         solver.checkpoint("statistics:start");

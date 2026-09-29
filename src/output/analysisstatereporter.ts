@@ -503,8 +503,11 @@ export class AnalysisStateReporter {
             callsWithNoCallee: null, nativeOnlyCalls: null, externalOnlyCalls: null,
             nativeOrExternalCalls: null, functionsWithZeroCallers: null, reachableFunctions: null,
         } : {};
-        fs.writeSync(fd, stringify({...stats, ...skipped}));
-        fs.closeSync(fd);
+        try {
+            fs.writeSync(fd, stringify({...stats, ...skipped}));
+        } finally {
+            fs.closeSync(fd);
+        }
         logger.info(`Analysis diagnostics written to ${file}`);
     }
 
