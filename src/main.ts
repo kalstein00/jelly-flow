@@ -73,6 +73,7 @@ program
     .option("--include-packages <package...>", "include only dependencies in this list")
     .option("--exclude-packages <package...>", "exclude dependencies in this list")
     .option("--ignore-dependencies", "don't include dependencies in analysis")
+    .option("--app-only <root>", "analyze reachable sources under root, excluding node_modules and external implementations")
     .option("--ignore-unresolved", "don't report errors about unresolved modules")
     .option("--npm-test <dir>", "run 'npm test' instead of 'node' (use with -d)")
     // .option("--graphviz-packages <package...>", "packages to include in Graphviz dot file (use with -g)")

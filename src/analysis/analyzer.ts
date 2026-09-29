@@ -24,6 +24,7 @@ import {PatchingDiagnostics} from "../approx/diagnostics";
 import {buildProgramCFG, CFGBuildError} from "../cfg/builder";
 import {computeDefUse} from "../cfg/defuse";
 import {MemoryBudgetException} from "./budget";
+import {isAppSource} from "./appscope";
 
 export async function analyzeFiles(files: Array<string>, solver: Solver) {
     try {
@@ -51,6 +52,12 @@ async function analyzeFilesImpl(files: Array<string>, solver: Solver) {
         d.terminationPhase = solver.currentPhase;
     };
     resolveBaseDir();
+    if (options.appOnly) {
+        d.scope = {kind: "app-only", root: options.appOnly, externalImplementations: false};
+        for (const file of files)
+            if (!isAppSource(fs.realpathSync(resolve(options.basedir, file))))
+                throw new Error(`Entry outside app-only source scope: ${file}`);
+    }
     if (options.approx || options.approxLoad) {
         a.approx = new ProcessManager(a);
         a.patching = new Patching(a.approx.hints);

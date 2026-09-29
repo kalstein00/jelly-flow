@@ -13,6 +13,7 @@
 import {LocationJSON} from "../misc/util";
 
 export type CallGraph = { // TODO: represent special call edges separately from ordinary call edges?
+    scope?: {kind: "app-only", root: string, externalImplementations: false};
 
     /**
      * Entry files (relative to basedir).

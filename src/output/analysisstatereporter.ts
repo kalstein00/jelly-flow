@@ -106,6 +106,8 @@ export class AnalysisStateReporter {
         };
         try {
         write(`{\n "time": "${new Date().toUTCString()}",\n`);
+        if (options.appOnly)
+            write(` "scope": ${JSON.stringify({kind: "app-only", root: options.appOnly, externalImplementations: false})},\n`);
         write(` "entries": [`);
         let first = true;
         for (const file of files) {
@@ -275,6 +277,7 @@ export class AnalysisStateReporter {
         }
         return {
             time: new Date().toUTCString(),
+            ...(options.appOnly ? {scope: {kind: "app-only" as const, root: options.appOnly, externalImplementations: false as const}} : {}),
             entries: ifiles.map(file => relative(options.basedir, resolve(options.basedir, file))),
             ignoreDependencies: options.ignoreDependencies,
             includePackages: options.includePackages,

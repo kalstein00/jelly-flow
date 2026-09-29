@@ -2,6 +2,7 @@ import {ApproxDiagnostics, PatchingDiagnostics} from "../approx/diagnostics";
 import {VulnerabilityDiagnostics} from "../patternmatching/diagnostics";
 
 export default class AnalysisDiagnostics {
+    scope?: {kind: "app-only", root: string, externalImplementations: false};
 
     memoryLimitReached: boolean = false;
     memoryLimitMB?: number;

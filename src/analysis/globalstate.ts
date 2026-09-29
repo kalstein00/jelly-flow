@@ -31,6 +31,7 @@ import {isDummyConstructor} from "../parsing/extras";
 import {getEnclosingFunction} from "../misc/asthelpers";
 import {Worklist} from "../misc/worklist";
 import {DefUse} from "../cfg/defuse";
+import {isAppSource} from "./appscope";
 
 /**
  * Global analysis state.
@@ -331,7 +332,7 @@ export class GlobalState {
                 // module has not been reached before, create new ModuleInfo
                 let ignoreModule = (from && (options.ignoreDependencies ||
                         (!packageInfo.isEntry && ((options.includePackages && !options.includePackages.includes(packageInfo.name)))))) ||
-                    options.excludePackages?.includes(packageInfo.name);
+                    options.excludePackages?.includes(packageInfo.name) || !isAppSource(tofile);
                 if (!ignoreModule && options.maxFileSize !== undefined) {
                     const fileSize = statSync(tofile).size;
                     if (fileSize > options.maxFileSize) {

@@ -39,6 +39,7 @@ export const options: {
     graalHome: string | undefined,
     testGraal: boolean,
     ignoreDependencies: boolean,
+    appOnly: string | undefined,
     ignoreUnresolved: boolean,
     excludeEntries: Array<string> | undefined,
     patterns: Array<string> | undefined,
@@ -121,6 +122,7 @@ export const options: {
     graalHome: undefined,
     testGraal: false,
     ignoreDependencies: false,
+    appOnly: undefined,
     ignoreUnresolved: false,
     excludeEntries: undefined,
     patterns: undefined,
@@ -213,6 +215,8 @@ export function setOptions(opts: OptionValues & Partial<typeof options>) {
  */
 export function resolveBaseDir() {
     options.basedir = realpathSync(resolve(process.cwd(), options.basedir));
+    if (options.appOnly)
+        options.appOnly = realpathSync(resolve(process.cwd(), options.appOnly));
 }
 
 const original = Object.assign({}, options);
