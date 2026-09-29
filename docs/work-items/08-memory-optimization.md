@@ -1,6 +1,25 @@
 # 08 — 측정된 병목의 메모리 절감
 
-상태: 계획. 선행: 06의 주요 보유 구조와 07의 진단 보존 경로.
+상태: 첫 후보 구현/검증 완료, 두 번째 후보 측정 예정. 선행: 06의 주요 보유 구조와 07의 진단 보존 경로.
+
+## 채택한 첫 후보: listener queue 수명
+
+06에서 약 192만 항목 중 171만 항목이 이미 처리됐는데도 배열이 참조했다.
+`WorkQueue`는 1,024개씩 저장하고 소비한 값/묶음을 즉시 해제한다. FIFO 순서와
+non-bounded listener 처리 중 enqueue를 유지한다. Bounded listener는 queue를
+분리하여 새 항목을 다음 round로 보내므로 `Array.from` 전체 복사가 필요 없다.
+처리한 항목과 token 중복 방지 집합은 별개다. 중복 방지 의미는 바꾸지 않았다.
+
+검증: chunk 경계 및 도중 enqueue FIFO, 기존 flow/unit 회귀 248개 통과.
+Bounded A/B 처리 중 추가된 non-bounded U가 다음 bounded C보다 먼저 실행되는
+순서도 별도로 검사한다. 결과 판단은 아래 실행 기록으로 갱신한다.
+
+- Queue 변경 후 hook 전체 graph는 06 control과 timestamp 제외 동일하다.
+- Renderer 계측에서 1,738,200회 처리 후 queue에는 미처리 183,378개만 남았다.
+  그러나 heap 약 4,012MiB에 도달했고 95,172ms wall에 여전히 OOM이었다.
+  처리된 참조 해제는 확인했으나 총 메모리 절감률/속도 개선을 주장하지 않는다.
+- 원시 결과: `tmp/flow-memory-20260929/queue`. 다음 후보는 token listener의
+  중복 방지 Set에서 singleton 비율을 측정한 뒤 제한적인 저장 방식 변경을 검토한다.
 
 ## 우선순위와 채택 조건
 

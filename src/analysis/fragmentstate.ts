@@ -34,6 +34,7 @@ import {NodePath} from "@babel/traverse";
 import {GlobalState} from "./globalstate";
 import {ConstraintVarProducer} from "./constraintvarproducer";
 import Solver from "./solver";
+import {WorkQueue} from "../misc/workqueue";
 import {MaybeEmptyPropertyRead} from "../patching/patchdynamics";
 import {getEnclosingNonArrowFunction, isInTryBlockOrBranch} from "../misc/asthelpers";
 import {isAbsoluteModuleName, isLocalRequire, resolveModule} from "../misc/files";
@@ -139,9 +140,9 @@ export class FragmentState {
 
     readonly objectPropertiesListeners: ArrayMapMap<Token, ObjectPropertyVarObj, ListenerID, (prop: string) => void>;
 
-    readonly postponedListenerCalls: Array<PostponedListenerCall> = [];
+    readonly postponedListenerCalls = new WorkQueue<PostponedListenerCall>();
 
-    readonly postponedListenerCalls2: Array<PostponedListenerCall> = [];
+    postponedListenerCalls2 = new WorkQueue<PostponedListenerCall>();
 
     readonly nodesWithNewEdges: Set<ConstraintVar> = new Set;
 

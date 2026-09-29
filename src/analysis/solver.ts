@@ -49,6 +49,7 @@ import {getMemoryUsage} from "../misc/memory";
 import AnalysisDiagnostics from "./diagnostics";
 import {MemoryTrace} from "./memorytrace";
 import {MemoryBudget} from "./budget";
+import {WorkQueue} from "../misc/workqueue";
 import {
     ARRAY_PROTOTYPE,
     ARRAY_UNKNOWN,
@@ -116,6 +117,7 @@ export default class Solver {
     propagationsThrottled: number = 0;
 
     postponedListenersProcessed: number = 0;
+    activeListenerCalls?: WorkQueue<PostponedListenerCall>;
 
     phase: Phase | undefined;
 
@@ -293,7 +295,7 @@ export default class Solver {
                     (options.diagnostics ? `, vars: ${f.getNumberOfVarsWithTokens()}, tokens: ${f.numberOfTokens}, subsets: ${f.numberOfSubsetEdges}, ` +
                         (options.maxIndirections !== undefined ? `round: ${this.diagnostics.round}, ` : "") +
                         `wave: ${this.diagnostics.wave}, ` +
-                    `propagations: ${this.diagnostics.propagations}, worklist: ${this.diagnostics.unprocessedTokensSize+f.postponedListenerCalls.length+f.postponedListenerCalls2.length-this.postponedListenersProcessed}` : "") +
+                    `propagations: ${this.diagnostics.propagations}, worklist: ${this.diagnostics.unprocessedTokensSize+f.postponedListenerCalls.length+f.postponedListenerCalls2.length+(this.activeListenerCalls?.length ?? 0)}` : "") +
                     ")");
                 f.a.timeoutTimer.checkTimeout();
             }
@@ -969,7 +971,8 @@ export default class Solver {
                 const timer = new Timer();
                 d.listenerNotificationRounds++;
                 try {
-                    for (const [fun, arg] of f.postponedListenerCalls) {
+                    while (f.postponedListenerCalls.length > 0) {
+                        const [fun, arg] = f.postponedListenerCalls.shift()!;
                         fun(arg as any);
                         if (++this.postponedListenersProcessed % 100 === 0) {
                             f.a.timeoutTimer.checkTimeout();
@@ -994,10 +997,12 @@ export default class Solver {
                         logger.verbose(`Processing bounded listener calls: ${f.postponedListenerCalls2.length}`);
                     const timer = new Timer();
                     d.listenerNotificationRounds++;
-                    const calls = Array.from(f.postponedListenerCalls2);
-                    f.postponedListenerCalls2.length = this.postponedListenersProcessed = 0;
+                    const calls = this.activeListenerCalls = f.postponedListenerCalls2;
+                    f.postponedListenerCalls2 = new WorkQueue();
+                    this.postponedListenersProcessed = 0;
                     try {
-                        for (const [fun, args] of calls) {
+                        while (calls.length > 0) {
+                            const [fun, args] = calls.shift()!;
                             (fun as Function).apply(undefined, Array.isArray(args) ? args : [args]);
                             if (++this.postponedListenersProcessed % 100 === 0) {
                                 f.a.timeoutTimer.checkTimeout();
@@ -1005,6 +1010,7 @@ export default class Solver {
                             }
                         }
                     } finally {
+                        this.activeListenerCalls = undefined;
                         d.totalListenerCallTime += timer.elapsed();
                     }
                     if (logger.isVerboseEnabled() || (options.diagnostics && options.printProgress))

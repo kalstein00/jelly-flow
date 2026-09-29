@@ -28,6 +28,7 @@ export class MemoryTrace {
             listenerKeys: solver.listeners.size, pendingTokenVars: solver.unprocessedTokens.size,
             listenerQueue: f.postponedListenerCalls.length,
             boundedListenerQueue: f.postponedListenerCalls2.length,
+            activeBoundedListenerQueue: solver.activeListenerCalls?.length ?? 0,
             listenersProcessed: solver.postponedListenersProcessed,
             callEdges: f.numberOfCallToFunctionEdges, propertyReads: f.propertyReads.length,
             defUseModules: a.defUse.size,
