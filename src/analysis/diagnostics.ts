@@ -3,6 +3,13 @@ import {VulnerabilityDiagnostics} from "../patternmatching/diagnostics";
 
 export default class AnalysisDiagnostics {
 
+    memoryLimitReached: boolean = false;
+    memoryLimitMB?: number;
+    terminationPhase?: string;
+    finalizationStatus: "not-started" | "complete" | "skipped" | "interrupted" = "not-started";
+    statisticsStatus: "not-computed" | "complete" = "not-computed";
+    graphOutputStatus: "not-requested" | "pending" | "complete" | "skipped-budget" = "not-requested";
+
     libraryModels: Array<{
         model: string, module: string, version: string, relation: "return-argument",
         argument: number, implementationAnalyzed: boolean, calls: Array<string>

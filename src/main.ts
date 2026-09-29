@@ -21,6 +21,7 @@ import {autoDetectBaseDir, expand, writeStreamedStringify} from "./misc/files";
 import {tapirPatternMatch} from "./patternmatching/tapirpatterns";
 import {toDot} from "./output/graphviz";
 import {AnalysisStateReporter} from "./output/analysisstatereporter";
+import {saveAnalysisOutputs} from "./output/bounded";
 import {TypeScriptTypeInferrer} from "./typescript/typeinferrer";
 import {getAPIUsage, reportAPIUsage} from "./patternmatching/apiusage";
 import {
@@ -86,6 +87,7 @@ program
     .option("--react-callback-model", "add a useCallback return-value model for React 18.3.1 (keeps library analysis)")
     .option("--map-keys", "separate literal Map keys, conservatively merging unknown keys")
     .option("--memory-trace <file>", "write incremental memory checkpoints to a new NDJSON file")
+    .option("--max-heap-mb <MB>", "cooperative heap budget in MiB (leave headroom below the Node heap limit)", parsePositiveInt)
     .option("--test-graal", "test graal-nodejs (use with -d)")
     .option("--no-print-progress", "don't print analysis progress information")
     .option("--no-tty", "don't print solver progress for TTY")
@@ -355,6 +357,9 @@ async function main() {
             await analyzeFiles(files, solver);
             const f = solver.fragmentState;
             const out = new AnalysisStateReporter(f);
+            saveAnalysisOutputs(solver, files);
+            if (solver.diagnostics.memoryLimitReached || solver.diagnostics.timeout || solver.diagnostics.aborted)
+                return;
 
             let typer: TypeScriptTypeInferrer | undefined;
             if (options.typescript)
@@ -402,14 +407,6 @@ async function main() {
                 out.reportMostCalledFunctions();
             }
 
-            solver.memoryTrace.checkpoint(solver, "serialization:start");
-            if (options.callgraphJson)
-                out.saveCallGraph(options.callgraphJson, files);
-
-            if (options.diagnosticsJson)
-                out.saveDiagnostics(solver.diagnostics, options.diagnosticsJson);
-            solver.memoryTrace.checkpoint(solver, "serialization:end");
-            solver.memoryTrace.close();
 
             if (options.matchesFile)
                 saveMatches(vr, loadedVulnerabilities, options.matchesFile);

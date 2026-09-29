@@ -48,6 +48,7 @@ import {setImmediate} from "timers/promises";
 import {getMemoryUsage} from "../misc/memory";
 import AnalysisDiagnostics from "./diagnostics";
 import {MemoryTrace} from "./memorytrace";
+import {MemoryBudget} from "./budget";
 import {
     ARRAY_PROTOTYPE,
     ARRAY_UNKNOWN,
@@ -100,6 +101,15 @@ export default class Solver {
 
     readonly diagnostics = new AnalysisDiagnostics;
     readonly memoryTrace = new MemoryTrace();
+    readonly memoryBudget = new MemoryBudget();
+    currentPhase = "initialization";
+
+    checkpoint(phase: string, module?: string, force = true) {
+        this.currentPhase = phase;
+        this.memoryTrace.checkpoint(this, phase, module, force);
+        this.memoryBudget.check(phase, force);
+        this.globalState.timeoutTimer.checkTimeout();
+    }
 
     readonly abort?: () => boolean;
 
@@ -150,6 +160,8 @@ export default class Solver {
      */
     private enqueueListenerCall(la: PostponedListenerCall) {
         this.fragmentState.postponedListenerCalls.push(la);
+        if (this.fragmentState.postponedListenerCalls.length % 1024 === 0)
+            this.memoryBudget.check(this.currentPhase);
     }
 
     /**
@@ -157,6 +169,8 @@ export default class Solver {
      */
     private enqueueListenerCall2(la: PostponedListenerCall) {
         this.fragmentState.postponedListenerCalls2.push(la);
+        if (this.fragmentState.postponedListenerCalls2.length % 1024 === 0)
+            this.memoryBudget.check(this.currentPhase);
     }
 
     /**
@@ -266,6 +280,7 @@ export default class Solver {
      */
     private printDiagnostics() {
         this.memoryTrace.checkpoint(this, `propagation:${this.phase}`, undefined, false);
+        this.memoryBudget.check(this.currentPhase);
         if (options.printProgress && options.tty && isTTY && !options.logfile && logger.level === "info") {
             const d = Number(this.timer.elapsed() / 1000000n);
             if (d > this.diagnostics.lastPrintDiagnosticsTime + 100) { // only report every 100ms
@@ -865,7 +880,7 @@ export default class Solver {
      * This notifies listeners and propagates tokens along subset edges.
      */
     async propagate(phase: Phase) {
-        this.memoryTrace.checkpoint(this, `propagation:${phase}:start`);
+        this.checkpoint(`propagation:${phase}:start`);
         this.phase = phase;
         if (logger.isDebugEnabled())
             logger.debug("Processing constraints until fixpoint...");

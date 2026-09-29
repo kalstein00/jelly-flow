@@ -18,12 +18,18 @@ export function finalizeCallEdges(solver: Solver) {
     const f = solver.fragmentState;
     const a = solver.globalState;
     const d = solver.diagnostics;
+    let steps = 0;
+    const check = () => {
+        if (++steps % 1024 === 0)
+            solver.checkpoint("finalization:work", undefined, false);
+    };
 
     // ordinary call edges (aborted runs only)
     const t1 = new Timer;
     const aborted = d.aborted || d.timeout || d.waveLimitReached > 0 || d.indirectionsLimitReached > 0;
     if (aborted) {
         for (const n of f.callLocations) {
+            check();
             const caller = f.callToContainingFunction.get(n);
             assert(caller);
             const vs = f.callToCalleeVars.get(n);
@@ -37,7 +43,7 @@ export function finalizeCallEdges(solver: Solver) {
         }
     }
     const elapsed1 = t1.elapsed();
-    solver.memoryTrace.checkpoint(solver, "finalization:getter-index");
+    solver.checkpoint("finalization:getter-index");
 
     // build getter index
     const t2 = new Timer;
@@ -45,6 +51,7 @@ export function finalizeCallEdges(solver: Solver) {
     const getterProps = new Set<string>();
     let getterIndexEntries = 0;
     const collectGetters = (v: ConstraintVar) => {
+        check();
         if (v instanceof ObjectPropertyVar && v.accessor === "get") {
             const funs: Array<FunctionInfo> = [];
             for (const t of f.getTokens(f.getRepresentative(v)))
@@ -62,13 +69,14 @@ export function finalizeCallEdges(solver: Solver) {
     for (const v of f.redirections.keys())
         collectGetters(v);
     const elapsed2 = t2.elapsed();
-    solver.memoryTrace.checkpoint(solver, "finalization:property-reads");
+    solver.checkpoint("finalization:property-reads");
 
     // group property reads by representative base
     const t3 = new Timer;
     const pm = new Map<RepresentativeVar, Map<string, Array<[Node, FunctionInfo | ModuleInfo]>>>();
     let prsTotal = 0, prsKept = 0;
     for (const {base, prop, node, encl} of f.propertyReads) {
+        check();
         prsTotal++;
         if (!getterProps.has(prop))
             continue;
@@ -76,7 +84,7 @@ export function finalizeCallEdges(solver: Solver) {
         mapGetArray(mapGetMap(pm, f.getRepresentative(base)), prop).push([node, encl]);
     }
     const elapsed3 = t3.elapsed();
-    solver.memoryTrace.checkpoint(solver, "finalization:getter-edges");
+    solver.checkpoint("finalization:getter-edges");
 
     // getter call edges
     const t4 = new Timer;
@@ -96,6 +104,7 @@ export function finalizeCallEdges(solver: Solver) {
     const tm = new Map<ObjectPropertyVarObj, Set<Map<string, Array<[Node, FunctionInfo | ModuleInfo]>>>>();
     for (const [base, ms] of pm)
         for (const t1 of f.getTokens(base)) {
+            check();
             if (isObjectPropertyVarObj(t1)) {
                 if (getterTokens.has(t1))
                     mapGetSet(tm, t1).add(ms);
@@ -110,6 +119,7 @@ export function finalizeCallEdges(solver: Solver) {
                 const funs = gs.get(prop);
                 if (funs)
                     for (const [node, enclosing] of targets) {
+                        check();
                         f.registerCall(node, enclosing, undefined, {accessor: true});
                         for (const fi of funs)
                             f.registerCallEdge(node, enclosing, fi, {accessor: true});

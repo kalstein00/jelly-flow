@@ -23,6 +23,7 @@ import {Patching} from "../approx/patching";
 import {PatchingDiagnostics} from "../approx/diagnostics";
 import {buildProgramCFG, CFGBuildError} from "../cfg/builder";
 import {computeDefUse} from "../cfg/defuse";
+import {MemoryBudgetException} from "./budget";
 
 export async function analyzeFiles(files: Array<string>, solver: Solver) {
     try {
@@ -36,6 +37,19 @@ async function analyzeFilesImpl(files: Array<string>, solver: Solver) {
     const a = solver.globalState;
     const d = solver.diagnostics;
     const timer = new Timer();
+    d.memoryLimitMB = options.maxHeapMb;
+    const stopped = () => d.timeout || d.aborted || d.memoryLimitReached;
+    const recordStop = (ex: unknown) => {
+        if (ex instanceof TimeoutException)
+            d.timeout = true;
+        else if (ex instanceof AbortedException)
+            d.aborted = true;
+        else if (ex instanceof MemoryBudgetException)
+            d.memoryLimitReached = true;
+        else
+            throw ex;
+        d.terminationPhase = solver.currentPhase;
+    };
     resolveBaseDir();
     if (options.approx || options.approxLoad) {
         a.approx = new ProcessManager(a);
@@ -44,6 +58,7 @@ async function analyzeFilesImpl(files: Array<string>, solver: Solver) {
     }
 
     try {
+        solver.checkpoint("analysis:start");
         if (files.length === 0)
             logger.info("Error: No files to analyze");
         else {
@@ -72,10 +87,10 @@ async function analyzeFilesImpl(files: Array<string>, solver: Solver) {
                             logger.info(`Analyzing module ${moduleInfo} (${d.modules})`);
 
                         const str = fs.readFileSync(file, "utf8"); // TODO: OK to assume utf8? (ECMAScript says utf16??)
-                        solver.memoryTrace.checkpoint(solver, "parse:start", file);
+                        solver.checkpoint("parse:start", file);
                         writeStdOutIfActive(`Parsing ${file} (${Math.ceil(str.length / 1024)}KB)...`);
                         const ast = parseAndDesugar(str, file, solver.fragmentState);
-                        solver.memoryTrace.checkpoint(solver, "parse:end", file);
+                        solver.checkpoint("parse:end", file);
                         if (!ast) {
                             a.filesWithParseErrors.push(file);
                             continue;
@@ -115,13 +130,13 @@ async function analyzeFilesImpl(files: Array<string>, solver: Solver) {
                             if (options.defUse)
                                 try {
                                     const t1 = new Timer();
-                                    solver.memoryTrace.checkpoint(solver, "cfg:start", file);
+                                    solver.checkpoint("cfg:start", file);
                                     const pcfg = buildProgramCFG(ast, options.narrow);
-                                    solver.memoryTrace.checkpoint(solver, "def-use:start", file);
+                                    solver.checkpoint("def-use:start", file);
                                     d.cfgTime += t1.elapsed();
                                     const t2 = new Timer();
                                     a.defUse.set(moduleInfo, computeDefUse(pcfg));
-                                    solver.memoryTrace.checkpoint(solver, "def-use:end", file);
+                                    solver.checkpoint("def-use:end", file);
                                     d.defUseTime += t2.elapsed();
                                 } catch (ex) {
                                     if (!(ex instanceof CFGBuildError))
@@ -135,9 +150,9 @@ async function analyzeFilesImpl(files: Array<string>, solver: Solver) {
 
                             // traverse the AST
                             writeStdOutIfActive("Traversing AST...");
-                            solver.memoryTrace.checkpoint(solver, "traversal:start", file);
+                            solver.checkpoint("traversal:start", file);
                             visit(ast, new Operations(moduleInfo, solver, buildModuleNatives(solver, moduleInfo, moduleParams)));
-                            solver.memoryTrace.checkpoint(solver, "traversal:end", file);
+                            solver.checkpoint("traversal:end", file);
 
                             if (options.eagerPropagation) {
                                 const t = new Timer();
@@ -169,7 +184,7 @@ async function analyzeFilesImpl(files: Array<string>, solver: Solver) {
                     // patch using escape analysis
                     if (options.patchEscaping) {
                         const t = new Timer();
-                        solver.memoryTrace.checkpoint(solver, "escape:start");
+                        solver.checkpoint("escape:start");
                         findEscapingObjects(Array.from(a.moduleInfos.values()), solver); // TODO: currently using all modules, restrict to relevant packages?
                         await solver.propagate("Escape patching");
                         d.totalEscapePatchingTime += t.elapsed();
@@ -196,12 +211,7 @@ async function analyzeFilesImpl(files: Array<string>, solver: Solver) {
         f.reportUnhandledDynamicPropertyReads();
 
     } catch (ex) {
-        if (ex instanceof TimeoutException)
-            d.timeout = true;
-        else if (ex instanceof AbortedException)
-            d.aborted = true;
-        else
-            throw ex;
+        recordStop(ex);
     } finally {
         if (a.approx) {
             a.approx.stop();
@@ -213,22 +223,35 @@ async function analyzeFilesImpl(files: Array<string>, solver: Solver) {
         logger.warn("Received abort signal, analysis aborted");
     else if (d.timeout)
         logger.warn("Time limit reached, analysis aborted");
+    else if (d.memoryLimitReached)
+        logger.warn("Heap budget reached, analysis stopped with partial results");
     else if (d.waveLimitReached > 0)
         logger.warn("Warning: Wave limit reached, analysis terminated early");
     else if (d.indirectionsLimitReached > 0)
         logger.warn("Warning: Indirection limit reached, analysis terminated early");
 
     // collect final call edges
-    solver.memoryTrace.checkpoint(solver, "finalization:start");
-    finalizeCallEdges(solver);
-    solver.memoryTrace.checkpoint(solver, "statistics:start");
+    if (stopped())
+        d.finalizationStatus = "skipped";
+    else {
+        try {
+            solver.checkpoint("finalization:start");
+            finalizeCallEdges(solver);
+            d.finalizationStatus = "complete";
+        } catch (ex) {
+            recordStop(ex);
+            d.finalizationStatus = "interrupted";
+        }
+    }
     solver.updateDiagnostics();
 
     // output statistics
     d.analysisTime = timer.elapsed();
     d.errors = getMapHybridSetSize(solver.fragmentState.errors) + a.filesWithParseErrors.length;
     d.warnings = getMapHybridSetSize(solver.fragmentState.warnings) + getMapHybridSetSize(solver.fragmentState.warningsUnsupported);
-    if (!options.modulesOnly && files.length > 0) {
+    if (!stopped() && !options.modulesOnly && files.length > 0) {
+      try {
+        solver.checkpoint("statistics:start");
         const f = solver.fragmentState; // current fragment (not final if aborted due to timeout)
         const r = new AnalysisStateReporter(f);
         d.callsWithUniqueCallee = r.getOneCalleeCalls();
@@ -239,10 +262,17 @@ async function analyzeFilesImpl(files: Array<string>, solver: Solver) {
         d.externalOnlyCalls = r.getZeroButExternalCalleeCalls();
         d.nativeOrExternalCalls = r.getZeroButNativeOrExternalCalleeCalls();
         d.functionsWithZeroCallers = r.getZeroCallerFunctions().size;
+        solver.checkpoint("statistics:reachability");
+        let steps = 0;
+        const check = () => {
+            if (++steps % 1024 === 0) solver.checkpoint("statistics:reachability", undefined, false);
+        };
         const entries = new Set<FunctionInfo | ModuleInfo>(r.getEntryModules());
-        for (const fi of getExportedFunctions(f))
+        for (const fi of getExportedFunctions(f, check))
             entries.add(fi);
-        d.reachableFunctions = Array.from(r.getReachableModulesAndFunctions(entries)).filter(r => r instanceof FunctionInfo).length;
+        d.reachableFunctions = Array.from(r.getReachableModulesAndFunctions(entries, check)).filter(r => r instanceof FunctionInfo).length;
+        solver.checkpoint("statistics:end");
+        d.statisticsStatus = "complete";
         if (logger.isInfoEnabled()) {
             logger.info(`Analyzed packages: ${d.packages}, modules: ${d.modules}, functions: ${a.functionInfos.size}, code size main: ${Math.ceil(d.codeSizeMain / 1024)}KB, dependencies: ${Math.ceil(d.codeSizeDependencies / 1024)}KB`);
             logger.info(`Call edges function->function: ${d.functionToFunctionEdges}, call->function: ${d.callToFunctionEdges}`);
@@ -280,6 +310,9 @@ async function analyzeFilesImpl(files: Array<string>, solver: Solver) {
                     logger.info(`Vulnerability collection: ${nanoToMs(d.vulnerabilities!.vulnerabilityCollectionTime)}`);
             }
         }
+      } catch (ex) {
+        recordStop(ex);
+      }
     }
-    solver.memoryTrace.checkpoint(solver, "statistics:end");
+    d.analysisTime = timer.elapsed();
 }

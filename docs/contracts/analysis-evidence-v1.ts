@@ -28,5 +28,6 @@ export type AnalysisEvidence = BaseEvidence & (
     | {termination: "failed"; relations: null; graphSha256: null; diagnostics: null;
        failure: {code: number | null; killed: boolean; heapOutOfMemory: boolean}}
     | {termination: "completed" | "partial"; relations: Array<Relation>; graphSha256: string;
-       diagnostics: {errors: number; warnings: number; timeout: boolean; aborted: boolean; unprocessedTokens: number}}
+       diagnostics: {errors: number; warnings: number; timeout: boolean; aborted: boolean; unprocessedTokens: number;
+           memoryLimitReached?: boolean; terminationPhase?: string; finalizationStatus?: string; statisticsStatus?: string}}
 );

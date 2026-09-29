@@ -12,6 +12,8 @@ export type DartSummary = {
     errors?: number, warnings?: number, timeout?: boolean, aborted?: boolean, unprocessedTokens?: number,
     closeCall?: {location: Location, targets: Array<Location>},
     libraryModels?: Array<{model: string, version: string, argument: number, calls: Array<string>}>,
+    memoryLimitReached?: boolean, terminationPhase?: string, finalizationStatus?: string,
+    statisticsStatus?: string, graphOutputStatus?: string, waveLimitReached?: number, indirectionsLimitReached?: number,
 };
 
 /** Evaluation-only adapter: never labels selected relations as a complete graph. */
@@ -36,6 +38,7 @@ export function buildEvidence(run: DartRun, summary: DartSummary, reference: str
     if (run.code !== 0 || run.killed)
         throw new Error("Termination contradicts process exit status");
     if (!["completed", "partial"].includes(summary.status) || !summary.graphSha256 ||
+        (summary.graphOutputStatus !== undefined && summary.graphOutputStatus !== "complete") ||
         summary.selectionError || !summary.closeCall || !Array.isArray(summary.outOfScopeFiles) ||
         summary.outOfScopeFiles.length !== 0)
         throw new Error("Cannot export invalid or out-of-scope selected graph evidence");
@@ -43,7 +46,10 @@ export function buildEvidence(run: DartRun, summary: DartSummary, reference: str
     if (typeof errors !== "number" || typeof warnings !== "number" || typeof timeout !== "boolean" ||
         typeof aborted !== "boolean" || typeof unprocessedTokens !== "number")
         throw new Error("Cannot replace missing diagnostics with zeros");
-    if (summary.status === "completed" && (errors !== 0 || timeout || aborted || unprocessedTokens !== 0))
+    if (summary.status === "completed" && (errors !== 0 || timeout || aborted || unprocessedTokens !== 0 ||
+        summary.memoryLimitReached || (summary.waveLimitReached ?? 0) > 0 || (summary.indirectionsLimitReached ?? 0) > 0 ||
+        (summary.finalizationStatus !== undefined && summary.finalizationStatus !== "complete") ||
+        (summary.statisticsStatus !== undefined && summary.statisticsStatus !== "complete")))
         throw new Error("Termination contradicts analyzer diagnostics");
     const relations: Array<Relation> = summary.closeCall.targets.map(target => ({
         kind: "may-call", callsite: summary.closeCall!.location, target, attribution: "unclassified",
@@ -62,7 +68,9 @@ export function buildEvidence(run: DartRun, summary: DartSummary, reference: str
                 argument: model.argument});
         }
     return {...base, termination: summary.status, graphSha256: summary.graphSha256, relations,
-        diagnostics: {errors, warnings, timeout, aborted, unprocessedTokens}};
+        diagnostics: {errors, warnings, timeout, aborted, unprocessedTokens,
+            memoryLimitReached: summary.memoryLimitReached, terminationPhase: summary.terminationPhase,
+            finalizationStatus: summary.finalizationStatus, statisticsStatus: summary.statisticsStatus}};
 }
 
 if (require.main === module) {

@@ -37,13 +37,14 @@ export function visitExportedTokens(
  * Returns the FunctionInfos reachable as values of `module.exports` (or
  * properties of values of `module.exports`) for entry modules.
  */
-export function getExportedFunctions(f: FragmentState): Set<FunctionInfo> {
+export function getExportedFunctions(f: FragmentState, check?: () => void): Set<FunctionInfo> {
     const a = f.a;
     const res = new Set<FunctionInfo>();
     const seeds = Array.from(a.moduleInfos.values())
         .filter(m => m.isEntry)
         .map(m => f.varProducer.objPropVar(a.canonicalizeToken(new NativeObjectToken("module", m)), "exports"));
     visitExportedTokens(f, seeds, (t, visitor) => {
+        check?.();
         if (t instanceof FunctionToken) {
             const fi = a.functionInfos.get(t.fun);
             if (fi)

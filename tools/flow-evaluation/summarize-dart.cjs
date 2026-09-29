@@ -8,7 +8,15 @@ function summarizeDart(directory) {
   const result = {name: run.name, status: 'failed', elapsedMs: run.elapsedMs, code: run.code,
     killed: run.killed, graphProduced: fs.existsSync(path.join(directory, 'graph.json')),
     diagnosticsProduced: fs.existsSync(path.join(directory, 'diagnostics.json'))};
-  if (run.code !== 0 || run.killed || run.error || !result.graphProduced || !result.diagnosticsProduced) {
+  if (result.diagnosticsProduced) {
+    const d = read('diagnostics.json');
+    Object.assign(result, {memoryLimitReached: d.memoryLimitReached, memoryLimitMB: d.memoryLimitMB,
+      terminationPhase: d.terminationPhase, finalizationStatus: d.finalizationStatus,
+      statisticsStatus: d.statisticsStatus, graphOutputStatus: d.graphOutputStatus,
+      waveLimitReached: d.waveLimitReached, indirectionsLimitReached: d.indirectionsLimitReached});
+  }
+  if (run.code !== 0 || run.killed || run.error || !result.graphProduced || !result.diagnosticsProduced ||
+      (result.graphOutputStatus !== undefined && result.graphOutputStatus !== 'complete')) {
     result.heapOutOfMemory = /heap out of memory/i.test(fs.readFileSync(path.join(directory, 'analysis.log'), 'utf8'));
     return result;
   }
@@ -18,7 +26,10 @@ function summarizeDart(directory) {
     modules: d.modules, functions: d.functions, analysisMs: d.analysisTime, memoryMB: d.maxMemoryUsage,
     errors: d.errors, warnings: d.warnings, timeout: d.timeout, aborted: d.aborted,
     unprocessedTokens: d.unprocessedTokensSize, libraryModels: d.libraryModels ?? []});
-  result.status = d.timeout || d.aborted || d.errors !== 0 || d.unprocessedTokensSize !== 0 ? 'partial' : 'completed';
+  result.status = d.timeout || d.aborted || d.memoryLimitReached || d.errors !== 0 ||
+    d.unprocessedTokensSize !== 0 || d.waveLimitReached > 0 || d.indirectionsLimitReached > 0 ||
+    (d.finalizationStatus !== undefined && d.finalizationStatus !== 'complete') ||
+    (d.statisticsStatus !== undefined && d.statisticsStatus !== 'complete') ? 'partial' : 'completed';
   const locate = location => {
     const [file, line, column, endLine, endColumn] = location.split(':').map(Number);
     return {file: graph.files[file].replaceAll('\\', '/'), line, column, endLine, endColumn};

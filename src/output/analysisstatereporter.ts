@@ -1,3 +1,4 @@
+import {randomUUID} from "crypto";
 import logger from "../misc/logger";
 import {
     addAll,
@@ -83,46 +84,65 @@ export class AnalysisStateReporter {
     /**
      * Saves the call graph to a JSON file using the format defined in callgraph.d.ts.
      */
-    saveCallGraph(outfile: string, files: Array<string>) { // TODO: use callGraphToJSON?
-        const fd = fs.openSync(outfile, "w");
-        fs.writeSync(fd, `{\n "time": "${new Date().toUTCString()}",\n`);
-        fs.writeSync(fd, ` "entries": [`);
+    saveCallGraph(outfile: string, files: Array<string>, check?: () => void) {
+        check?.();
+        const temporary = outfile + "." + randomUUID() + ".tmp";
+        try {
+            this.writeCallGraph(temporary, files, check);
+            check?.();
+            fs.renameSync(temporary, outfile);
+        } finally {
+            if (fs.existsSync(temporary)) fs.unlinkSync(temporary);
+        }
+        logger.info(`Call graph written to ${outfile}`);
+    }
+
+    private writeCallGraph(outfile: string, files: Array<string>, check?: () => void) { // TODO: use callGraphToJSON?
+        const fd = fs.openSync(outfile, "wx");
+        let writes = 0;
+        const write = (text: string) => {
+            if (++writes % 1024 === 0) check?.();
+            fs.writeSync(fd, text);
+        };
+        try {
+        write(`{\n "time": "${new Date().toUTCString()}",\n`);
+        write(` "entries": [`);
         let first = true;
         for (const file of files) {
-            fs.writeSync(fd, `${first ? "" : ","}\n  ${JSON.stringify(relative(options.basedir, resolve(options.basedir, file)))}`);
+            write(`${first ? "" : ","}\n  ${JSON.stringify(relative(options.basedir, resolve(options.basedir, file)))}`);
             first = false;
         }
-        fs.writeSync(fd, `\n ],\n`);
+        write(`\n ],\n`);
         if (options.ignoreDependencies)
-            fs.writeSync(fd, ` "ignoreDependencies": true,\n`);
+            write(` "ignoreDependencies": true,\n`);
         if (options.includePackages) {
-            fs.writeSync(fd, ` "included": [`);
+            write(` "included": [`);
             first = true;
             for (const name of options.includePackages) {
-                fs.writeSync(fd, `${first ? "" : ","}\n  ${JSON.stringify(name)}`);
+                write(`${first ? "" : ","}\n  ${JSON.stringify(name)}`);
                 first = false;
             }
-            fs.writeSync(fd, `\n ],\n`);
+            write(`\n ],\n`);
         }
         if (options.excludePackages) {
-            fs.writeSync(fd, ` "excluded": [`);
+            write(` "excluded": [`);
             first = true;
             for (const name of options.excludePackages) {
-                fs.writeSync(fd, `${first ? "" : ","}\n  ${JSON.stringify(name)}`);
+                write(`${first ? "" : ","}\n  ${JSON.stringify(name)}`);
                 first = false;
             }
-            fs.writeSync(fd, `\n ],\n`);
+            write(`\n ],\n`);
         }
-        fs.writeSync(fd, ` "files": [`);
+        write(` "files": [`);
         const fileIndices = new Map<ModuleInfo, number>();
         first = true;
         for (const m of this.a.moduleInfos.values())
             if (m.loc) {
                 fileIndices.set(m, fileIndices.size);
-                fs.writeSync(fd, `${first ? "" : ","}\n  ${JSON.stringify(relative(options.basedir, m.getPath()))}`);
+                write(`${first ? "" : ","}\n  ${JSON.stringify(relative(options.basedir, m.getPath()))}`);
                 first = false;
             }
-        fs.writeSync(fd, `\n ],\n "functions": {`);
+        write(`\n ],\n "functions": {`);
         const functionIndices = new Map<FunctionInfo | ModuleInfo, number>();
         first = true;
         for (const fun of [...this.a.functionInfos.values(), ...this.a.moduleInfos.values()])
@@ -132,10 +152,10 @@ export class AnalysisStateReporter {
                 const fileIndex = fileIndices.get(fun instanceof ModuleInfo ? fun : fun.moduleInfo);
                 if (fileIndex === undefined)
                     assert.fail(`File index not found for ${fun}`);
-                fs.writeSync(fd, `${first ? "" : ","}\n  "${funIndex}": ${JSON.stringify(this.makeLocStr(fileIndex, fun.loc))}`);
+                write(`${first ? "" : ","}\n  "${funIndex}": ${JSON.stringify(this.makeLocStr(fileIndex, fun.loc))}`);
                 first = false;
             }
-        fs.writeSync(fd, `\n },\n "calls": {`);
+        write(`\n },\n "calls": {`);
         const callIndices = new Map<Node, number>();
         first = true;
         for (const call of this.f.callLocations) {
@@ -146,10 +166,10 @@ export class AnalysisStateReporter {
             const fileIndex = fileIndices.get(m);
             if (fileIndex === undefined)
                 assert.fail(`File index not found for ${m}`);
-            fs.writeSync(fd, `${first ? "" : ","}\n  "${callIndex}": ${JSON.stringify(this.makeLocStr(fileIndex, call.loc))}`);
+            write(`${first ? "" : ","}\n  "${callIndex}": ${JSON.stringify(this.makeLocStr(fileIndex, call.loc))}`);
             first = false;
         }
-        fs.writeSync(fd, `\n },\n "fun2fun": [`);
+        write(`\n },\n "fun2fun": [`);
         first = true;
         for (const [caller, callees] of [...this.f.functionToFunction, ...(options.callgraphRequire ? this.f.requireGraph : [])])
             if (caller instanceof FunctionInfo || caller.loc)
@@ -161,10 +181,10 @@ export class AnalysisStateReporter {
                         const calleeIndex = functionIndices.get(callee);
                         if (calleeIndex === undefined)
                             assert.fail(`Function index not found for ${callee}`);
-                        fs.writeSync(fd, `${first ? "\n  " : ", "}[${callerIndex}, ${calleeIndex}]`);
+                        write(`${first ? "\n  " : ", "}[${callerIndex}, ${calleeIndex}]`);
                         first = false;
                     }
-        fs.writeSync(fd, `${first ? "" : "\n "}],\n "call2fun": [`);
+        write(`${first ? "" : "\n "}],\n "call2fun": [`);
         first = true;
         for (const [call, callIndex] of callIndices) {
             const funs = this.f.callToFunction.get(call) || [];
@@ -174,22 +194,23 @@ export class AnalysisStateReporter {
                     const calleeIndex = functionIndices.get(callee);
                     if (calleeIndex === undefined)
                         assert.fail(`Function index not found for ${callee}`);
-                    fs.writeSync(fd, `${first ? "\n  " : ", "}[${callIndex}, ${calleeIndex}]`);
+                    write(`${first ? "\n  " : ", "}[${callIndex}, ${calleeIndex}]`);
                     first = false;
                 }
         }
-        fs.writeSync(fd, `${first ? "" : "\n "}],\n "ignore": [`);
+        write(`${first ? "" : "\n "}],\n "ignore": [`);
         first = true;
         for (const [m, loc] of this.f.artificialFunctions) {
             const fileIndex = fileIndices.get(m);
             if (fileIndex === undefined)
                 assert.fail(`File index not found for ${m}`);
-            fs.writeSync(fd, `${first ? "" : ","}\n  ${JSON.stringify(this.makeLocStr(fileIndex, loc))}`);
+            write(`${first ? "" : ","}\n  ${JSON.stringify(this.makeLocStr(fileIndex, loc))}`);
             first = false;
         }
-        fs.writeSync(fd, `${first ? "" : "\n "}]\n}\n`);
-        fs.closeSync(fd);
-        logger.info(`Call graph written to ${outfile}`);
+        write(`${first ? "" : "\n "}]\n}\n`);
+        } finally {
+            fs.closeSync(fd);
+        }
     }
 
     /**
@@ -453,10 +474,11 @@ export class AnalysisStateReporter {
     /**
      * Returns the modules and functions that are reachable from the given entries.
      */
-    getReachableModulesAndFunctions(entries: Set<FunctionInfo | ModuleInfo>): Set<FunctionInfo | ModuleInfo> {
+    getReachableModulesAndFunctions(entries: Set<FunctionInfo | ModuleInfo>, check?: () => void): Set<FunctionInfo | ModuleInfo> {
         const res = new Set<FunctionInfo | ModuleInfo>(entries);
         const w = Array.from(entries);
         while (w.length > 0) {
+            check?.();
             const f = w.pop()!;
             for (const g of [...this.f.functionToFunction.get(f) ?? [], ...this.f.requireGraph.get(f) ?? []]) {
                 if (!res.has(g)) {
@@ -476,7 +498,12 @@ export class AnalysisStateReporter {
      */
     saveDiagnostics(stats: AnalysisDiagnostics, file: string) {
         const fd = fs.openSync(file, "w");
-        fs.writeSync(fd, stringify(stats));
+        const skipped = stats.statisticsStatus !== "complete" ? {
+            totalCallSites: null, callsWithUniqueCallee: null, callsWithMultipleCallees: null,
+            callsWithNoCallee: null, nativeOnlyCalls: null, externalOnlyCalls: null,
+            nativeOrExternalCalls: null, functionsWithZeroCallers: null, reachableFunctions: null,
+        } : {};
+        fs.writeSync(fd, stringify({...stats, ...skipped}));
         fs.closeSync(fd);
         logger.info(`Analysis diagnostics written to ${file}`);
     }

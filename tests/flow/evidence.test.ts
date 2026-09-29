@@ -43,6 +43,8 @@ test("process failure cannot masquerade as completed analysis", () => {
 test.each([
     {selectionError: "missing function"}, {outOfScopeFiles: ["elsewhere.ts"]},
     {warnings: undefined}, {timeout: true},
+    {memoryLimitReached: true}, {finalizationStatus: "skipped"}, {waveLimitReached: 1},
+    {graphOutputStatus: "pending"},
 ])("rejects invalid evidence %j", patch => {
     expect(() => buildEvidence(run, {...summary, ...patch}, "ref")).toThrow();
 });

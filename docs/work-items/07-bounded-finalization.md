@@ -1,6 +1,27 @@
 # 07 — 메모리·시간 제한 이후 종료 경로
 
-상태: 계획. 선행: 06의 phase별 측정.
+상태: 구현/검증 완료. 선행: 06의 phase별 측정.
+
+## 실행 결과 (2026-09-29)
+
+- `--max-heap-mb 3072`를 4GB old-space 실행에서 검증. 기본값은 미설정이며
+  기존 완료 실행의 분석 의미를 변경하지 않는다. GC 강제 실행은 하지 않는다.
+- 모듈 단계, token/listener 전파, finalization 반복, reachability에 협력적 체크.
+  50ms 샘플 및 1,024개 작업 간격이므로 단일 거대 할당을 선점할 수는 없다.
+- timeout/abort/memory stop이면 finalization과 통계를 생략한다. 도중에 제한에
+  도달한 finalization은 `interrupted`로 기록. 미계산 통계 JSON은 `null`이다.
+- CLI는 선택적 상세 보고 전에 diagnostics를 저장한다. Graph 출력은 별도
+  256MiB/10초 여유를 사용하며, 임시 파일 완료 후 rename한다. 실패 시 기존
+  graph를 보존하지만 `graphOutputStatus`가 `complete`가 아니므로 재사용하면 안 된다.
+- 실제 renderer: **49,570ms wall, 46,825ms analysis, 3,073MiB sampled heap**,
+  정상 프로세스 종료, graph/diagnostics 보존. `partial`, memory stop, finalization
+  skipped, 통계 not-computed. 1,782 modules / 34,592 functions, 오류 46건,
+  미처리 token 164,102건, 선택 close 호출 미연결. 전체 분석 성공으로 세지 않는다.
+- 원시 결과: `tmp/flow-memory-20260929/bounded`.
+- 3,072MiB 예산을 켠 hook 전체 graph는 06 control과 timestamp 제외 동일.
+- 회귀: flow + unit **247개 통과**, 전체 TypeScript noEmit 통과.
+  저예산/만료된 시간/finalization 중단/출력 원자성/미계산 통계를 별도 검사했다.
+- 계약 v1에는 optional 중단 상태만 추가했다. 기존 artifact에 없는 필드는 unknown이다.
 
 ## 목적
 

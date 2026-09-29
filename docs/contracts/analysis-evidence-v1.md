@@ -3,6 +3,15 @@
 Status: proposed output contract for bounded evaluation artifacts. This does not
 change Jelly's existing callgraph JSON or integrate a DART production collector.
 
+The OOM follow-up adds optional diagnostic metadata (`memoryLimitReached`,
+`terminationPhase`, `finalizationStatus`, `statisticsStatus`) without changing v1
+relations or termination values. Missing fields on older artifacts mean unknown.
+A memory stop or incomplete finalization cannot be classified as completed.
+Raw analyzer diagnostics emit `null` for uncomputed call/reachability statistics.
+`graphOutputStatus` must be `complete` when present before consuming a graph:
+an older file may remain after an interrupted atomic replacement. Diagnostics-only
+runs cannot be exported as selected graph evidence by this adapter.
+
 ## Meaning
 
 Consumers must distinguish analyzer termination from graph completeness.
