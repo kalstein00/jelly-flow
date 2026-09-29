@@ -32,7 +32,7 @@ React and ReactDOM must both appear in the analyzed files.
 `completed` means the analyzer terminated without timeout/abort/errors/pending
 tokens; it does **not** claim a complete or sound call graph. `selectedChecksPassed`
 covers expected positive edges and unrelated-function controls. Known Map
-false positives are reported separately and remain defects. In Jest these are
+false positives are reported separately (the default model retains them). In Jest these are
 ordinary negative tests with `options.mapKeys = true`. The initial 01 commit
 used `test.failing`; 03 removed `.failing` after the key model fixed both defects.
 
@@ -64,3 +64,20 @@ Current baseline results and next steps are in
 [01-baseline.md](../../docs/work-items/01-baseline.md).
 Full-suite tests for unrelated dynamic/approximate/native integrations may need
 additional environments; the focused commands above do not install those.
+
+## Fixed DART comparison
+
+```powershell
+$dartRoot = 'C:/Users/hj0712.jo/.codex/worktrees/jelly-evaluation/dev-branch'
+node tools/flow-evaluation/run-dart.cjs lib/main.js tmp/dart-new-run $dartRoot hook --react-callback-model --map-keys
+node tools/flow-evaluation/run-dart.cjs lib/main.js tmp/dart-new-run $dartRoot renderer --react-callback-model --map-keys
+```
+
+Point the CLI at the npm reference or a build of commit `574ef30` and omit the
+model flags for baseline runs. The script checks the fixed DART HEAD, clean
+analysis source, and React versions, follows dependency realpaths, and computes
+their common ancestor as basedir. Only imports reachable from the explicit entry
+are analyzed. No DART files are written. Budget/overwrite rules match fixture runs.
+The report checks the real call at line 483 and callback at line 430 in
+`useWorkspaceAggregate.ts`, preserving ambiguous/missing selection failures.
+Incomplete/failed runs do not manufacture zero-edge graphs.

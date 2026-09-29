@@ -1,0 +1,113 @@
+{
+  "react": {
+    "name": "react",
+    "node": "v24.20.0",
+    "elapsedMs": 6071,
+    "exitCode": 0,
+    "killed": false,
+    "status": "completed",
+    "selectedChecksPassed": true,
+    "graphSha256": "5353e48dac29a6c442e8bc5e072fc874c4f9c95fbfc4abf158ab4c0111486500",
+    "modules": 11,
+    "functions": 1988,
+    "analysisMs": 4904,
+    "memoryMB": 377,
+    "errors": 0,
+    "warnings": 221,
+    "timeout": false,
+    "aborted": false,
+    "unprocessedTokens": 0,
+    "libraryModels": [
+      {
+        "model": "react.useCallback/1",
+        "module": "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tests\\flow\\node_modules\\react\\index.js",
+        "version": "18.3.1",
+        "relation": "return-argument",
+        "argument": 0,
+        "implementationAnalyzed": true,
+        "calls": [
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tests\\flow\\fixtures\\react.tsx:7:17"
+        ]
+      }
+    ],
+    "expectedEdges": {
+      "clickToCallback": true,
+      "callbackToPersist": true
+    },
+    "unrelatedIncoming": 0,
+    "analyzedDependencies": {
+      "react": true,
+      "react-dom": true
+    }
+  },
+  "react-no-external": {
+    "name": "react-no-external",
+    "node": "v24.20.0",
+    "elapsedMs": 4910,
+    "exitCode": 0,
+    "killed": false,
+    "status": "completed",
+    "selectedChecksPassed": true,
+    "graphSha256": "4a1eb4a0a0f8eba9711c86db33411c4908011760d1c1e9dbb0b739aa33d1225d",
+    "modules": 11,
+    "functions": 1988,
+    "analysisMs": 3691,
+    "memoryMB": 378,
+    "errors": 0,
+    "warnings": 221,
+    "timeout": false,
+    "aborted": false,
+    "unprocessedTokens": 0,
+    "libraryModels": [
+      {
+        "model": "react.useCallback/1",
+        "module": "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tests\\flow\\node_modules\\react\\index.js",
+        "version": "18.3.1",
+        "relation": "return-argument",
+        "argument": 0,
+        "implementationAnalyzed": true,
+        "calls": [
+          "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tests\\flow\\fixtures\\react.tsx:7:17"
+        ]
+      }
+    ],
+    "expectedEdges": {
+      "clickToCallback": true,
+      "callbackToPersist": true
+    },
+    "unrelatedIncoming": 0,
+    "analyzedDependencies": {
+      "react": true,
+      "react-dom": true
+    }
+  },
+  "negative": {
+    "name": "negative",
+    "node": "v24.20.0",
+    "elapsedMs": 1066,
+    "exitCode": 0,
+    "killed": false,
+    "status": "completed",
+    "selectedChecksPassed": true,
+    "graphSha256": "163f3832b5e916b99ac47ef98455d7e5c4404d8d013d4d19a13632f96346c35d",
+    "modules": 1,
+    "functions": 5,
+    "analysisMs": 55,
+    "memoryMB": 44,
+    "errors": 0,
+    "warnings": 0,
+    "timeout": false,
+    "aborted": false,
+    "unprocessedTokens": 0,
+    "libraryModels": [],
+    "expectedEdges": {
+      "saveToSave": true,
+      "removeToRemove": true
+    },
+    "knownFalsePositives": {
+      "saveToRemove": false,
+      "removeToSave": false
+    },
+    "unrelatedIncoming": 0
+  }
+}

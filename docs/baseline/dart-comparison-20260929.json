@@ -1,0 +1,587 @@
+{
+  "date": "2026-09-29",
+  "variants": {
+    "npm": {
+      "reference": "@cs-au-dk/jelly@0.13.0",
+      "lock": "docs/baseline/reference-package-lock.json",
+      "runs": {
+        "hook": {
+          "rawDirectory": "tmp/flow-dart-20260929/npm/hook",
+          "run": {
+            "name": "hook",
+            "dart": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+            "dependencies": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules",
+            "base": "C:\\Users\\hj0712.jo",
+            "entry": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts",
+            "head": "e6628e840ed5d9c27f3cb99023a93f6ef979dc5b",
+            "versions": {
+              "react": "18.3.1",
+              "react-dom": "18.3.1"
+            },
+            "args": [
+              "--max-old-space-size=4096",
+              "C:\\Users\\hj0712.jo\\AppData\\Local\\Temp\\dart-jelly-evaluation-20260929\\node_modules\\@cs-au-dk\\jelly\\lib\\main.js",
+              "--basedir",
+              "C:\\Users\\hj0712.jo",
+              "--timeout",
+              "90",
+              "--no-print-progress",
+              "--warnings-unsupported",
+              "--diagnostics-json",
+              "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-dart-20260929\\npm\\hook\\diagnostics.json",
+              "--callgraph-json",
+              "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-dart-20260929\\npm\\hook\\graph.json",
+              "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts"
+            ],
+            "node": "v24.20.0",
+            "cliSha256": "0f5422e1a35b78e8ce059f5cd1fb11f445e51eace6b0a4463f3212887f91bd5d",
+            "entrySha256": "05dbd8bcaa26dd9c3146e6e646eccf98c39c84da99fbb77d97dd94338b4463d4",
+            "lockSha256": "86994d6c8d3405b0fbdaa2fa9e9c4680bc4bd3b3f69e20268767803d9a00efb6",
+            "startedAt": "2026-09-29T09:49:02.845Z",
+            "killed": false,
+            "code": 0,
+            "signal": null,
+            "elapsedMs": 25396
+          },
+          "summary": {
+            "name": "hook",
+            "status": "completed",
+            "elapsedMs": 25396,
+            "code": 0,
+            "killed": false,
+            "graphProduced": true,
+            "diagnosticsProduced": true,
+            "graphSha256": "d264410590b11b0d5839accd551b9fe955d38e96f3cb7b7e2ae0b9264a4fafa9",
+            "modules": 1130,
+            "functions": 5553,
+            "analysisMs": 16873,
+            "memoryMB": 1003,
+            "errors": 0,
+            "warnings": 1055,
+            "timeout": false,
+            "aborted": false,
+            "unprocessedTokens": 0,
+            "libraryModels": [],
+            "closeViewInstance": {
+              "location": {
+                "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+                "line": 430,
+                "column": 5,
+                "endLine": 456,
+                "endColumn": 6
+              },
+              "incoming": [],
+              "outgoing": [
+                {
+                  "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+                  "line": 341,
+                  "column": 51,
+                  "endLine": 366,
+                  "endColumn": 2
+                },
+                {
+                  "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+                  "line": 113,
+                  "column": 39,
+                  "endLine": 120,
+                  "endColumn": 2
+                }
+              ]
+            },
+            "closeCall": {
+              "location": {
+                "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+                "line": 483,
+                "column": 17,
+                "endLine": 483,
+                "endColumn": 42
+              },
+              "targets": []
+            },
+            "actualCloseCallConnected": false,
+            "outOfScopeFiles": []
+          },
+          "logSha256": "78e8aecd6507df1b5c8f6bce49f63762b6cd4bdf5397e9c2e2ddb599433ae664"
+        },
+        "renderer": {
+          "rawDirectory": "tmp/flow-dart-20260929/npm/renderer",
+          "run": {
+            "name": "renderer",
+            "dart": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+            "dependencies": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules",
+            "base": "C:\\Users\\hj0712.jo",
+            "entry": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+            "head": "e6628e840ed5d9c27f3cb99023a93f6ef979dc5b",
+            "versions": {
+              "react": "18.3.1",
+              "react-dom": "18.3.1"
+            },
+            "args": [
+              "--max-old-space-size=4096",
+              "C:\\Users\\hj0712.jo\\AppData\\Local\\Temp\\dart-jelly-evaluation-20260929\\node_modules\\@cs-au-dk\\jelly\\lib\\main.js",
+              "--basedir",
+              "C:\\Users\\hj0712.jo",
+              "--timeout",
+              "90",
+              "--no-print-progress",
+              "--warnings-unsupported",
+              "--diagnostics-json",
+              "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-dart-20260929\\npm\\renderer\\diagnostics.json",
+              "--callgraph-json",
+              "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-dart-20260929\\npm\\renderer\\graph.json",
+              "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx"
+            ],
+            "node": "v24.20.0",
+            "cliSha256": "0f5422e1a35b78e8ce059f5cd1fb11f445e51eace6b0a4463f3212887f91bd5d",
+            "entrySha256": "e968898b0abde63520999b6eb14e0b8e15ec87dc1a1547bd9c691d4657af5c61",
+            "lockSha256": "86994d6c8d3405b0fbdaa2fa9e9c4680bc4bd3b3f69e20268767803d9a00efb6",
+            "startedAt": "2026-09-29T09:50:31.292Z",
+            "killed": false,
+            "code": 134,
+            "signal": null,
+            "elapsedMs": 101172
+          },
+          "summary": {
+            "name": "renderer",
+            "status": "failed",
+            "elapsedMs": 101172,
+            "code": 134,
+            "killed": false,
+            "graphProduced": false,
+            "diagnosticsProduced": false,
+            "heapOutOfMemory": true
+          },
+          "logSha256": "daf44c0f6f43b342f0e3c27b7e42e15022fd870e150b70c84d116577abd3f977"
+        }
+      }
+    },
+    "baseline": {
+      "reference": "574ef30",
+      "analysisSource": "62e60eb4fd5b991c5bf4cfc992f018984f560ea4",
+      "runs": {
+        "hook": {
+          "rawDirectory": "tmp/flow-dart-20260929/baseline/hook",
+          "run": {
+            "name": "hook",
+            "dart": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+            "dependencies": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules",
+            "base": "C:\\Users\\hj0712.jo",
+            "entry": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts",
+            "head": "e6628e840ed5d9c27f3cb99023a93f6ef979dc5b",
+            "versions": {
+              "react": "18.3.1",
+              "react-dom": "18.3.1"
+            },
+            "args": [
+              "--max-old-space-size=4096",
+              "C:\\Users\\hj0712.jo\\.codex\\worktrees\\analysis-baseline\\jelly-flow\\lib\\main.js",
+              "--basedir",
+              "C:\\Users\\hj0712.jo",
+              "--timeout",
+              "90",
+              "--no-print-progress",
+              "--warnings-unsupported",
+              "--diagnostics-json",
+              "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-dart-20260929\\baseline\\hook\\diagnostics.json",
+              "--callgraph-json",
+              "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-dart-20260929\\baseline\\hook\\graph.json",
+              "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts"
+            ],
+            "node": "v24.20.0",
+            "cliSha256": "740d0db7c6804f290ae154a0efcb61c466da4db61b57e51ca1a7e8ddf42b81db",
+            "entrySha256": "05dbd8bcaa26dd9c3146e6e646eccf98c39c84da99fbb77d97dd94338b4463d4",
+            "lockSha256": "86994d6c8d3405b0fbdaa2fa9e9c4680bc4bd3b3f69e20268767803d9a00efb6",
+            "startedAt": "2026-09-29T09:49:29.091Z",
+            "killed": false,
+            "code": 0,
+            "signal": null,
+            "elapsedMs": 18913
+          },
+          "summary": {
+            "name": "hook",
+            "status": "completed",
+            "elapsedMs": 18913,
+            "code": 0,
+            "killed": false,
+            "graphProduced": true,
+            "diagnosticsProduced": true,
+            "graphSha256": "d3da33d9fca0b131a89c0bf2a88e9cc7c6eb14543c208ef0ef9477175757e651",
+            "modules": 1130,
+            "functions": 5553,
+            "analysisMs": 15281,
+            "memoryMB": 1032,
+            "errors": 0,
+            "warnings": 968,
+            "timeout": false,
+            "aborted": false,
+            "unprocessedTokens": 0,
+            "libraryModels": [],
+            "closeViewInstance": {
+              "location": {
+                "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+                "line": 430,
+                "column": 5,
+                "endLine": 456,
+                "endColumn": 6
+              },
+              "incoming": [],
+              "outgoing": [
+                {
+                  "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+                  "line": 341,
+                  "column": 51,
+                  "endLine": 366,
+                  "endColumn": 2
+                },
+                {
+                  "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+                  "line": 113,
+                  "column": 39,
+                  "endLine": 120,
+                  "endColumn": 2
+                }
+              ]
+            },
+            "closeCall": {
+              "location": {
+                "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+                "line": 483,
+                "column": 17,
+                "endLine": 483,
+                "endColumn": 42
+              },
+              "targets": []
+            },
+            "actualCloseCallConnected": false,
+            "outOfScopeFiles": []
+          },
+          "logSha256": "59a05444395c1032bd16efc5c9ea53bbbcf67b030dc771e492a4f5f494fe8d7b"
+        },
+        "renderer": {
+          "rawDirectory": "tmp/flow-dart-20260929/baseline/renderer",
+          "run": {
+            "name": "renderer",
+            "dart": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+            "dependencies": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules",
+            "base": "C:\\Users\\hj0712.jo",
+            "entry": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+            "head": "e6628e840ed5d9c27f3cb99023a93f6ef979dc5b",
+            "versions": {
+              "react": "18.3.1",
+              "react-dom": "18.3.1"
+            },
+            "args": [
+              "--max-old-space-size=4096",
+              "C:\\Users\\hj0712.jo\\.codex\\worktrees\\analysis-baseline\\jelly-flow\\lib\\main.js",
+              "--basedir",
+              "C:\\Users\\hj0712.jo",
+              "--timeout",
+              "90",
+              "--no-print-progress",
+              "--warnings-unsupported",
+              "--diagnostics-json",
+              "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-dart-20260929\\baseline\\renderer\\diagnostics.json",
+              "--callgraph-json",
+              "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-dart-20260929\\baseline\\renderer\\graph.json",
+              "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx"
+            ],
+            "node": "v24.20.0",
+            "cliSha256": "740d0db7c6804f290ae154a0efcb61c466da4db61b57e51ca1a7e8ddf42b81db",
+            "entrySha256": "e968898b0abde63520999b6eb14e0b8e15ec87dc1a1547bd9c691d4657af5c61",
+            "lockSha256": "86994d6c8d3405b0fbdaa2fa9e9c4680bc4bd3b3f69e20268767803d9a00efb6",
+            "startedAt": "2026-09-29T09:52:13.058Z",
+            "killed": false,
+            "code": 134,
+            "signal": null,
+            "elapsedMs": 95583
+          },
+          "summary": {
+            "name": "renderer",
+            "status": "failed",
+            "elapsedMs": 95583,
+            "code": 134,
+            "killed": false,
+            "graphProduced": false,
+            "diagnosticsProduced": false,
+            "heapOutOfMemory": true
+          },
+          "logSha256": "80338599de6e9d0cf2bdb5271e97c7ba466553f191d3431332a10f5a005481e5"
+        }
+      }
+    },
+    "improved": {
+      "reference": "5cb50be",
+      "flags": [
+        "--react-callback-model",
+        "--map-keys"
+      ],
+      "runs": {
+        "hook": {
+          "rawDirectory": "tmp/flow-dart-20260929/improved/hook",
+          "run": {
+            "name": "hook",
+            "dart": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+            "dependencies": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules",
+            "base": "C:\\Users\\hj0712.jo",
+            "entry": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts",
+            "head": "e6628e840ed5d9c27f3cb99023a93f6ef979dc5b",
+            "versions": {
+              "react": "18.3.1",
+              "react-dom": "18.3.1"
+            },
+            "args": [
+              "--max-old-space-size=4096",
+              "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\lib\\main.js",
+              "--basedir",
+              "C:\\Users\\hj0712.jo",
+              "--timeout",
+              "90",
+              "--no-print-progress",
+              "--warnings-unsupported",
+              "--diagnostics-json",
+              "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-dart-20260929\\improved\\hook\\diagnostics.json",
+              "--callgraph-json",
+              "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-dart-20260929\\improved\\hook\\graph.json",
+              "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts",
+              "--react-callback-model",
+              "--map-keys"
+            ],
+            "node": "v24.20.0",
+            "cliSha256": "1f16bb923ac64a5410437c0dfdb4f2bf2a167a5fd2404d32761cab4384f31a20",
+            "entrySha256": "05dbd8bcaa26dd9c3146e6e646eccf98c39c84da99fbb77d97dd94338b4463d4",
+            "lockSha256": "86994d6c8d3405b0fbdaa2fa9e9c4680bc4bd3b3f69e20268767803d9a00efb6",
+            "startedAt": "2026-09-29T09:49:48.658Z",
+            "killed": false,
+            "code": 0,
+            "signal": null,
+            "elapsedMs": 24456
+          },
+          "summary": {
+            "name": "hook",
+            "status": "completed",
+            "elapsedMs": 24456,
+            "code": 0,
+            "killed": false,
+            "graphProduced": true,
+            "diagnosticsProduced": true,
+            "graphSha256": "4fac89a47ab051c82be3cb4e68abf3aa091cc428d9b8bfa287e927eec8a11704",
+            "modules": 1130,
+            "functions": 5553,
+            "analysisMs": 15585,
+            "memoryMB": 976,
+            "errors": 0,
+            "warnings": 968,
+            "timeout": false,
+            "aborted": false,
+            "unprocessedTokens": 0,
+            "libraryModels": [
+              {
+                "model": "react.useCallback/1",
+                "module": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules\\react\\index.js",
+                "version": "18.3.1",
+                "relation": "return-argument",
+                "argument": 0,
+                "implementationAnalyzed": true,
+                "calls": [
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:100:25",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:104:33",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:110:35",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:164:29",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:197:30",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:237:35",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:253:33",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:287:37",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:331:28",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:381:23",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:429:29",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:500:28",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:552:34",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:623:34",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:637:34",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:651:34",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:666:24",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:764:19",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceAggregate.ts:800:23",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceDatasetLifecycle.ts:59:40",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceDatasetLifecycle.ts:89:25",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceDatasetLifecycle.ts:187:33",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTabDragTransfer.ts:43:39",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTabDragTransfer.ts:62:38",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTabDragTransfer.ts:99:36",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspacePivotViewState.ts:70:32",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceChartsViewState.ts:77:21",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceChartsViewState.ts:96:25",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceChartsViewState.ts:112:30",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceChartsViewState.ts:144:33",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceViewInstancePanels.ts:133:30",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceViewInstancePanels.ts:174:28",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceViewInstancePanels.ts:300:28",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceViewInstancePanels.ts:329:27",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceViewInstancePanels.ts:341:29",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceViewInstancePanels.ts:368:39",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceViewInstancePanels.ts:380:45",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceViewInstancePanels.ts:409:41",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceViewInstancePanels.ts:486:43",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceViewInstancePanels.ts:515:38",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceViewInstancePanels.ts:529:42",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceViewInstancePanels.ts:539:5",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceViewInstancePanels.ts:657:44",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTableViewColumnState.ts:52:38",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTagViewInteraction.ts:65:21",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTagViewInteraction.ts:98:36",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTagViewInteraction.ts:117:41",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTagViewInteraction.ts:144:32",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTagViewInteraction.ts:192:32",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTagViewInteraction.ts:214:42",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTagViewInteraction.ts:249:40",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTagViewInteraction.ts:280:38",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTagViewInteraction.ts:349:35",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTagViewInteraction.ts:365:37",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTagViewInteraction.ts:377:35",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTagViewInteraction.ts:388:28",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTagViewInteraction.ts:467:25",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTagViewInteraction.ts:483:30",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTagViewInteraction.ts:508:47",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceTagViewInteraction.ts:520:35",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceDmViewInteraction.ts:90:21",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceDmViewInteraction.ts:111:36",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceDmViewInteraction.ts:130:41",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceDmViewInteraction.ts:160:31",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceDmViewInteraction.ts:212:40",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceDmViewInteraction.ts:252:31",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceDmViewInteraction.ts:303:28",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceDmViewInteraction.ts:395:25",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceDmViewInteraction.ts:411:29",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceDmViewInteraction.ts:429:46",
+                  "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\app\\useWorkspaceDmViewInteraction.ts:441:34"
+                ]
+              }
+            ],
+            "closeViewInstance": {
+              "location": {
+                "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+                "line": 430,
+                "column": 5,
+                "endLine": 456,
+                "endColumn": 6
+              },
+              "incoming": [
+                {
+                  "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+                  "line": 464,
+                  "column": 13,
+                  "endLine": 496,
+                  "endColumn": 8
+                }
+              ],
+              "outgoing": [
+                {
+                  "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+                  "line": 341,
+                  "column": 51,
+                  "endLine": 366,
+                  "endColumn": 2
+                },
+                {
+                  "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/workspaceAggregateProjection.ts",
+                  "line": 113,
+                  "column": 39,
+                  "endLine": 120,
+                  "endColumn": 2
+                },
+                {
+                  "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+                  "line": 101,
+                  "column": 5,
+                  "endLine": 101,
+                  "endColumn": 77
+                }
+              ]
+            },
+            "closeCall": {
+              "location": {
+                "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+                "line": 483,
+                "column": 17,
+                "endLine": 483,
+                "endColumn": 42
+              },
+              "targets": [
+                {
+                  "file": ".codex/worktrees/jelly-evaluation/dev-branch/log-viewer-app/src/renderer/src/app/useWorkspaceAggregate.ts",
+                  "line": 430,
+                  "column": 5,
+                  "endLine": 456,
+                  "endColumn": 6
+                }
+              ]
+            },
+            "actualCloseCallConnected": true,
+            "outOfScopeFiles": []
+          },
+          "logSha256": "0a2ed08ddfa9b5ab592069445a2314219bbc37f313177d4cb6a6866d51e383d0"
+        },
+        "renderer": {
+          "rawDirectory": "tmp/flow-dart-20260929/improved/renderer",
+          "run": {
+            "name": "renderer",
+            "dart": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch",
+            "dependencies": "C:\\Users\\hj0712.jo\\vscode\\DART\\wt\\dev-branch\\node_modules",
+            "base": "C:\\Users\\hj0712.jo",
+            "entry": "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+            "head": "e6628e840ed5d9c27f3cb99023a93f6ef979dc5b",
+            "versions": {
+              "react": "18.3.1",
+              "react-dom": "18.3.1"
+            },
+            "args": [
+              "--max-old-space-size=4096",
+              "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\lib\\main.js",
+              "--basedir",
+              "C:\\Users\\hj0712.jo",
+              "--timeout",
+              "90",
+              "--no-print-progress",
+              "--warnings-unsupported",
+              "--diagnostics-json",
+              "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-dart-20260929\\improved\\renderer\\diagnostics.json",
+              "--callgraph-json",
+              "C:\\Users\\hj0712.jo\\vscode\\jelly-flow\\tmp\\flow-dart-20260929\\improved\\renderer\\graph.json",
+              "C:\\Users\\hj0712.jo\\.codex\\worktrees\\jelly-evaluation\\dev-branch\\log-viewer-app\\src\\renderer\\src\\main.tsx",
+              "--react-callback-model",
+              "--map-keys"
+            ],
+            "node": "v24.20.0",
+            "cliSha256": "1f16bb923ac64a5410437c0dfdb4f2bf2a167a5fd2404d32761cab4384f31a20",
+            "entrySha256": "e968898b0abde63520999b6eb14e0b8e15ec87dc1a1547bd9c691d4657af5c61",
+            "lockSha256": "86994d6c8d3405b0fbdaa2fa9e9c4680bc4bd3b3f69e20268767803d9a00efb6",
+            "startedAt": "2026-09-29T09:53:49.174Z",
+            "killed": false,
+            "code": 134,
+            "signal": null,
+            "elapsedMs": 94786
+          },
+          "summary": {
+            "name": "renderer",
+            "status": "failed",
+            "elapsedMs": 94786,
+            "code": 134,
+            "killed": false,
+            "graphProduced": false,
+            "diagnosticsProduced": false,
+            "heapOutOfMemory": true
+          },
+          "logSha256": "09fc566e598241f102c80302b7f7ccb305f8ecb03db49b0c0de2c18e39db5434"
+        }
+      }
+    }
+  },
+  "hookEdgeDelta": {
+    "before": 21378,
+    "after": 21519,
+    "added": 141,
+    "removed": 0,
+    "reviewed": "The selected close call and its outgoing targets only; other additions are not exhaustively reviewed."
+  },
+  "conclusion": "Selected hook callback improves. Full renderer still fails with heap OOM in all variants. No full-application completeness or performance improvement claim."
+}
