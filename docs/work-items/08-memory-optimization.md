@@ -1,6 +1,6 @@
 # 08 — 측정된 병목의 메모리 절감
 
-상태: 첫 후보 구현/검증 완료, 두 번째 후보 측정 예정. 선행: 06의 주요 보유 구조와 07의 진단 보존 경로.
+상태: 두 후보 구현/검증 완료, 전체 renderer OOM은 미해결. 선행: 06/07.
 
 ## 채택한 첫 후보: listener queue 수명
 
@@ -20,6 +20,22 @@ Bounded A/B 처리 중 추가된 non-bounded U가 다음 bounded C보다 먼저 
   처리된 참조 해제는 확인했으나 총 메모리 절감률/속도 개선을 주장하지 않는다.
 - 원시 결과: `tmp/flow-memory-20260929/queue`. 다음 후보는 token listener의
   중복 방지 Set에서 singleton 비율을 측정한 뒤 제한적인 저장 방식 변경을 검토한다.
+
+## 두 번째 후보: singleton listener 중복 방지 저장
+
+`dedup-before/renderer`를 3,072MiB 예산+계측으로 실행한 결과 중단 시
+208,345개 중복 방지 Set 중 141,110개(67.7%)가 singleton이었다. 기존 util의
+hybrid set을 적용해 첫 token은 직접 참조하고, 다른 token이 들어올 때만 Set을 만든다.
+Listener ID와 token identity에 따른 중복 방지는 그대로 유지한다.
+비율 측정은 profile 사용 시 diagnostics 갱신 지점에서만 수행한다.
+
+- 두 번째 후보까지 적용한 flow/unit 251개 통과. bounded/non-bounded listener의
+  변수 간·회차 간 중복 방지를 별도 검증했다.
+- `dedup-after/renderer`는 97,344ms wall에 OOM. 마지막 표본 heap 4,022MiB,
+  약 208만 constraint vars, 207만 tokens, 66만 dedup entries.
+- 두 후보 모두 의미를 보존하는 저장 개선이지만 전체 renderer를 4GB에 맞추지는
+  못했다. 이 지점에서 예정된 두 후보 조사를 끝내고 09의 반복 종료/정확성 검증으로
+  넘어간다. 라이브러리 제외나 heap 증설을 성공으로 대체하지 않는다.
 
 ## 우선순위와 채택 조건
 

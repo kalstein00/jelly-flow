@@ -10,9 +10,9 @@ React 전용 제품이나 완전한 JS/TS 그래프를 목표로 하지 않는�
 | 03 | [Map 상수 키](03-map-keys.md) | 완료 | 올바른 2개 연결 유지, 잘못된 2개 연결 제거 |
 | 04 | [DART 동일 조건 비교](04-dart-comparison.md) | 완료 — hook 성공 / renderer OOM | 실제 호출부와 비용을 원본/fork에서 비교 |
 | 05 | [수집기 출력 계약](05-output-contract.md) | 설계·평가 adapter 완료 | bounded 결과 계약, production 통합 보류 |
-| 06 | [OOM 원인 측정](06-oom-profile.md) | 계획 | phase별 증가 구간과 주요 보유 구조 확인 |
-| 07 | [예산 제한 후 종료](07-bounded-finalization.md) | 계획 | 중단 후 crash 방지와 진단 보존 |
-| 08 | [병목 메모리 절감](08-memory-optimization.md) | 계획 | 근거 있는 구조 최적화와 정확성 유지 |
+| 06 | [OOM 원인 측정](06-oom-profile.md) | 완료 | 전파 중 메모리 증가와 queue 보유 확인 |
+| 07 | [예산 제한 후 종료](07-bounded-finalization.md) | 완료 — A 수준 | 협력적 중단과 진단/partial graph 보존 |
+| 08 | [병목 메모리 절감](08-memory-optimization.md) | 두 후보 검증 중 | 근거 있는 구조 최적화와 정확성 유지 |
 | 09 | [renderer 재검증](09-renderer-validation.md) | 계획 | 같은 4GB/90초/120초 조건의 3회 완료 판정 |
 
 각 파일은 목적 → 선행 조건 → 작업 → 검증 → 결과/다음 시작점 순서로 관리한다.
@@ -38,7 +38,7 @@ React 전용 제품이나 완전한 JS/TS 그래프를 목표로 하지 않는�
 
 현재 완료 지점: 01~05의 구현/평가/계약 설계. 각 단계별 별도 커밋.
 01에서는 분석기 production 코드를 변경하지 않았다.
-06~09는 후속 OOM 개선 계획이며 아직 구현/실행하지 않았다. 다음 시작점은 06이다.
+06/07 및 08의 두 구조 최적화를 구현했다. 최종 renderer 완료 여부는 09에서 별도 판정한다.
 
 ## 최종 결과와 남은 한계
 

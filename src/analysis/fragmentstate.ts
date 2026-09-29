@@ -132,7 +132,7 @@ export class FragmentState {
      */
     readonly nonEmptyListeners: ArrayMapArray<ConstraintVar, RVT, () => void>;
 
-    readonly listenersProcessed: Map<ListenerID, Set<Token>> = new Map;
+    readonly listenersProcessed: Map<ListenerID, Token | Set<Token>> = new Map;
 
     readonly externalCallbacksProcessed: Set<FunctionToken> = new Set;
 

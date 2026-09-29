@@ -19,11 +19,11 @@ import {
 } from "./tokens";
 import {GlobalState} from "./globalstate";
 import {
+    addMapHybridSet,
     getNodeHash,
     isArrayIndex,
     locationToStringWithFileAndEnd,
     mapGetMap,
-    mapGetSet,
     nodeToString,
     pushArraySingle,
     strHash,
@@ -144,6 +144,12 @@ export default class Solver {
         d.maxMemoryUsage = Math.max(d.maxMemoryUsage, getMemoryUsage());
         d.unhandledDynamicPropertyWrites = f.unhandledDynamicPropertyWrites.size;
         d.unhandledDynamicPropertyReads = f.unhandledDynamicPropertyReads.size;
+        if (options.memoryTrace) {
+            d.listenerDedupEntries = f.listenersProcessed.size;
+            d.listenerDedupSingletons = 0;
+            for (const seen of f.listenersProcessed.values())
+                if (!(seen instanceof Set) || seen.size === 1) d.listenerDedupSingletons++;
+        }
     }
 
     /**
@@ -281,7 +287,7 @@ export default class Solver {
      * Reports diagnostics periodically (only if print progress is enabled, stdout is tty, and log level is "info").
      */
     private printDiagnostics() {
-        this.memoryTrace.checkpoint(this, `propagation:${this.phase}`, undefined, false);
+        this.memoryTrace.checkpoint(this, this.currentPhase, undefined, false);
         this.memoryBudget.check(this.currentPhase);
         if (options.printProgress && options.tty && isTTY && !options.logfile && logger.level === "info") {
             const d = Number(this.timer.elapsed() / 1000000n);
@@ -458,9 +464,7 @@ export default class Solver {
      * Enqueues a call to a (non-bounded) token listener if it hasn't been done before.
      */
     private callTokenListener(id: ListenerID, listener: (t: Token) => void, t: Token, now?: boolean) {
-        const s = mapGetSet(this.fragmentState.listenersProcessed, id);
-        if (!s.has(t)) {
-            s.add(t);
+        if (addMapHybridSet(id, t, this.fragmentState.listenersProcessed)) {
             if (now)
                 listener(t);
             else {
@@ -474,9 +478,7 @@ export default class Solver {
      * Enqueues a call to a (bounded) token listener if it hasn't been done before.
      */
     private callTokenListener2(id: ListenerID, listener: (t: Token) => void, t: Token) { // FIXME: no longer ignoring bounded listeners in module phase!!
-        const s = mapGetSet(this.fragmentState.listenersProcessed, id);
-        if (!s.has(t)) {
-            s.add(t);
+        if (addMapHybridSet(id, t, this.fragmentState.listenersProcessed)) {
             this.enqueueListenerCall2([listener, t]);
             this.diagnostics.tokenListener2Notifications++;
         }
@@ -883,6 +885,7 @@ export default class Solver {
      */
     async propagate(phase: Phase) {
         this.checkpoint(`propagation:${phase}:start`);
+        this.currentPhase = `propagation:${phase}`;
         this.phase = phase;
         if (logger.isDebugEnabled())
             logger.debug("Processing constraints until fixpoint...");

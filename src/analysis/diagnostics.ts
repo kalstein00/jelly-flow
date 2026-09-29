@@ -5,6 +5,8 @@ export default class AnalysisDiagnostics {
 
     memoryLimitReached: boolean = false;
     memoryLimitMB?: number;
+    listenerDedupEntries?: number;
+    listenerDedupSingletons?: number;
     terminationPhase?: string;
     finalizationStatus: "not-started" | "complete" | "skipped" | "interrupted" = "not-started";
     statisticsStatus: "not-computed" | "complete" = "not-computed";
