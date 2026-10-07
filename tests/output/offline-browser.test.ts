@@ -54,6 +54,9 @@ test("moved standalone HTML works offline and selects a file without external re
     expect(await page.locator("#copyStatus").innerText()).toMatch(/Copied|Copy unavailable/);
     await page.getByRole("button", {name: "Expand two steps", exact: true}).click();
     await page.getByLabel("Search files or functions").fill("");
+    await page.getByLabel("Highlight cycles").check();
+    await page.getByLabel("Highlight across areas").check();
+    expect(await page.locator("#status").innerText()).toContain("Cycles:");
     await page.getByLabel("Execution area").selectOption("worker");
     expect(await page.locator("#files").innerText()).toContain("worker/c.ts");
     expect(await page.locator("#files").innerText()).not.toContain("app/a.ts");

@@ -52,7 +52,8 @@ function details(visible) {
         selectedFunction ? "Function: " + selectedFunction.name + "\nLocation: " + selectedFunction.location : "",
         hidden ? hidden + " connections have hidden neighbors (partial display)." : "",
         ...related.map(e => (e.kind === "call" ? "Possible calls" : "Imports") + ": " + e.source + " → " + e.target +
-            " · " + e.count + (e.kind === "call" ? " distinct function pairs" : " import sites") + "\n" + e.sites.join("\n")),
+            " · " + e.count + (e.kind === "call" ? " distinct function pairs" : " import sites") +
+            (e.cycle ? " · Cycle" : "") + (e.crossArea ? " · Across areas (different memberships)" : "") + "\n" + e.sites.join("\n")),
         ...(report.imports || []).filter(i => i.source === selected && !i.target).map(i => "Unresolved/external import: " + i.specifier + " at " + i.location)
     ].filter(Boolean).join("\n");
     byId("path").value = file.path;
@@ -75,7 +76,7 @@ byId("copy").onclick = async () => {
 };
 const areas = [...new Set([...report.files.flatMap(f => f.areas), ...report.runs.map(r => r.area)])].sort();
 for (const area of areas) { const option = document.createElement("option"); option.value = area; option.textContent = area; byId("area").append(option); }
-for (const id of ["area", "calls", "imports"]) byId(id).onchange = draw;
+for (const id of ["area", "calls", "imports", "cycles", "crossings"]) byId(id).onchange = draw;
 byId("search").oninput = draw;
 if (!report.imports) { byId("imports").disabled = true; byId("imports").parentElement.append(" (unavailable)"); }
 function draw() {
@@ -101,9 +102,12 @@ function draw() {
         if (member) scene.append(element("text", {x: 20, y: positions.get(member.path)[1] - 28, opacity: .6}, folder));
     }
     function line(a, b, edge, emphasized) {
+        const highlighted = (byId("cycles").checked && edge.cycle) || (byId("crossings").checked && edge.crossArea);
         scene.append(element("line", {x1: a[0], y1: a[1], x2: b[0], y2: b[1], "data-kind": edge.kind,
             "stroke-dasharray": edge.kind === "import" ? "5 4" : "none", "stroke-width": edge.kind === "call" ? 1 + Math.log2(1 + edge.count) : 1,
-            "marker-end": "url(#arrow)", style: "stroke-opacity:" + (emphasized ? ".95" : selected ? ".12" : ".35")}));
+            "data-cycle": !!edge.cycle, "data-cross-area": !!edge.crossArea,
+            "marker-end": "url(#arrow)", style: "stroke:" + (highlighted ? "#ffd58a" : "#6d829f") +
+                ";stroke-opacity:" + (emphasized || highlighted ? ".95" : selected ? ".12" : ".35")}));
     }
     let connections = 0;
     for (const edge of report.edges) {
@@ -139,7 +143,9 @@ function draw() {
         if (expanded.has(file.path)) for (const fun of file.functions) node(file, functionPositions.get(fun.id), fun);
     }
     byId("status").textContent = visible.length + " / " + report.files.length + " files · " + connections + " visible directed connections" +
-        (visible.length < report.files.length ? " · Partial display" : "") + (selected ? " · " + depth + "-step neighbors highlighted" : "");
+        (visible.length < report.files.length ? " · Partial display" : "") + (selected ? " · " + depth + "-step neighbors highlighted" : "") +
+        (byId("cycles").checked ? " · Cycles: " + report.edges.filter(e=>e.cycle && relationEnabled(e)).length : "") +
+        (byId("crossings").checked ? " · Across areas: " + report.edges.filter(e=>e.crossArea && relationEnabled(e)).length : "");
     details(shown);
 }
 byId("coverage").textContent = JSON.stringify({snapshot: report.snapshot, created: report.created, selection: report.selection, runs: report.runs, limitations: report.limitations}, null, 2);

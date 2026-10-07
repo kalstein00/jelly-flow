@@ -8,6 +8,17 @@ import {AnalysisStateReporter} from "../../src/output/analysisstatereporter";
 import {generateReport, writeReport} from "../../src/report/report";
 import {reportFixture} from "./report-fixture";
 
+test("cycles are specific to each relation and crossings respect shared area membership", () => {
+    const input = reportFixture();
+    input.inventory[1].areas = ["worker"];
+    input.runs[0].graph!.fun2fun.push([1, 0]);
+    input.imports = [{source: "app/a.ts", target: "shared/b.ts", location: "app/a.ts:1:1", specifier: "../shared/b", typeOnly: true}];
+    const model = generateReport(input).model;
+    expect(model.edges.filter(e => e.kind === "call").every(e => e.cycle)).toBe(true);
+    expect(model.edges.find(e => e.kind === "import")?.cycle).toBe(false);
+    expect(model.edges.every(e => e.crossArea)).toBe(true);
+});
+
 test("multi-entry coverage merges shared identities and distinguishes uncovered inventory", () => {
     const input = reportFixture();
     input.inventory.push({path: "worker/c.ts", areas: ["worker"]});

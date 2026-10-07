@@ -2,6 +2,7 @@ import {readFileSync, writeFileSync, renameSync, rmSync} from "fs";
 import {randomUUID} from "crypto";
 import path from "path";
 import {CallGraph} from "../typings/callgraph";
+import {annotateTopology} from "./topology";
 
 export interface ReportInput {
     version: 1;
@@ -15,7 +16,7 @@ export interface ReportInput {
 }
 export interface ReportFunction {id: string, file: string, name: string, location: string}
 export interface ReportEdge {source: string, target: string, kind: "call" | "import", count: number,
-    pairs: Array<[string, string]>, sites: string[]}
+    pairs: Array<[string, string]>, sites: string[], cycle?: boolean, crossArea?: boolean}
 export interface ReportModel {
     snapshot: string; created: string; selection: ReportInput["selection"];
     files: Array<{path: string, areas: string[], folder: string, callers: number,
@@ -131,6 +132,7 @@ export function generateReport(input: ReportInput): {model: ReportModel, html: s
     const model: ReportModel = {snapshot: input.snapshot, created: input.created, selection: input.selection,
         files: [...files.values()], edges: [...edges.values()], limitations: [...limitations], imports: input.imports,
         runs: input.runs.map(({area, status, diagnostics}) => ({area, status, diagnostics}))};
+    annotateTopology(model.files, model.edges);
     const data = JSON.stringify(model).replaceAll("<", "\\u003c").replaceAll(">", "\\u003e").replaceAll("&", "\\u0026");
     const template = readFileSync(path.resolve(__dirname, "../../resources/offline-report.html"), "utf8");
     const script = readFileSync(path.resolve(__dirname, "../../resources/offline-report.js"), "utf8")
