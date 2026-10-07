@@ -160,11 +160,12 @@ function draw() {
         if (expanded.has(file.path)) for (const fun of file.functions) node(file, functionPositions.get(fun.id), fun);
     }
     byId("status").textContent = visible.length + " / " + report.files.length + " files · " + connections + " visible directed connections" +
+        " · Snapshot analyzed: " + report.coverage.analyzed + "/" + report.coverage.inventory + "; unanalyzed: " + report.coverage.unanalyzed +
         (visible.length < report.files.length ? " · Partial display" : "") + (selected ? " · " + depth + "-step neighbors highlighted" : "") +
         (byId("cycles").checked ? " · Cycles: " + report.edges.filter(e=>e.cycle && relationEnabled(e)).length : "") +
         (byId("crossings").checked ? " · Across areas: " + report.edges.filter(e=>e.crossArea && relationEnabled(e)).length : "");
     details(shown);
 }
 byId("coverage").textContent = JSON.stringify({snapshot: report.snapshot, created: report.created, selection: report.selection,
-    provenance: report.provenance, runs: report.runs, limitations: report.limitations}, null, 2);
+    provenance: report.provenance, coverage: report.coverage, runs: report.runs, limitations: report.limitations}, null, 2);
 draw(); camera();

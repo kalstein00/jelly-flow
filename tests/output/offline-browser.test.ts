@@ -17,6 +17,45 @@ beforeAll(async () => {
 }, 30000);
 afterAll(async () => { await browser?.close(); });
 
+test("keyboard, collapse, panning and restricted clipboard remain usable with HTML-like names", async () => {
+    const input = reportFixture();
+    const hostile = "misc/<script>alert(1)</script>.ts";
+    input.inventory.push({path: hostile, areas: ["app"]});
+    const output = path.join(mkdtempSync(path.join(tmpdir(), "report-keyboard-")), "map.html");
+    writeFileSync(output, generateReport(input).html);
+    const context = await browser.newContext({offline: true});
+    const page = await context.newPage();
+    page.setDefaultTimeout(5000);
+    await page.addInitScript(() => Object.defineProperty(navigator, "clipboard", {value: {
+        writeText: async () => { throw new Error("Clipboard denied"); }
+    }}));
+    const dialogs: string[] = [];
+    page.on("dialog", async dialog => { dialogs.push(dialog.message()); await dialog.dismiss(); });
+    await page.goto(pathToFileURL(output).href);
+    await page.locator("#files").getByRole("button", {name: hostile, exact: true}).focus();
+    await page.keyboard.press("Enter");
+    expect(await page.locator("#details").innerText()).toContain(hostile);
+    expect(dialogs).toEqual([]);
+    await page.locator("#files").getByRole("button", {name: "app/a.ts", exact: true}).click();
+    await page.getByRole("button", {name: "Expand functions", exact: true}).click();
+    await page.locator("#functions").getByRole("button", {name: "run", exact: true}).focus();
+    await page.keyboard.press("Enter");
+    expect(await page.locator("#details").innerText()).toContain("Function: run");
+    await page.getByRole("button", {name: "Collapse functions", exact: true}).click();
+    expect(await page.locator("#functions button").count()).toBe(0);
+    await page.getByRole("button", {name: "Copy path", exact: true}).click();
+    await page.locator("#copyStatus").filter({hasText: "Copy unavailable"}).waitFor();
+    expect(await page.getByLabel("Selected path").inputValue()).toBe("app/a.ts");
+    const before = await page.locator("#map").getAttribute("viewBox");
+    const bounds = (await page.locator("#map").boundingBox())!;
+    await page.mouse.move(bounds.x + 5, bounds.y + 5);
+    await page.mouse.down();
+    await page.mouse.move(bounds.x + 55, bounds.y + 55);
+    await page.mouse.up();
+    expect(await page.locator("#map").getAttribute("viewBox")).not.toBe(before);
+    await context.close();
+}, 30000);
+
 test("moved standalone HTML works offline and selects a file without external requests", async () => {
     const output = path.join(mkdtempSync(path.join(tmpdir(), "moved-report-")), "map.html");
     const input = reportFixture();

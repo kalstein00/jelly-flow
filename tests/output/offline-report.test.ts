@@ -59,6 +59,7 @@ test("multi-entry coverage merges shared identities and distinguishes uncovered 
     expect(result.model.files.find(f => f.path === "worker/c.ts")?.status).toBe("unanalyzed");
     expect(result.model.edges[0].count).toBe(1);
     expect(result.model.runs[2].status).toBe("failed");
+    expect(result.model.coverage).toEqual({inventory: 3, analyzed: 2, unanalyzed: 1});
 });
 
 test("invalid generation preserves the previous valid report", () => {

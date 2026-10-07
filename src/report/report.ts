@@ -20,6 +20,7 @@ export interface ReportFunction {id: string, file: string, name: string, locatio
 export interface ReportEdge {source: string, target: string, kind: "call" | "import", count: number,
     pairs: Array<[string, string]>, sites: string[], cycle?: boolean, crossArea?: boolean}
 export interface ReportModel {
+    coverage: {inventory: number, analyzed: number, unanalyzed: number};
     provenance?: ReportInput["provenance"];
     snapshot: string; created: string; selection: ReportInput["selection"];
     files: Array<{path: string, areas: string[], folder: string, callers: number,
@@ -144,7 +145,9 @@ export function generateReport(input: ReportInput): {model: ReportModel, html: s
         if (!edge.sites.includes(site)) edge.sites.push(site);
         edge.count = edge.sites.length;
     }
+    const analyzed = [...files.values()].filter(file => file.status === "analyzed").length;
     const model: ReportModel = {snapshot: input.snapshot, created: input.created, selection: input.selection,
+        coverage: {inventory: files.size, analyzed, unanalyzed: files.size - analyzed},
         provenance: input.provenance,
         files: [...files.values()], edges: [...edges.values()], limitations: [...limitations], imports,
         runs: input.runs.map(({area, status, diagnostics}) => ({area, status, diagnostics}))};
