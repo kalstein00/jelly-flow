@@ -18,7 +18,10 @@ afterAll(async () => { await browser?.close(); });
 
 test("moved standalone HTML works offline and selects a file without external requests", async () => {
     const output = path.join(mkdtempSync(path.join(tmpdir(), "moved-report-")), "map.html");
-    writeFileSync(output, generateReport(reportFixture()).html);
+    const input = reportFixture();
+    input.inventory.push({path: "worker/c.ts", areas: ["worker"]});
+    input.runs.push({area: "worker", status: "failed", diagnostics: {error: "budget"}});
+    writeFileSync(output, generateReport(input).html);
     const context = await browser.newContext({offline: true});
     const page = await context.newPage();
     const external: string[] = [], errors: string[] = [];
@@ -32,5 +35,10 @@ test("moved standalone HTML works offline and selects a file without external re
     expect(await page.locator("#map").getAttribute("viewBox")).not.toBe(before);
     expect(external).toEqual([]);
     expect(errors).toEqual([]);
+    await page.getByLabel("Execution area").selectOption("worker");
+    expect(await page.locator("#files").innerText()).toContain("worker/c.ts");
+    expect(await page.locator("#files").innerText()).not.toContain("app/a.ts");
+    await page.locator("#files").getByRole("button").click();
+    expect(await page.locator("#details").innerText()).toContain("unanalyzed");
     await context.close();
 }, 30000);

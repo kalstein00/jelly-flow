@@ -72,6 +72,7 @@ export function generateReport(input: ReportInput): {model: ReportModel, html: s
             const item = files.get(sourcePath(file));
             if (!item) throw new Error("Graph file outside inventory: " + file);
             item.status = "analyzed";
+            if (!item.areas.includes(run.area)) item.areas.push(run.area);
         }
         const ids = new Map<number, string>();
         for (const [index, loc] of Object.entries(graph.functions)) {

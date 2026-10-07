@@ -8,6 +8,18 @@ import {AnalysisStateReporter} from "../../src/output/analysisstatereporter";
 import {generateReport, writeReport} from "../../src/report/report";
 import {reportFixture} from "./report-fixture";
 
+test("multi-entry coverage merges shared identities and distinguishes uncovered inventory", () => {
+    const input = reportFixture();
+    input.inventory.push({path: "worker/c.ts", areas: ["worker"]});
+    input.runs.push({...input.runs[0], area: "worker"});
+    input.runs.push({area: "broken", status: "failed", diagnostics: {error: "budget"}});
+    const result = generateReport(input);
+    expect(result.model.files.find(f => f.path === "shared/b.ts")).toMatchObject({callers: 1, areas: ["app", "worker"]});
+    expect(result.model.files.find(f => f.path === "worker/c.ts")?.status).toBe("unanalyzed");
+    expect(result.model.edges[0].count).toBe(1);
+    expect(result.model.runs[2].status).toBe("failed");
+});
+
 test("invalid generation preserves the previous valid report", () => {
     const output = path.join(mkdtempSync(path.join(tmpdir(), "report-preserve-")), "report.html");
     const input = reportFixture();
