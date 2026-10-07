@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>Jelly Flow — offline code map</title>
+<style>
+:root{font:14px system-ui;color:#dce5f4;background:#101827}*{box-sizing:border-box}
+body{margin:0}header{padding:14px 20px;background:#18243a;border-bottom:1px solid #34415a}
+h1{font-size:20px;margin:0 0 8px}button,input,select{font:inherit;padding:6px;margin:3px;background:#253650;color:inherit;border:1px solid #546682;border-radius:4px}
+button{cursor:pointer}button:focus-visible{outline:2px solid #ffdc85}
+main{display:grid;grid-template-columns:minmax(0,1fr) 340px;height:calc(100vh - 125px)}
+svg{width:100%;height:100%;background:#101827;touch-action:none}aside{padding:14px;overflow:auto;background:#18243a;overflow-wrap:anywhere}
+line{stroke:#6d829f;stroke-opacity:.42}circle{stroke:#d4e0f4;stroke-width:1.5}
+text{fill:#e1eafa;font-size:12px;pointer-events:none}pre{white-space:pre-wrap;font:12px system-ui}#status{color:#a9bbd4}#details{white-space:pre-wrap}
+</style>
+<header><h1>Jelly Flow <small>Offline code map</small></h1>
+<span>Possible calls</span><button id="zoomIn">Zoom in</button><button id="zoomOut">Zoom out</button><button id="reset">Reset view</button>
+<div id="status"></div></header>
+<main><svg id="map" role="img" aria-label="Code file map"><defs><marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8b9db8"/></marker></defs><g id="scene"></g></svg>
+<aside><h2>Selection</h2><div id="details">Select a file</div><h3>Files</h3><div id="files"></div><h3>Coverage and limitations</h3><pre id="coverage"></pre></aside></main>
+<script>
+"use strict";
+const report = /*REPORT_DATA*/null;
+const byId = id => document.getElementById(id);
+const svg = byId("map"), scene = byId("scene");
+const ns = "http://www.w3.org/2000/svg";
+let view = [0,0,1200,800], drag;
+function camera(){svg.setAttribute("viewBox",view.join(" "))}
+byId("zoomIn").onclick=()=>{view[2]*=.8;view[3]*=.8;camera()};
+byId("zoomOut").onclick=()=>{view[2]*=1.25;view[3]*=1.25;camera()};
+byId("reset").onclick=()=>{view=[0,0,1200,800];camera()};
+svg.onpointerdown=e=>{drag=[e.clientX,e.clientY,...view];svg.setPointerCapture(e.pointerId)};
+svg.onpointermove=e=>{if(drag){view[0]=drag[2]-(e.clientX-drag[0])*view[2]/svg.clientWidth;view[1]=drag[3]-(e.clientY-drag[1])*view[3]/svg.clientHeight;camera()}};
+svg.onpointerup=()=>drag=null;
+function element(tag,attrs,text){const e=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,v);if(text!==undefined)e.textContent=text;return e}
+const palette=["#7ba8e0","#7fc8a9","#c998da","#e0b57b","#df8d9a","#86c6d9"];
+const folders=[...new Set(report.files.map(f=>f.folder))].sort();
+const positions=new Map();
+report.files.forEach((f,i)=>positions.set(f.path,[70+(i%10)*112,70+Math.floor(i/10)*85]));
+function select(file){byId("details").textContent=file.path+"\nStatus: "+file.status+"\nDistinct caller files: "+file.callers+"\nFolder: "+file.folder}
+for(const edge of report.edges){if(edge.source===edge.target)continue;const a=positions.get(edge.source),b=positions.get(edge.target);scene.append(element("line",{x1:a[0],y1:a[1],x2:b[0],y2:b[1],"stroke-width":1+Math.log2(1+edge.count),"marker-end":"url(#arrow)"}))}
+for(const file of report.files){
+ const [x,y]=positions.get(file.path),g=element("g",{role:"button",tabindex:0,"aria-label":file.path});
+ const c=element("circle",{cx:x,cy:y,r:7+Math.log2(1+file.callers)*3,fill:palette[folders.indexOf(file.folder)%palette.length]});
+ g.append(c,element("title",{},file.path));g.onclick=()=>select(file);g.onkeydown=e=>{if(e.key==="Enter")select(file)};scene.append(g);
+ const button=document.createElement("button");button.textContent=file.path;button.onclick=()=>select(file);byId("files").append(button);
+}
+byId("status").textContent=report.files.length+" files · "+report.edges.filter(e=>e.source!==e.target).length+" directed file connections";
+byId("coverage").textContent=JSON.stringify({snapshot:report.snapshot,created:report.created,runs:report.runs,limitations:report.limitations},null,2);
+camera();
+</script></html>

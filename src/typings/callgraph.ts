@@ -13,6 +13,8 @@
 import {LocationJSON} from "../misc/util";
 
 export type CallGraph = { // TODO: represent special call edges separately from ordinary call edges?
+    /** Optional report metadata; legacy graph consumers can ignore this field. */
+    functionMetadata?: Record<number, {kind: "function" | "module", name?: string}>;
     scope?: {kind: "app-only", root: string, externalImplementations: false};
 
     /**

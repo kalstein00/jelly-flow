@@ -275,6 +275,10 @@ export class AnalysisStateReporter {
                     call2fun.push([callIndex, calleeIndex]);
                 }
         }
+        const functionMetadata: NonNullable<CallGraph["functionMetadata"]> = {};
+        for (const [fun, index] of functionIndices)
+            functionMetadata[index] = fun instanceof FunctionInfo ?
+                {kind: "function", name: fun.name} : {kind: "module"};
         return {
             time: new Date().toUTCString(),
             ...(options.appOnly ? {scope: {kind: "app-only" as const, root: options.appOnly, externalImplementations: false as const}} : {}),
@@ -284,6 +288,7 @@ export class AnalysisStateReporter {
             excludePackages: options.excludePackages,
             files,
             functions,
+            functionMetadata,
             calls,
             fun2fun,
             call2fun,
