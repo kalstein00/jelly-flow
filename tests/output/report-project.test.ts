@@ -1,7 +1,7 @@
 import {mkdtempSync, writeFileSync, mkdirSync} from "fs";
 import {tmpdir} from "os";
 import path from "path";
-import {buildProjectReport} from "../../src/report/project";
+import {buildProjectReport, publishProjectReport} from "../../src/report/project";
 
 test("project report analyzes entries and retains unvisited app files but excludes tests", async () => {
     const root = mkdtempSync(path.join(tmpdir(), "report-project-"));
@@ -17,4 +17,15 @@ test("project report analyzes entries and retains unvisited app files but exclud
     expect(result.model.edges.find(e => e.kind === "import")).toMatchObject({
         source: "src/main.ts", target: "src/save.ts", count: 1
     });
+}, 30000);
+
+test("same input reuses a valid report while dirty source invalidates reuse", async () => {
+    const root = mkdtempSync(path.join(tmpdir(), "report-cache-"));
+    writeFileSync(path.join(root, "main.ts"), "export function run(){}");
+    const output = path.join(root, ".jelly-flow", "report.html");
+    const config = {root, areas: [{name: "app", entries: ["main.ts"], roots: ["."]}]};
+    expect((await publishProjectReport(config, output)).status).toBe("generated");
+    expect((await publishProjectReport(config, output)).status).toBe("reused");
+    writeFileSync(path.join(root, "main.ts"), "export function changed(){}");
+    expect((await publishProjectReport(config, output)).status).toBe("generated");
 }, 30000);

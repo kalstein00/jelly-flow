@@ -1,9 +1,9 @@
-import {readdirSync, readFileSync, lstatSync, realpathSync} from "fs";
+import {readdirSync, readFileSync, lstatSync, realpathSync, existsSync, mkdirSync, writeFileSync} from "fs";
 import path from "path";
-import {createHash} from "crypto";
 import {spawnSync} from "child_process";
-import {generateReport, ReportInput} from "./report";
+import {generateReport, ReportInput, writeReport} from "./report";
 import {collectImports} from "./imports";
+import {digest, projectIdentity} from "./identity";
 
 export interface ProjectConfig {
     root: string;
@@ -12,7 +12,7 @@ export interface ProjectConfig {
     timeoutSeconds?: number;
     heapMB?: number;
 }
-const excluded = /(^|\/)(node_modules|\.git|dist|lib|out|build|coverage|__tests__|tests?|fixtures)(\/|$)|\.(test|spec)\.[cm]?[jt]sx?$|\.d\.[cm]?ts$/i;
+const excluded = /(^|\/)(node_modules|\.git|\.jelly-flow|dist|lib|out|build|coverage|__tests__|tests?|fixtures)(\/|$)|\.(test|spec)\.[cm]?[jt]sx?$|\.d\.[cm]?ts$/i;
 export function projectPath(root: string, relative: string): string {
     const resolved = path.resolve(root, relative);
     const rel = path.relative(root, resolved);
@@ -45,9 +45,8 @@ export async function buildProjectReport(config: ProjectConfig) {
         throw new Error("Invalid project configuration");
     config = {...config, root: path.resolve(config.root)};
     const inventory = projectInventory(config);
-    const hash = createHash("sha256").update(JSON.stringify(config));
-    for (const file of inventory) hash.update(file.path).update(readFileSync(projectPath(config.root, file.path)));
-    const input: ReportInput = {version: 1, snapshot: hash.digest("hex"), created: new Date().toISOString(),
+    const snapshot = projectIdentity(config);
+    const input: ReportInput = {version: 1, snapshot, created: new Date().toISOString(),
         selection: config.selection ?? "all", inventory, runs: []};
     for (const area of config.areas) {
         if (!area.name || !Array.isArray(area.entries) || !area.entries.length) throw new Error("Invalid area");
@@ -56,7 +55,7 @@ export async function buildProjectReport(config: ProjectConfig) {
         const result = spawnSync(process.execPath, ["--max-old-space-size=" + (config.heapMB ?? 4096), worker],
             {input: JSON.stringify({root: config.root, entries: area.entries, timeout: config.timeoutSeconds ?? 90}),
                 encoding: "utf8", timeout: ((config.timeoutSeconds ?? 90) + 30) * 1000, maxBuffer: 128 * 1024 * 1024,
-                windowsHide: true});
+                windowsHide: true, cwd: config.root});
         if (result.status !== 0 || result.error) {
             input.runs.push({area: area.name, status: "failed", diagnostics: {
                 exit: result.status, error: result.error?.message || result.stderr.slice(-4000)}});
@@ -73,5 +72,26 @@ export async function buildProjectReport(config: ProjectConfig) {
         }
     }
     input.imports = collectImports(config.root, inventory);
+    if (projectIdentity(config) !== snapshot) throw new Error("Inputs changed during analysis; report discarded");
     return {...generateReport(input), input};
+}
+
+export async function publishProjectReport(config: ProjectConfig, output: string) {
+    config = {...config, root: path.resolve(config.root)};
+    const snapshot = projectIdentity(config), manifest = output + ".manifest.json";
+    if (existsSync(output) && existsSync(manifest)) {
+        try {
+            const cached = JSON.parse(readFileSync(manifest, "utf8"));
+            if (cached.snapshot === snapshot && cached.htmlDigest === digest(readFileSync(output)) &&
+                cached.status === "completed")
+                return {status: "reused", output, snapshot};
+        } catch { /* Corrupt cache is regenerated; existing HTML survives generation failure. */ }
+    }
+    const result = await buildProjectReport(config);
+    mkdirSync(path.dirname(output), {recursive: true});
+    writeReport(result.input, output);
+    const status = result.input.runs.every(run => run.status === "completed") ? "completed" : "partial";
+    writeFileSync(manifest, JSON.stringify({snapshot: result.input.snapshot, htmlDigest: digest(readFileSync(output)), status,
+        config, created: result.input.created, runs: result.model.runs}, null, 2));
+    return {status: "generated", analysis: status, output, snapshot: result.input.snapshot, files: result.model.files.length};
 }

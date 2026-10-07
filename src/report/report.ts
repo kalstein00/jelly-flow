@@ -133,6 +133,15 @@ export function generateReport(input: ReportInput): {model: ReportModel, html: s
         files: [...files.values()], edges: [...edges.values()], limitations: [...limitations], imports: input.imports,
         runs: input.runs.map(({area, status, diagnostics}) => ({area, status, diagnostics}))};
     annotateTopology(model.files, model.edges);
+    if (input.selection !== "all") {
+        if (!Array.isArray(input.selection) || input.selection.some(file => !files.has(file)))
+            throw new Error("Invalid report selection");
+        const selected = new Set(input.selection);
+        model.files = model.files.filter(file => selected.has(file.path));
+        model.edges = model.edges.filter(edge => selected.has(edge.source) && selected.has(edge.target));
+        model.imports = model.imports?.filter(item => selected.has(item.source));
+        model.limitations.push("Selected subset: outside neighbors are omitted. Metrics and cycle evidence retain full snapshot meaning.");
+    }
     const data = JSON.stringify(model).replaceAll("<", "\\u003c").replaceAll(">", "\\u003e").replaceAll("&", "\\u0026");
     const template = readFileSync(path.resolve(__dirname, "../../resources/offline-report.html"), "utf8");
     const script = readFileSync(path.resolve(__dirname, "../../resources/offline-report.js"), "utf8")

@@ -12,7 +12,9 @@ async function main() {
     options.appOnly = input.root;
     options.mapKeys = true;
     options.timeout = input.timeout;
+    options.excludeEntries = ["**/*.test.*", "**/*.spec.*", "**/__tests__/**", "**/tests/**", "**/test/**", "**/fixtures/**"];
     options.loglevel = logger.transports[0].level = "error";
+    logger.silent = true; // stdout is the worker protocol; diagnostics are returned as structured data.
     const solver = new Solver();
     await analyzeFiles(input.entries, solver);
     const d = solver.diagnostics;
