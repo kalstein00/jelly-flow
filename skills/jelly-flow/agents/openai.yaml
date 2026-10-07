@@ -1,0 +1,6 @@
+interface:
+  display_name: "Jelly Flow"
+  short_description: "Inspect TypeScript possible calls with source evidence"
+  default_prompt: "Use $jelly-flow to inspect the requested TypeScript call relationships with a local analyzer checkout and bounded source evidence."
+policy:
+  allow_implicit_invocation: true
