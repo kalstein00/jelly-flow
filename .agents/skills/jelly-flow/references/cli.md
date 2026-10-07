@@ -24,7 +24,7 @@ Node >=22, 설치된 jelly-flow 의존성과 빌드가 필요하다. skill 폴�
 - 복사한 skill의 launcher: node <skill>/scripts/report.cjs <config.json> <report.html>.
 - stdout JSON의 status는 generated 또는 reused. generated의 analysis는 completed 또는 partial. exit 1이면 실패 진단을 표시한다. partial/손상 cache는 재사용하지 않는다.
 - HTML 한 파일만 이동해도 동작한다. 옆의 manifest JSON은 재사용 검증용이며 HTML 열기에 필요하지 않다.
-- 재사용은 source/config bytes, installed package manifests/lockfiles, analyzer build/resources/revision, Node, 영역·선택·budgets identity와 HTML digest가 일치할 때만 허용한다. 외부 구현은 분석하지 않는다. 현재 identity는 symlink가 있으면 명시적으로 실패한다.
+- 재사용은 source/config bytes, installed dependency source/config bytes와 lockfiles, analyzer build/resources/revision, Node, 영역·선택·budgets identity와 HTML digest가 일치할 때만 허용한다. 외부 구현은 분석하지 않는다. 의존성 symlink는 실제 대상과 내용을 검증하고 순환·중복을 제거한다. source symlink는 명시적으로 실패한다.
 - 테스트·외부 구현은 기본 제외하며 경로 이름으로 IPC를 생성하지 않는다. import resolver가 찾지 못한 alias/external import는 unresolved로 보존한다.
 - 부분 결과, 경고, 미분석 inventory는 HTML의 Coverage and limitations에서 확인한다. 앱 전체 coverage와 관계의 의미적 완전성은 다르다.
 

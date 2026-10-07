@@ -4,7 +4,7 @@ import {VulnerabilityDiagnostics} from "../patternmatching/diagnostics";
 export default class AnalysisDiagnostics {
     scope?: {kind: "app-only", root: string, externalImplementations: false};
     excludedModules?: Array<{file: string, package: string, version?: string, modeled: boolean}>;
-    resourceImports?: Array<{importer: string, specifier: string, file: string, kind: "css" | "json"}>;
+    resourceImports?: Array<{importer: string, specifier: string, file: string, kind: "css" | "json" | "asset" | "modulePath"}>;
 
     memoryLimitReached: boolean = false;
     memoryLimitMB?: number;

@@ -8,6 +8,36 @@ import {AnalysisStateReporter} from "../../src/output/analysisstatereporter";
 import {generateReport, writeReport} from "../../src/report/report";
 import {reportFixture} from "./report-fixture";
 
+test("missing classification is unknown, never an exact zero", () => {
+    const input = reportFixture();
+    delete input.runs[0].graph!.functionMetadata;
+    expect(generateReport(input).model.files[1].metricStatus).toBe("unknown");
+});
+
+test("a completed label cannot conceal failed or unfinished analyzer diagnostics", () => {
+    const input = reportFixture();
+    input.runs[0].diagnostics = {errors: 1, timeout: true};
+    expect(() => generateReport(input)).toThrow("Completed run contradicts diagnostics");
+});
+
+test("type-only imports and module bodies do not become function-pair counts", () => {
+    const input = reportFixture(), graph = input.runs[0].graph!;
+    graph.functions[2] = "0:1:1:5:1";
+    graph.functionMetadata![2] = {kind: "module"};
+    graph.fun2fun.push([2, 1], [0, 1]);
+    input.imports = [{source: "app/a.ts", target: "shared/b.ts", location: "app/a.ts:1:1", specifier: "../shared/b", typeOnly: true}];
+    const model = generateReport(input).model;
+    expect(model.files[1].callers).toBe(1);
+    expect(model.edges.find(e => e.kind === "call")?.count).toBe(1);
+    expect(model.edges.find(e => e.kind === "import")?.sites).toEqual(["app/a.ts:1:1 (type-only)"]);
+});
+
+test("Windows import paths normalize at the public generation boundary", () => {
+    const input = reportFixture();
+    input.imports = [{source: "app\\a.ts", target: "shared\\b.ts", location: "app/a.ts:1:1", specifier: "../shared/b", typeOnly: false}];
+    expect(generateReport(input).model.edges.find(e => e.kind === "import")?.source).toBe("app/a.ts");
+});
+
 test("cycles are specific to each relation and crossings respect shared area membership", () => {
     const input = reportFixture();
     input.inventory[1].areas = ["worker"];

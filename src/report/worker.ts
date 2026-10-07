@@ -23,6 +23,11 @@ async function main() {
         d.finalizationStatus !== "complete" ? "partial" : "completed";
     const graph = new AnalysisStateReporter(solver.fragmentState).callGraphToJSON(input.entries);
     const diagnostics = JSON.parse(JSON.stringify(d, (_key, value) => typeof value === "bigint" ? value.toString() : value));
+    diagnostics.errorMessages = [...solver.fragmentState.errors].flatMap(([node, messages]) =>
+        [...(typeof messages === "string" ? [messages] : messages)].map(message => ({
+            message, location: node?.loc ? {file: node.loc.filename, line: node.loc.start.line, column: node.loc.start.column + 1} : undefined
+        })));
+    diagnostics.parseErrorFiles = solver.globalState.filesWithParseErrors;
     process.stdout.write(JSON.stringify({status, graph, diagnostics}));
 }
 main().catch(error => { process.stderr.write(String(error)); process.exitCode = 1; });

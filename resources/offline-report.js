@@ -7,17 +7,24 @@ const files = new Map(report.files.map(f => [f.path, f]));
 const functions = new Map(report.files.flatMap(f => f.functions).map(f => [f.id, f]));
 const folders = [...new Set(report.files.map(f => f.folder))].sort();
 const positions = new Map();
+const folderLabels = new Map();
 let view = [0, 0, 1200, 800], drag, selected, selectedFunction, expanded = new Set(), depth = 1;
-let layoutY = 55;
-for (const folder of folders) {
+let layoutX = 20, layoutY = 40, shelfHeight = 0, mapWidth = 0;
+for (const folder of [...folders].sort((a,b)=>report.files.filter(f=>f.folder===b).length-report.files.filter(f=>f.folder===a).length)) {
     const members = report.files.filter(f => f.folder === folder);
-    members.forEach((f, i) => positions.set(f.path, [80 + (i % 8) * 140, layoutY + Math.floor(i / 8) * 95]));
-    layoutY += Math.ceil(members.length / 8) * 95 + 45;
+    const columns = Math.min(18, Math.max(3, Math.ceil(Math.sqrt(members.length))));
+    const width = columns * 36 + 40, height = Math.ceil(members.length / columns) * 36 + 70;
+    if (layoutX + width > 1500) {layoutX=20;layoutY+=shelfHeight;shelfHeight=0;}
+    folderLabels.set(folder,[layoutX,layoutY]);
+    members.forEach((f, i) => positions.set(f.path, [layoutX+20+(i%columns)*36,layoutY+30+Math.floor(i/columns)*36]));
+    mapWidth=Math.max(mapWidth,layoutX+width);layoutX+=width;shelfHeight=Math.max(shelfHeight,height);
 }
+const overview=[0,0,Math.max(500,mapWidth),Math.max(350,layoutY+shelfHeight)];
+view=[...overview];
 function camera() { svg.setAttribute("viewBox", view.join(" ")); }
 byId("zoomIn").onclick = () => { view[2] *= .8; view[3] *= .8; camera(); };
 byId("zoomOut").onclick = () => { view[2] *= 1.25; view[3] *= 1.25; camera(); };
-byId("reset").onclick = () => { view = [0, 0, 1200, Math.max(800, layoutY)]; camera(); };
+byId("reset").onclick = () => { view = [...overview]; camera(); };
 svg.onpointerdown = e => { if (e.target.closest('[role="button"]')) return; drag = [e.clientX, e.clientY, ...view]; svg.setPointerCapture(e.pointerId); };
 svg.onpointermove = e => {
     if (drag) { view[0] = drag[2] - (e.clientX - drag[0]) * view[2] / svg.clientWidth; view[1] = drag[3] - (e.clientY - drag[1]) * view[3] / svg.clientHeight; camera(); }
@@ -34,6 +41,7 @@ function button(parent, text, click) {
     const e = document.createElement("button"); e.textContent = text; e.onclick = click; parent.append(e); return e;
 }
 function relationEnabled(edge) { return edge.kind === "call" ? byId("calls").checked : byId("imports").checked; }
+function radius(file) { return Math.min(14, 3 + Math.log2(1 + file.callers) * 1.5); }
 function select(file, fun) {
     selected = file.path; selectedFunction = fun; depth = 1;
     byId("copyStatus").textContent = "";
@@ -46,7 +54,8 @@ function details(visible) {
     const related = report.edges.filter(e => e.source === selected || e.target === selected);
     const hidden = related.filter(e => relationEnabled(e) && (!visible.has(e.source) || !visible.has(e.target))).length;
     byId("details").textContent = [
-        file.path, "Status: " + file.status, "Distinct caller files: " + file.callers,
+        file.path, "Status: " + file.status, "Distinct caller files: " +
+            (file.metricStatus === "unknown" ? "unknown" : file.callers + (file.metricStatus === "lower-bound" ? " (lower bound)" : "")),
         "Folder: " + file.folder, "Areas: " + file.areas.join(", "),
         "Metrics use the original snapshot, independent of filters.",
         selectedFunction ? "Function: " + selectedFunction.name + "\nLocation: " + selectedFunction.location : "",
@@ -99,15 +108,22 @@ function draw() {
     }
     for (const folder of folders) {
         const member = visible.find(f => f.folder === folder);
-        if (member) scene.append(element("text", {x: 20, y: positions.get(member.path)[1] - 28, opacity: .6}, folder));
+        if (member) {const [x,y]=folderLabels.get(folder);scene.append(element("text", {x,y,opacity:.7},folder));}
     }
     function line(a, b, edge, emphasized) {
         const highlighted = (byId("cycles").checked && edge.cycle) || (byId("crossings").checked && edge.crossArea);
-        scene.append(element("line", {x1: a[0], y1: a[1], x2: b[0], y2: b[1], "data-kind": edge.kind,
+        const dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy);
+        if (!length) return;
+        const ux=dx/length,uy=dy/length;
+        const startRadius=a===positions.get(edge.source)?radius(files.get(edge.source)):3;
+        const endRadius=b===positions.get(edge.target)?radius(files.get(edge.target)):3;
+        // End arrows outside node strokes; reciprocal edges take opposite parallel lanes.
+        scene.append(element("line", {x1: a[0]+ux*(startRadius+2)-uy*2, y1:a[1]+uy*(startRadius+2)+ux*2,
+            x2:b[0]-ux*(endRadius+2)-uy*2,y2:b[1]-uy*(endRadius+2)+ux*2,"data-kind": edge.kind,
             "stroke-dasharray": edge.kind === "import" ? "5 4" : "none", "stroke-width": edge.kind === "call" ? 1 + Math.log2(1 + edge.count) : 1,
             "data-cycle": !!edge.cycle, "data-cross-area": !!edge.crossArea,
             "marker-end": "url(#arrow)", style: "stroke:" + (highlighted ? "#ffd58a" : "#6d829f") +
-                ";stroke-opacity:" + (emphasized || highlighted ? ".95" : selected ? ".12" : ".35")}));
+                ";stroke-opacity:" + (emphasized || highlighted ? ".85" : selected ? ".06" : ".13")}));
     }
     let connections = 0;
     for (const edge of report.edges) {
@@ -125,16 +141,17 @@ function draw() {
     function node(file, position, fun) {
         const [x, y] = position, label = fun ? fun.name : file.path;
         const group = element("g", {role: "button", tabindex: 0, "aria-label": label});
-        const circle = element("circle", {cx: x, cy: y, r: fun ? 4 : 7 + Math.log2(1 + file.callers) * 3,
+        const circle = element("circle", {cx: x, cy: y, r: fun ? 3 : radius(file),
             fill: palette[folders.indexOf(file.folder) % palette.length],
             "stroke-dasharray": file.status === "unanalyzed" ? "3 2" : "none",
             opacity: !selected || neighbors.has(file.path) ? 1 : .35});
-        const text = element("text", {x: x + 14, y: y - 8, visibility: selected === file.path ? "visible" : "hidden"}, label);
+        const isSelected = fun ? selectedFunction?.id === fun.id : selected === file.path;
+        const text = element("text", {x: x + 14, y: y - 8, visibility: isSelected ? "visible" : "hidden"}, label);
         group.append(circle, element("title", {}, label + " · " + file.status), text);
         group.onclick = () => select(file, fun);
         group.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(file, fun); } };
         group.onmouseenter = group.onfocus = () => text.setAttribute("visibility", "visible");
-        group.onmouseleave = group.onblur = () => text.setAttribute("visibility", selected === file.path ? "visible" : "hidden");
+        group.onmouseleave = group.onblur = () => text.setAttribute("visibility", isSelected ? "visible" : "hidden");
         scene.append(group);
     }
     for (const file of visible) {
@@ -148,5 +165,6 @@ function draw() {
         (byId("crossings").checked ? " · Across areas: " + report.edges.filter(e=>e.crossArea && relationEnabled(e)).length : "");
     details(shown);
 }
-byId("coverage").textContent = JSON.stringify({snapshot: report.snapshot, created: report.created, selection: report.selection, runs: report.runs, limitations: report.limitations}, null, 2);
+byId("coverage").textContent = JSON.stringify({snapshot: report.snapshot, created: report.created, selection: report.selection,
+    provenance: report.provenance, runs: report.runs, limitations: report.limitations}, null, 2);
 draw(); camera();

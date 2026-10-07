@@ -10,6 +10,7 @@ import {options} from "../options";
 import {pathToFileURL} from "url";
 import {patchGlobalBuiltins, WHITELISTED} from "./sandbox";
 import {inspect} from "util";
+import {MessageChannel} from "node:worker_threads";
 
 // get options from parent process
 Object.assign(options, JSON.parse(process.argv[2]));

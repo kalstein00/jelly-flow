@@ -1,6 +1,6 @@
 import {readdirSync, readFileSync, lstatSync, realpathSync, existsSync, mkdirSync, writeFileSync} from "fs";
 import path from "path";
-import {spawnSync} from "child_process";
+import {spawnSync, execFileSync} from "child_process";
 import {generateReport, ReportInput, writeReport} from "./report";
 import {collectImports} from "./imports";
 import {digest, projectIdentity} from "./identity";
@@ -40,14 +40,24 @@ export function projectInventory(config: ProjectConfig): ReportInput["inventory"
     return [...files].sort(([a], [b]) => a.localeCompare(b)).map(([file, areas]) => ({path: file, areas: [...areas]}));
 }
 export async function buildProjectReport(config: ProjectConfig) {
+    return analyzeProject(config);
+}
+
+async function analyzeProject(config: ProjectConfig, verifiedSnapshot?: string) {
     if (!config.root || !Array.isArray(config.areas) || !config.areas.length ||
         new Set(config.areas.map(a => a.name)).size !== config.areas.length)
         throw new Error("Invalid project configuration");
     config = {...config, root: path.resolve(config.root)};
     const inventory = projectInventory(config);
-    const snapshot = projectIdentity(config);
+    const snapshot = verifiedSnapshot ?? projectIdentity(config);
+    let revision = "unversioned-build";
+    try { revision = execFileSync("git", ["rev-parse", "HEAD"], {cwd: path.resolve(__dirname, "../.."), encoding: "utf8", windowsHide: true}).trim(); }
+    catch { /* Installed package builds are identified by the full snapshot byte digest. */ }
     const input: ReportInput = {version: 1, snapshot, created: new Date().toISOString(),
-        selection: config.selection ?? "all", inventory, runs: []};
+        selection: config.selection ?? "all", inventory, runs: [],
+        provenance: {root: config.root, areas: config.areas, timeoutSeconds: config.timeoutSeconds ?? 90,
+            heapMB: config.heapMB ?? 4096, node: process.version,
+            analyzer: {revision, options: ["app-only", "map-keys", "exclude-tests"]}}};
     for (const area of config.areas) {
         if (!area.name || !Array.isArray(area.entries) || !area.entries.length) throw new Error("Invalid area");
         for (const entry of area.entries) projectPath(config.root, entry);
@@ -87,7 +97,7 @@ export async function publishProjectReport(config: ProjectConfig, output: string
                 return {status: "reused", output, snapshot};
         } catch { /* Corrupt cache is regenerated; existing HTML survives generation failure. */ }
     }
-    const result = await buildProjectReport(config);
+    const result = await analyzeProject(config, snapshot);
     mkdirSync(path.dirname(output), {recursive: true});
     writeReport(result.input, output);
     const status = result.input.runs.every(run => run.status === "completed") ? "completed" : "partial";

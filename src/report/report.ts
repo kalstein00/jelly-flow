@@ -8,6 +8,8 @@ export interface ReportInput {
     version: 1;
     snapshot: string;
     created: string;
+    provenance?: {root: string, areas: Array<{name: string, entries: string[], roots: string[]}>,
+        timeoutSeconds: number, heapMB: number, node: string, analyzer?: {revision: string, options: string[]}};
     selection: "all" | string[];
     imports?: Array<{source: string, target?: string, specifier: string, typeOnly: boolean, location: string}>;
     inventory: Array<{path: string, areas: string[]}>;
@@ -18,9 +20,10 @@ export interface ReportFunction {id: string, file: string, name: string, locatio
 export interface ReportEdge {source: string, target: string, kind: "call" | "import", count: number,
     pairs: Array<[string, string]>, sites: string[], cycle?: boolean, crossArea?: boolean}
 export interface ReportModel {
+    provenance?: ReportInput["provenance"];
     snapshot: string; created: string; selection: ReportInput["selection"];
     files: Array<{path: string, areas: string[], folder: string, callers: number,
-        status: "unanalyzed" | "analyzed", functions: ReportFunction[]}>;
+        status: "unanalyzed" | "analyzed", metricStatus: "known" | "unknown" | "lower-bound", functions: ReportFunction[]}>;
     edges: ReportEdge[];
     runs: Array<Omit<ReportInput["runs"][number], "graph">>;
     limitations: string[];
@@ -48,16 +51,23 @@ export function generateReport(input: ReportInput): {model: ReportModel, html: s
             throw new Error("Invalid areas");
         if (files.has(file)) throw new Error("Duplicate inventory path");
         files.set(file, {path: file, areas: [...item.areas], folder: path.posix.dirname(file),
-            callers: 0, status: "unanalyzed", functions: []});
+            callers: 0, status: "unanalyzed", metricStatus: "unknown", functions: []});
     }
     const functions = new Map<string, ReportFunction>(), edges = new Map<string, ReportEdge>();
     const limitations = new Set(["Possible calls are static possibilities, not execution.",
         "No edge does not prove dead code. JSX/event/IPC coverage is unavailable.",
+        "Code embedded in strings (including eval workers) is not analyzed.",
         "Per-edge derivation attribution is unavailable. Size is distinct caller files; width is distinct function pairs."]);
     let validRuns = 0;
+    let incomplete = false;
     for (const run of input.runs) {
         if (!["completed", "partial", "failed"].includes(run.status) || !run.area || !run.diagnostics)
             throw new Error("Invalid run status");
+        if (run.status === "completed" && (["errors", "timeout", "aborted", "memoryLimitReached", "unprocessedTokensSize",
+            "waveLimitReached", "indirectionsLimitReached"].some(key => !!run.diagnostics[key]) ||
+            (run.diagnostics.finalizationStatus !== undefined && run.diagnostics.finalizationStatus !== "complete")))
+            throw new Error("Completed run contradicts diagnostics");
+        if (run.status !== "completed") incomplete = true;
         if (run.status === "failed") continue;
         const graph = run.graph;
         if (!graph || !Array.isArray(graph.files) || !graph.functions || !graph.calls ||
@@ -81,7 +91,7 @@ export function generateReport(input: ReportInput): {model: ReportModel, html: s
         for (const [index, loc] of Object.entries(graph.functions)) {
             const where = locations(loc);
             const meta = graph.functionMetadata?.[Number(index)];
-            if (!meta) { limitations.add("Function/module classification unavailable for some entries."); continue; }
+            if (!meta) { incomplete = true; limitations.add("Function/module classification unavailable for some entries."); continue; }
             if (meta.kind === "module") continue;
             if (meta.kind !== "function") throw new Error("Invalid function kind");
             const id = where.location;
@@ -114,11 +124,16 @@ export function generateReport(input: ReportInput): {model: ReportModel, html: s
         edge.count = edge.pairs.length;
         if (edge.source !== edge.target) files.get(edge.target)!.callers++;
     }
+    for (const file of files.values())
+        file.metricStatus = file.status === "unanalyzed" ? "unknown" : incomplete ?
+            (file.callers ? "lower-bound" : "unknown") : "known";
     if (input.imports === undefined) limitations.add("Imports unavailable: no separate import evidence supplied.");
-    for (const item of input.imports ?? []) {
-        if (!files.has(sourcePath(item.source))) throw new Error("Import source outside inventory");
+    const imports = input.imports?.map(item => ({...item, source: sourcePath(item.source),
+        target: item.target ? sourcePath(item.target) : undefined}));
+    for (const item of imports ?? []) {
+        if (!files.has(item.source)) throw new Error("Import source outside inventory");
         if (!item.target) continue;
-        if (!files.has(sourcePath(item.target))) throw new Error("Import target outside inventory");
+        if (!files.has(item.target)) throw new Error("Import target outside inventory");
         const key = JSON.stringify(["import", item.source, item.target]);
         let edge = edges.get(key);
         if (!edge) {
@@ -130,7 +145,8 @@ export function generateReport(input: ReportInput): {model: ReportModel, html: s
         edge.count = edge.sites.length;
     }
     const model: ReportModel = {snapshot: input.snapshot, created: input.created, selection: input.selection,
-        files: [...files.values()], edges: [...edges.values()], limitations: [...limitations], imports: input.imports,
+        provenance: input.provenance,
+        files: [...files.values()], edges: [...edges.values()], limitations: [...limitations], imports,
         runs: input.runs.map(({area, status, diagnostics}) => ({area, status, diagnostics}))};
     annotateTopology(model.files, model.edges);
     if (input.selection !== "all") {

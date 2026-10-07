@@ -1,3 +1,4 @@
+/// <reference lib="dom" />
 import {chromium, Browser} from "playwright";
 import {existsSync, mkdtempSync, writeFileSync} from "fs";
 import path from "path";

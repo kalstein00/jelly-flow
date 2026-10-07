@@ -132,6 +132,18 @@ export function isAbsoluteModuleName(str: string): boolean {
 export function resolveModule(mode: "commonjs" | "module", str: string, file: FilePath, a: GlobalState): FilePath | undefined {
     if (str[0] === "/")
         throw new Error("Ignoring absolute module path");
+    // Electron bundler path imports produce a resource path, not a JS import/call.
+    // Only these explicit suffixes are recognized; missing files still fail resolution.
+    const query = /^(\..+)\?(asset|modulePath)$/.exec(str);
+    if (options.appOnly && query) {
+        const kind = query[2] as "asset" | "modulePath";
+        const resolved = kind === "asset" ? resolve(dirname(file), query[1]) :
+            a.tsModuleResolver.resolveModuleName(query[1], file);
+        const resource = realpathSync(resolved);
+        if (!statSync(resource).isFile()) throw new Error("Resource is not a file");
+        a.resourceImports.set(`${file}\0${str}`, {importer: file, specifier: str, file: resource, kind});
+        return undefined;
+    }
     // Plain CSS/JSON imports carry resources, not JS function implementations. Resolve
     // and record actual files; missing resources and JS targets must still fail/analyze normally.
     if (options.appOnly && /\.(css|json)$/.test(str)) {
