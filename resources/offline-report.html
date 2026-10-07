@@ -12,7 +12,7 @@ line{stroke:#6d829f;stroke-opacity:.42}circle{stroke:#d4e0f4;stroke-width:1.5}
 text{fill:#e1eafa;font-size:12px;pointer-events:none}pre{white-space:pre-wrap;font:12px system-ui}#status{color:#a9bbd4}#details{white-space:pre-wrap}
 </style>
 <header><h1>Jelly Flow <small>Offline code map</small></h1>
-<span>Possible calls</span><label>Execution area <select id="area"><option value="">All areas</option></select></label><button id="zoomIn">Zoom in</button><button id="zoomOut">Zoom out</button><button id="reset">Reset view</button>
+<label><input type="checkbox" id="calls" checked>Possible calls</label><label><input type="checkbox" id="imports">Imports</label><label>Execution area <select id="area"><option value="">All areas</option></select></label><button id="zoomIn">Zoom in</button><button id="zoomOut">Zoom out</button><button id="reset">Reset view</button>
 <div id="status"></div></header>
 <main><svg id="map" role="img" aria-label="Code file map"><defs><marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8b9db8"/></marker></defs><g id="scene"></g></svg>
 <aside><h2>Selection</h2><div id="details">Select a file</div><h3>Files</h3><div id="files"></div><h3>Coverage and limitations</h3><pre id="coverage"></pre></aside></main>
@@ -39,11 +39,13 @@ function select(file){byId("details").textContent=file.path+"\nStatus: "+file.st
 const areas=[...new Set([...report.files.flatMap(f=>f.areas),...report.runs.map(r=>r.area)])].sort();
 for(const area of areas){const option=document.createElement("option");option.value=area;option.textContent=area;byId("area").append(option)}
 byId("area").onchange=draw;
+byId("calls").onchange=draw;byId("imports").onchange=draw;
+if(!report.imports){byId("imports").disabled=true;byId("imports").parentElement.append(" (unavailable)")}
 function draw(){
 scene.replaceChildren();byId("files").replaceChildren();
 const visible=report.files.filter(f=>!byId("area").value||f.areas.includes(byId("area").value));
 const shown=new Set(visible.map(f=>f.path));
-for(const edge of report.edges){if(edge.source===edge.target||!shown.has(edge.source)||!shown.has(edge.target))continue;const a=positions.get(edge.source),b=positions.get(edge.target);scene.append(element("line",{x1:a[0],y1:a[1],x2:b[0],y2:b[1],"stroke-width":1+Math.log2(1+edge.count),"marker-end":"url(#arrow)"}))}
+for(const edge of report.edges){if(edge.source===edge.target||!shown.has(edge.source)||!shown.has(edge.target)||!(edge.kind==="call"?byId("calls").checked:byId("imports").checked))continue;const a=positions.get(edge.source),b=positions.get(edge.target);scene.append(element("line",{x1:a[0],y1:a[1],x2:b[0],y2:b[1],"data-kind":edge.kind,"stroke-dasharray":edge.kind==="import"?"5 4":"none","stroke-width":edge.kind==="call"?1+Math.log2(1+edge.count):1,"marker-end":"url(#arrow)"}))}
 for(const file of visible){
  const [x,y]=positions.get(file.path),g=element("g",{role:"button",tabindex:0,"aria-label":file.path});
  const c=element("circle",{cx:x,cy:y,r:7+Math.log2(1+file.callers)*3,fill:palette[folders.indexOf(file.folder)%palette.length]});

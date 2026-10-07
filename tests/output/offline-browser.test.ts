@@ -19,11 +19,13 @@ afterAll(async () => { await browser?.close(); });
 test("moved standalone HTML works offline and selects a file without external requests", async () => {
     const output = path.join(mkdtempSync(path.join(tmpdir(), "moved-report-")), "map.html");
     const input = reportFixture();
+    input.imports = [{source: "app/a.ts", target: "shared/b.ts", specifier: "../shared/b", typeOnly: true, location: "app/a.ts:1:1"}];
     input.inventory.push({path: "worker/c.ts", areas: ["worker"]});
     input.runs.push({area: "worker", status: "failed", diagnostics: {error: "budget"}});
     writeFileSync(output, generateReport(input).html);
     const context = await browser.newContext({offline: true});
     const page = await context.newPage();
+    page.setDefaultTimeout(5000);
     const external: string[] = [], errors: string[] = [];
     page.on("request", r => { if (!r.url().startsWith("file:")) external.push(r.url()); });
     page.on("pageerror", e => errors.push(e.message));
@@ -35,6 +37,12 @@ test("moved standalone HTML works offline and selects a file without external re
     expect(await page.locator("#map").getAttribute("viewBox")).not.toBe(before);
     expect(external).toEqual([]);
     expect(errors).toEqual([]);
+    expect(await page.getByLabel("Possible calls", {exact: true}).isChecked()).toBe(true);
+    expect(await page.getByLabel("Imports", {exact: true}).isChecked()).toBe(false);
+    await page.getByLabel("Possible calls", {exact: true}).uncheck();
+    await page.getByLabel("Imports", {exact: true}).check();
+    expect(await page.locator("#scene line[data-kind=import]").count()).toBe(1);
+    expect(await page.locator("#scene line[data-kind=call]").count()).toBe(0);
     await page.getByLabel("Execution area").selectOption("worker");
     expect(await page.locator("#files").innerText()).toContain("worker/c.ts");
     expect(await page.locator("#files").innerText()).not.toContain("app/a.ts");

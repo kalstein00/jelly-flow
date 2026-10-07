@@ -3,6 +3,7 @@ import path from "path";
 import {createHash} from "crypto";
 import {spawnSync} from "child_process";
 import {generateReport, ReportInput} from "./report";
+import {collectImports} from "./imports";
 
 export interface ProjectConfig {
     root: string;
@@ -71,5 +72,6 @@ export async function buildProjectReport(config: ProjectConfig) {
                 inventory.push({path: normalized, areas: [area.name]});
         }
     }
+    input.imports = collectImports(config.root, inventory);
     return {...generateReport(input), input};
 }

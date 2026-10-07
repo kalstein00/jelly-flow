@@ -8,6 +8,7 @@ export interface ReportInput {
     snapshot: string;
     created: string;
     selection: "all" | string[];
+    imports?: Array<{source: string, target?: string, specifier: string, typeOnly: boolean, location: string}>;
     inventory: Array<{path: string, areas: string[]}>;
     runs: Array<{area: string, status: "completed" | "partial" | "failed", graph?: CallGraph,
         diagnostics: Record<string, unknown>}>;
@@ -22,6 +23,7 @@ export interface ReportModel {
     edges: ReportEdge[];
     runs: Array<Omit<ReportInput["runs"][number], "graph">>;
     limitations: string[];
+    imports: ReportInput["imports"];
 }
 
 function sourcePath(value: string): string {
@@ -111,8 +113,23 @@ export function generateReport(input: ReportInput): {model: ReportModel, html: s
         edge.count = edge.pairs.length;
         if (edge.source !== edge.target) files.get(edge.target)!.callers++;
     }
+    if (input.imports === undefined) limitations.add("Imports unavailable: no separate import evidence supplied.");
+    for (const item of input.imports ?? []) {
+        if (!files.has(sourcePath(item.source))) throw new Error("Import source outside inventory");
+        if (!item.target) continue;
+        if (!files.has(sourcePath(item.target))) throw new Error("Import target outside inventory");
+        const key = JSON.stringify(["import", item.source, item.target]);
+        let edge = edges.get(key);
+        if (!edge) {
+            edge = {source: item.source, target: item.target, kind: "import", count: 0, pairs: [], sites: []};
+            edges.set(key, edge);
+        }
+        const site = item.location + (item.typeOnly ? " (type-only)" : " (import)");
+        if (!edge.sites.includes(site)) edge.sites.push(site);
+        edge.count = edge.sites.length;
+    }
     const model: ReportModel = {snapshot: input.snapshot, created: input.created, selection: input.selection,
-        files: [...files.values()], edges: [...edges.values()], limitations: [...limitations],
+        files: [...files.values()], edges: [...edges.values()], limitations: [...limitations], imports: input.imports,
         runs: input.runs.map(({area, status, diagnostics}) => ({area, status, diagnostics}))};
     const data = JSON.stringify(model).replaceAll("<", "\\u003c").replaceAll(">", "\\u003e").replaceAll("&", "\\u0026");
     const template = readFileSync(path.resolve(__dirname, "../../resources/offline-report.html"), "utf8");
