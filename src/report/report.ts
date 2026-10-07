@@ -133,7 +133,9 @@ export function generateReport(input: ReportInput): {model: ReportModel, html: s
         runs: input.runs.map(({area, status, diagnostics}) => ({area, status, diagnostics}))};
     const data = JSON.stringify(model).replaceAll("<", "\\u003c").replaceAll(">", "\\u003e").replaceAll("&", "\\u0026");
     const template = readFileSync(path.resolve(__dirname, "../../resources/offline-report.html"), "utf8");
-    return {model, html: template.replace("/*REPORT_DATA*/null", () => data)};
+    const script = readFileSync(path.resolve(__dirname, "../../resources/offline-report.js"), "utf8")
+        .replace("/*REPORT_DATA*/null", () => data);
+    return {model, html: template.replace("/*REPORT_SCRIPT*/", () => script)};
 }
 
 export function writeReport(input: ReportInput, output: string): ReportModel {
