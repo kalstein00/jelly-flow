@@ -85,8 +85,8 @@ byId("copy").onclick = async () => {
 };
 const areas = [...new Set([...report.files.flatMap(f => f.areas), ...report.runs.map(r => r.area)])].sort();
 for (const area of areas) { const option = document.createElement("option"); option.value = area; option.textContent = area; byId("area").append(option); }
-for (const id of ["area", "calls", "imports", "cycles", "crossings"]) byId(id).onchange = draw;
-byId("search").oninput = draw;
+for (const id of ["area", "calls", "imports", "cycles", "crossings"]) byId(id).onchange = () => draw();
+byId("search").oninput = () => draw();
 if (!report.imports) { byId("imports").disabled = true; byId("imports").parentElement.append(" (unavailable)"); }
 function draw() {
     scene.replaceChildren(); byId("files").replaceChildren();
@@ -121,7 +121,7 @@ function draw() {
         scene.append(element("line", {x1: a[0]+ux*(startRadius+2)-uy*2, y1:a[1]+uy*(startRadius+2)+ux*2,
             x2:b[0]-ux*(endRadius+2)-uy*2,y2:b[1]-uy*(endRadius+2)+ux*2,"data-kind": edge.kind,
             "stroke-dasharray": edge.kind === "import" ? "5 4" : "none", "stroke-width": edge.kind === "call" ? 1 + Math.log2(1 + edge.count) : 1,
-            "data-cycle": !!edge.cycle, "data-cross-area": !!edge.crossArea,
+            "data-cycle": !!edge.cycle, "data-cross-area": !!edge.crossArea, "data-source": edge.source, "data-target": edge.target,
             "marker-end": "url(#arrow)", style: "stroke:" + (highlighted ? "#ffd58a" : "#6d829f") +
                 ";stroke-opacity:" + (emphasized || highlighted ? ".85" : selected ? ".06" : ".13")}));
     }

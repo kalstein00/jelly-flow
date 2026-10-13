@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Jelly Flow — Structure explorer</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<header><div><button id="toggleProjects" aria-expanded="true" aria-controls="projectsPanel">Projects</button> <span class="mark">⌘</span> <strong>Jelly Flow</strong><span class="subtitle">Structure explorer</span></div><span class="local">● Local workspace</span></header>
+<section id="workspace">
+<aside id="projectsPanel"><h2>Projects</h2><div id="projects"></div><button id="newProject">＋ Add project</button>
+<form id="projectForm"><h2>Project setup</h2><label>Project folder<input id="root" required placeholder="Absolute path to your project"></label>
+<button type="button" id="suggest">Suggest settings</button><div id="proposal" role="status"></div>
+<label>Analysis areas (JSON)<textarea id="areas" rows="7">[{"name":"app","entries":["src/main.ts"],"roots":["src"]}]</textarea></label>
+<button type="submit" class="primary">Save project</button></form><p id="error" role="alert"></p></aside>
+<main><section id="toolbar"><div><h1 id="projectName">Explore your code connections</h1><p id="jobStatus" role="status">Choose a project folder to begin.</p></div><button id="analyze" disabled class="primary">Analyze</button></section>
+<section id="resultActions"></section><div id="empty"><h2>See how your project connects.</h2><p>Analyze a local project, follow its dependencies and take concrete evidence back to your editor.</p><div class="legend">Imports <span>····</span> Possible calls <span>→</span></div></div><iframe id="graph" title="Code file map" hidden></iframe></main>
+</section><script src="/app.js"></script></body></html>

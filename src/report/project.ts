@@ -39,8 +39,8 @@ export function projectInventory(config: ProjectConfig): ReportInput["inventory"
     for (const area of config.areas) for (const root of area.roots) visit(root, area.name);
     return [...files].sort(([a], [b]) => a.localeCompare(b)).map(([file, areas]) => ({path: file, areas: [...areas]}));
 }
-export async function buildProjectReport(config: ProjectConfig) {
-    return analyzeProject(config);
+export async function buildProjectReport(config: ProjectConfig, verifiedSnapshot?: string) {
+    return analyzeProject(config, verifiedSnapshot);
 }
 
 async function analyzeProject(config: ProjectConfig, verifiedSnapshot?: string) {

@@ -2,6 +2,12 @@
 
 This is **jelly-flow**, an experimental fork for TypeScript call-graph analysis.
 Upstream licensing, package identity, and default analysis behavior are retained.
+
+Run `npm run web` from this checkout to open the local structure explorer for an
+external JavaScript/TypeScript project. Review suggested settings, explore Imports
+and Possible calls, copy review evidence, and manually reanalyze after editing the
+target project. See the [local web guide](docs/local-web.md) for setup and limits.
+
 Two independent opt-in extensions are available:
 
 ```bash
