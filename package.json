@@ -28,6 +28,7 @@
     "jelly-server": "lib/server.js"
   },
   "scripts": {
+    "prototype:hierarchy": "node tools/prototype-hierarchy.cjs",
     "web": "node node_modules/typescript/bin/tsc --build tsconfig-build.json && node lib/web/main.js",
     "build": "npm run chmod; tsc --build tsconfig-build.json",
     "build-watch": "npm run chmod; tsc --build tsconfig-build.json -w",

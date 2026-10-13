@@ -1,0 +1,12 @@
+<!doctype html>
+<!-- THROWAWAY: three structural hierarchy variants on /?variant=A|B|C, using the existing DART result. -->
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Jelly Flow · Hierarchy prototype</title><link rel="stylesheet" href="/prototype.css"></head>
+<body>
+<header><strong class="brand">♧ Jelly Flow</strong><span>Structure explorer</span><b class="tag">PROTOTYPE · 읽기 전용</b><span id="snapshot"></span></header>
+<div class="shell"><nav id="sidebar"></nav><main>
+<div class="titlebar"><div><span class="eyebrow" id="eyebrow">DART / STRUCTURE</span><h1 id="title">분석 결과를 불러오는 중…</h1><p id="subtitle"></p></div><label>관계 <select id="relation"><option value="call">Possible calls</option><option value="import">Imports</option></select></label></div>
+<div id="notice"></div><div id="content"></div>
+<details id="statePanel"><summary>시제품 상태 · 표시 기준 확인</summary><pre id="state"></pre></details>
+</main><aside id="detail"></aside></div>
+<div id="switcher" aria-label="시제품 비교"><button id="previous" aria-label="이전 시안">←</button><div><small>화면 구성 비교 · ← →</small><strong id="variantLabel"></strong></div><button id="next" aria-label="다음 시안">→</button></div>
+<script src="/prototype.js"></script></body></html>
