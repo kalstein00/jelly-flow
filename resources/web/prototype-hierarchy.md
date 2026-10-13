@@ -1,5 +1,19 @@
 # THROWAWAY — DART hierarchy UI experiment
 
+## Follow-up: a single review card (2026-10-13)
+
+The user found even the layered graph too difficult to follow. The next question is whether one grounded review card helps decide an action without reading hundreds of nodes. Open `/?variant=D` on the same prototype server. This extends the existing comparison; it is not another set of graph layouts.
+
+The manually curated candidate is `index.ts` ↔ `workspaceMenu.ts`. The stored report has two Possible calls edges and only the forward Imports edge. Reading the current source confirms that the startup file passes a shutdown callback into `installWorkspaceMenu`, and the menu calls that parameter on Quit. This explains the return call edge without a reverse import. The card recommends **deferring refactoring of this pair** rather than treating mutual file-level reachability as a defect. It does not dismiss the rest of the large SCC or claim runtime safety.
+
+Source checks: `index.ts:1,381–383`, `workspaceMenu.ts:4–6,12–14`, and `workspaceMenu.test.ts:38–57`. The test already describes invoking the injected shutdown function on Quit; it was read, not executed. Source HEAD was `06ba4000436b8ae82086ec6c909f793d4061bb50`; the working tree was clean at inspection. The state panel records the two inspected SHA-256 file digests. The curated claim is gated to the inspected report snapshot; later source changes are not automatically verified.
+
+D shows the suggested verdict, a two-file diagram, three source-backed observations, a concrete follow-up question, and contracts to preserve if a change is made. The user can record a temporary choice and copy the evidence (or select fallback text). Raw snapshot/edge evidence is collapsed. The full graph is available as an optional drilldown. The card explicitly labels its manually written interpretation; no automatic candidate selection or source reasoning engine was implemented. No DART source was changed or embedded in the repository.
+
+Updated provisional direction: start from review questions and evidence cards, and use A/B/C only as supporting exploration. User feedback on D is pending; no production promotion or ADR change has occurred.
+
+Manual D verification: the card rendered in the narrow in-app browser; temporary decision selection updated the copied evidence; the clipboard contents were read back and matched; optional drilldown opened `workspaceMenu.ts` in C; reloading D reset the temporary decision. No browser errors/warnings were observed. Screenshot: `tmp/hierarchy-prototype/D-review-card.jpg`. A selectable text fallback is provided when clipboard access fails or takes more than 1.5 seconds; this fallback was not separately forced during the manual check.
+
 Question: does a collapsed structural overview plus a directional file layout make the existing DART analysis easier to read than the free-layout file cloud?
 
 This is the UI branch of the `prototype` skill. Three structurally different variants share the existing explorer's header, project/area context, relation selector and read-only report data. The `/` route on a separate development server swaps rendering with `?variant=A|B|C`. It does not change the production server or regenerate the analysis. No variant has been accepted by the user yet; none is production code.

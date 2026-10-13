@@ -5,7 +5,7 @@
 const $ = id => document.getElementById(id);
 const esc = text => String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const short = file => file.split('/').pop();
-const variants = {A:'접힌 구조 개요',B:'방향성 계층 그래프',C:'호출 관계 읽기'};
+const variants = {A:'접힌 구조 개요',B:'방향성 계층 그래프',C:'호출 관계 읽기',D:'검토 카드 한 장'};
 const query = new URLSearchParams(location.search);
 let variant = variants[query.get('variant')] ? query.get('variant') : 'A';
 let scope = query.get('scope') || (variant === 'A' ? 'overview' : 'log-viewer-app/main');
@@ -13,6 +13,9 @@ let relation = query.get('relation') === 'import' ? 'import' : 'call';
 let selected = query.get('file') || '', search = '', zoom = 1, neighborhood = false;
 let expandedApps = new Set(), expandedFolders = new Set(), selectedCycle = null;
 let project, report, byPath, groups, owner, lastState = {}, allEdges = [];
+let reviewDecision = '미선택';
+const reviewSnapshot = '875baee997009c264d9637eb45b49f0701dc1accc7fb294b36a956a4458fc875';
+const reviewIndex = 'log-viewer-app/src/main/index.ts', reviewMenu = 'log-viewer-app/src/main/workspaceMenu.ts';
 const relationName = () => relation === 'call' ? 'Possible calls' : 'Imports';
 const filesInScope = () => scope === 'overview' ? report.files : report.files.filter(f=>f.areas.includes(scope));
 const edgesFor = files => {const paths=new Set(files.map(f=>f.path));return allEdges.filter(e=>e.kind===relation&&e.source!==e.target&&paths.has(e.source)&&paths.has(e.target));};
@@ -131,9 +134,32 @@ function details(){
     $('detail').innerHTML=`<small>FILE DETAILS</small><h2>${esc(short(selected))}</h2><div class="path">${esc(selected)}</div><span class="badge">${esc(file.status)}</span><h3>현재 범위에서 확인된 파일 수</h3><div class="stats"><div><strong>${incoming.length}</strong><span>incoming</span></div><div><strong>${outgoing.length}</strong><span>outgoing</span></div></div><p style="font-size:12px">범위 밖 연결 ${outside.length}쌍 · ${file.metricStatus==='known'?'정적 분석 관측값':'부분·미분석으로 전체 수를 확정할 수 없음'}</p>${button('이 파일 중심으로 읽기','data-variant="C"')}<h3>분석 영역 소속</h3><div class="path">${file.areas.map(esc).join('<br>')}</div><h3>호출·의존 대상</h3><div class="list">${outgoing.map(e=>fileButton(e.target)).join('')||'<small>이 범위에서 확인된 대상 없음</small>'}</div><h3>소스 위치 표본</h3><div class="path">${file.functions.slice(0,6).map(f=>esc(f.location)).join('<br>')||'함수 위치 없음'}</div>`;
 }
 function state(){const current={prototype:true,variant,scope,relation:relationName(),snapshot:report.snapshot,created:report.created,selected,selectedCycle:selectedCycle?.members||null,...lastState};$('state').textContent=JSON.stringify(current,null,2);console.info('[hierarchy prototype]',current);}
+function reviewD(){
+    const evidence=allEdges.filter(e=>[reviewIndex,reviewMenu].includes(e.source)&&[reviewIndex,reviewMenu].includes(e.target)&&e.source!==e.target);
+    const compatible=report.snapshot===reviewSnapshot&&evidence.some(e=>e.kind==='call'&&e.source===reviewMenu)&&evidence.some(e=>e.kind==='call'&&e.source===reviewIndex);
+    $('eyebrow').textContent='DART / 검토 후보 01 · 수동 검토 사례';
+    $('title').textContent='메뉴와 시작 코드, 정말 분리해야 할까?';
+    $('subtitle').textContent='파일 2개와 콜백 1개만 확인합니다. 전체 그래프를 따라갈 필요는 없습니다.';
+    $('notice').innerHTML='';
+    if(!compatible){$('content').innerHTML='<p>이 카드는 특정 snapshot과 소스를 수동으로 대조한 사례입니다. 현재 결과에는 검토 내용을 적용할 수 없습니다.</p>';lastState={display:'review case unavailable',expectedSnapshot:reviewSnapshot};state();return;}
+    const raw=evidence.map(e=>`${e.kind==='call'?'Possible calls':'Imports'}: ${e.source} -> ${e.target}\n  ${e.sites.join('\n  ')}`).join('\n\n');
+    const copy=`검토 후보: index.ts ↔ workspaceMenu.ts\n판단 제안: 수정 보류. 파일 수준 호출 순환만으로 순환 import나 잘못된 결합을 단정할 수 없음.\n근거: index.ts가 installWorkspaceMenu에 종료 콜백을 전달하고, workspaceMenu.ts가 requestShutdown 인자를 호출함. 메뉴는 index.ts를 import하지 않음.\n현재 선택: ${reviewDecision} (이 시제품 메모리에만 유지)\n추가 확인: 메뉴가 종료 동작을 주입받는 현재 계약을 유지하는지, UI 변경으로 종료 정책까지 함께 수정해야 하는 실제 사례가 있는지 확인.\n변경한다면 보존할 계약: Quit은 주입된 coordinated shutdown을 호출하고 New Window는 별도 동작이어야 함.\n분석 snapshot: ${report.snapshot}\n분석 시점: ${report.created}\n전체 coverage: ${report.coverage.analyzed}/${report.coverage.inventory} analyzed; ${report.coverage.unanalyzed} unanalyzed\n소스 수동 확인: 2026-10-13, DART HEAD 06ba4000436b8ae82086ec6c909f793d4061bb50. 현재 소스 재검증 기능은 없음.\n읽은 위치: index.ts:1,381-383; workspaceMenu.ts:4-6,12-14; workspaceMenu.test.ts:38-57 (테스트 소스 확인만, 실행하지 않음).\n\n${raw}\n\n수동 작성한 시제품 사례이며 자동 진단 결과가 아님. 실제 실행 순서, 결함 또는 성능 문제를 증명하지 않음.`;
+    $('content').innerHTML=`<article class="review-card"><section class="review-verdict"><span class="review-kicker">확인 후 제안 · 수정 보류</span><h2>종료 동작을 넘겨받아 호출하는 구조입니다.</h2><p>그래프에는 양방향 호출이 잡힙니다. 코드를 보면 메뉴가 <b>전달받은 콜백</b>을 호출하면서 시작 파일로 연결됩니다. 현재 근거만으로 이 둘을 다시 분리할 이유는 부족합니다.</p><div class="review-tags"><span>소스 대조 완료</span><span>자동 진단 아님</span><span>변경 제안 없음</span></div></section>
+    <section class="review-section"><span class="review-number">01</span><h2>왜 검토 후보로 보였나</h2><p><b>Possible calls에서 두 파일이 서로를 호출합니다.</b> 큰 순환 묶음의 작은 부분을 골랐습니다. 아래 두 연결만 확인하면 됩니다.</p><div class="review-diagram" aria-label="두 파일의 정적 호출 관계"><div class="review-file"><b>index.ts</b><small>메뉴를 설치하고 종료 동작을 전달</small></div><div class="review-arrows"><span>installWorkspaceMenu →</span><span>← 전달한 종료 콜백 호출</span></div><div class="review-file"><b>workspaceMenu.ts</b><small>Quit 메뉴에서 받은 동작을 호출</small></div></div><p class="review-caption">Imports: index.ts → workspaceMenu.ts만 확인됨. 반대 방향 import는 메뉴 소스에도 없습니다.</p></section>
+    <section class="review-section"><span class="review-number">02</span><h2>코드에서 확인한 세 가지</h2><ol class="review-evidence"><li><b>시작 코드가 종료 정책을 연결합니다.</b><span>installWorkspaceMenu에 shutdown coordinator를 호출하는 함수를 전달합니다.</span><code>index.ts:381–383</code></li><li><b>메뉴는 전달받은 함수를 호출합니다.</b><span>requestShutdown을 인자로 받고 Quit 클릭에서 실행합니다. 시작 모듈을 직접 가져오지 않습니다.</span><code>workspaceMenu.ts:4–6, 12–14</code></li><li><b>그 분리를 검증하는 테스트가 이미 있습니다.</b><span>메뉴 설치만으로 종료하지 않고, Quit을 선택할 때 주입한 함수를 한 번 호출하도록 검증합니다. 이번 작업에서는 테스트 소스만 읽었습니다.</span><code>workspaceMenu.test.ts:38–57</code></li></ol></section>
+    <section class="review-section review-next"><span class="review-number">03</span><h2>다음 행동은 무엇인가</h2><p><b>이 후보는 우선 수정 보류를 추천합니다.</b> 메뉴 모양을 바꿀 때 종료 정책까지 함께 수정해야 했던 실제 사례가 있는지 확인하세요. 그런 근거가 생기면 인터페이스를 다시 검토할 수 있습니다.</p><p>변경할 때는 <b>Quit → 주입된 종료 절차</b> 계약을 보존하고, 기존 메뉴 테스트와 실제 종료 동작을 확인해야 합니다.</p><div class="review-decisions" aria-label="검토 판단">${['수정 보류','추가 확인','수정 검토'].map(d=>button(d,`data-decision="${d}"`,reviewDecision===d?'active':'')).join('')}</div><small id="decisionStatus">내 판단: ${reviewDecision} · 저장되지 않는 시제품 메모</small></section>
+    <details class="review-section"><summary>원본 관계·분석 시점·검토 범위 펼치기</summary><p>분석 ${esc(report.created)} · snapshot ${report.snapshot.slice(0,12)}<br>전체 ${report.coverage.analyzed}/${report.coverage.inventory} analyzed · ${report.coverage.unanalyzed} unanalyzed</p><p>2026-10-13에 두 파일과 메뉴 테스트 소스를 수동 확인했습니다. source HEAD: <code>06ba4000436b8ae82086ec6c909f793d4061bb50</code>. 이후 소스 변경을 자동으로 검증하지 않습니다.</p><pre>${esc(raw)}</pre><p>이 두 파일의 콜백 구조에 대한 판단입니다. 다른 순환이나 종료 동작 전체의 안전성까지 검증한 것은 아닙니다.</p></details>
+    <div class="review-actions">${button('검토 근거 복사','id="copyReview"','active')}${button('필요할 때 파일 관계 열기','id="openReviewGraph"')}<span id="copyStatus" role="status"></span></div><details class="review-copy"><summary>복사할 텍스트 직접 보기</summary><textarea id="reviewCopy" aria-label="검토 카드 근거" readonly rows="12">${esc(copy)}</textarea></details></article>`;
+    lastState={display:'one manually curated review card',candidate:[reviewIndex,reviewMenu],relation:'Possible calls + Imports',snapshot:report.snapshot,sourceReviewedOn:'2026-10-13',sourceHead:'06ba4000436b8ae82086ec6c909f793d4061bb50',sourceHashes:{index:'5B64CA39D7ABC2926530436328A41F47ADED991C3A749494C5812AECBC5FD22A',menu:'1D46D03997AC765D031A99248BFB1EDA579364D95059BED410D4B6E7DE9A52AF'},recommendation:'defer refactoring; injected callback explains this pair',decision:reviewDecision,tests:'source inspected; not executed',evidence};
+    $('copyReview').onclick=async()=>{try{await Promise.race([navigator.clipboard.writeText($('reviewCopy').value),new Promise((_,reject)=>setTimeout(()=>reject(new Error('Clipboard unavailable')),1500))]);$('copyStatus').textContent='검토 근거를 복사했습니다.';}catch{$('copyStatus').textContent='아래 텍스트를 선택해 복사하세요.';$('reviewCopy').closest('details').open=true;$('reviewCopy').select();}};
+    $('openReviewGraph').onclick=()=>{scope='log-viewer-app/main';selected=reviewMenu;relation='call';switchVariant('C');};
+    state();
+}
 function render(){
     if(!report)return;urlState();$('relation').value=relation;
+    document.body.dataset.view=variant==='D'?'review':'graph';
     $('variantLabel').textContent=variant+' · '+variants[variant];
+    if(variant==='D'){reviewD();return;}
     $('eyebrow').textContent='DART / '+(scope==='overview'?'OVERVIEW':scope);
     $('title').textContent=variant==='A'?(scope==='overview'?'전체 구조를 먼저, 파일은 그다음.':'폴더를 펼쳐 구조를 좁혀보기'):variant==='B'?'연결 방향을 따라 읽는 파일 지도':'하나의 파일에서 앞뒤로 읽기';
     $('subtitle').textContent=variant==='A'?'포함 관계를 접고 펼칩니다. 관심 영역에 들어가면 연결 방향을 볼 수 있습니다.':variant==='B'?'순환은 묶고, 나머지는 방향에 따라 계층으로 배치합니다.':'전체 그림보다 파일 이름과 직접 연결을 읽는 데 집중합니다.';
@@ -143,7 +169,8 @@ function render(){
 function applySearch(value){search=value;neighborhood=false;selected=filesInScope().find(f=>search&&f.path.toLowerCase().includes(search.toLowerCase()))?.path||'';selectedCycle=null;render();}
 document.addEventListener('click',e=>{
     const b=e.target.closest('button');if(!b)return;const d=b.dataset;
-    if(d.scope)chooseScope(d.scope);
+    if(d.decision){reviewDecision=d.decision;reviewD();}
+    else if(d.scope)chooseScope(d.scope);
     else if(d.variant)switchVariant(d.variant);
     else if(d.file)chooseFile(d.file);
     else if(d.app){expandedApps.has(d.app)?expandedApps.delete(d.app):expandedApps.add(d.app);render();}
